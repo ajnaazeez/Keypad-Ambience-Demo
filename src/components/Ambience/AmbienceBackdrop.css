@@ -1,0 +1,323 @@
+/* ==========================================================================
+   ARISS Island Series - Living Room Showcase Ambience Engine
+   Photorealistic Architectural Lighting Simulation
+   ========================================================================== */
+
+.ambience-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  background-color: #030406;
+  border-radius: inherit;
+}
+
+/* 1. Photorealistic Base Room Image with Realistic Architectural Exposure */
+.ambience-room-photo {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center 22%;
+  background-repeat: no-repeat;
+  transition: filter 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: filter, transform;
+}
+
+/* Atmospheric Lighting Moods: Natural, Distinct, Preserving Architectural Depth */
+.ambience-room-photo.mood-standby {
+  filter: brightness(0.36) saturate(0.60) contrast(1.12);
+}
+.ambience-room-photo.mood-default {
+  filter: brightness(0.78) saturate(0.96) contrast(1.04);
+}
+.ambience-room-photo.mood-main-light {
+  filter: brightness(1.02) saturate(0.98) contrast(1.02);
+}
+.ambience-room-photo.mood-chandelier {
+  filter: brightness(0.85) saturate(1.24) contrast(1.08) hue-rotate(-4deg);
+}
+.ambience-room-photo.mood-spotlights {
+  filter: brightness(0.62) saturate(1.05) contrast(1.26);
+}
+.ambience-room-photo.mood-cove {
+  filter: brightness(0.80) saturate(1.18) contrast(1.06) hue-rotate(-2deg);
+}
+.ambience-room-photo.mood-ceiling {
+  filter: brightness(0.86) saturate(1.02) contrast(1.04);
+}
+.ambience-room-photo.mood-relax {
+  filter: brightness(0.72) saturate(1.36) sepia(0.24) contrast(1.10);
+  transform: scale(1.004);
+}
+.ambience-room-photo.mood-master {
+  filter: brightness(1.06) saturate(1.06) contrast(1.02);
+  transform: scale(1.004);
+}
+
+/* Base Architectural Layer */
+.ambience-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, filter;
+}
+
+/* 2. Nighttime Standby Vignette: Soft, preserving twilight and materials */
+.layer-night-standby {
+  background: radial-gradient(ellipse 90% 70% at 50% 38%, rgba(2, 4, 10, 0.12) 0%, rgba(1, 2, 6, 0.45) 100%);
+  opacity: 0;
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.layer-night-standby.is-active {
+  opacity: 1;
+}
+
+/* 3. Main Light — 4000K Neutral-White Clean Ceiling Wash */
+.layer-main-light {
+  background: radial-gradient(ellipse 95% 65% at 50% 12%, rgba(235, 245, 255, 0.34) 0%, rgba(210, 230, 255, 0.14) 45%, transparent 80%);
+  mix-blend-mode: screen;
+}
+.layer-main-light.is-lit {
+  opacity: 1;
+}
+.layer-main-light.is-focused,
+.layer-main-light.is-holding {
+  opacity: 1;
+  filter: brightness(1.25);
+}
+
+/* 4. Ceiling — 3000K Soft Indirect Upward Ceiling Canopy Wash */
+.layer-ceiling {
+  background: radial-gradient(ellipse 110% 50% at 50% 2%, rgba(240, 245, 255, 0.28) 0%, rgba(215, 230, 252, 0.10) 42%, transparent 75%);
+  mix-blend-mode: screen;
+}
+.layer-ceiling.is-lit {
+  opacity: 1;
+}
+.layer-ceiling.is-focused,
+.layer-ceiling.is-holding {
+  opacity: 1;
+  filter: brightness(1.25);
+}
+
+/* 5. Chandelier — 2700K Warm Golden Crystal Radiance & Table Downlight */
+.layer-chandelier {
+  mix-blend-mode: screen;
+}
+.layer-chandelier.is-lit {
+  opacity: 1;
+}
+.layer-chandelier.is-focused,
+.layer-chandelier.is-holding {
+  opacity: 1;
+  filter: brightness(1.35);
+}
+
+/* Delicate crystalline glow centered inside the fixture glass rods */
+.chandelier-core-bloom {
+  position: absolute;
+  top: 31%;
+  left: 50.2%;
+  transform: translate(-50%, -50%);
+  width: min(150px, 22%);
+  height: min(150px, 22%);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 235, 170, 0.68) 0%,
+    rgba(255, 205, 110, 0.38) 40%,
+    transparent 72%
+  );
+  filter: blur(14px);
+}
+
+/* Gentle warm downlight pool on the central seating & coffee table */
+.chandelier-down-wash {
+  position: absolute;
+  top: 54%;
+  left: 50.2%;
+  transform: translate(-50%, -50%);
+  width: 60%;
+  height: 50%;
+  background: radial-gradient(
+    ellipse at 50% 20%,
+    rgba(255, 215, 120, 0.24) 0%,
+    rgba(245, 185, 80, 0.09) 45%,
+    transparent 72%
+  );
+  filter: blur(12px);
+}
+
+/* 6. Spotlights — Subtle Architectural Recessed Downlight Cones */
+.layer-spotlights {
+  mix-blend-mode: screen;
+}
+.layer-spotlights.is-lit {
+  opacity: 1;
+}
+.layer-spotlights.is-focused,
+.layer-spotlights.is-holding {
+  opacity: 1;
+  filter: brightness(1.40);
+}
+
+.spot-fixture {
+  position: absolute;
+  pointer-events: none;
+}
+
+/* Delicate Recessed Pinhole Emitter */
+.spot-emitter {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -2px);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow:
+    0 0 4px 1.5px #ffffff,
+    0 0 8px 3px rgba(255, 245, 200, 0.75);
+  z-index: 2;
+}
+
+/* Natural Volumetric Downlight Cone with Soft Falloff */
+.spot-beam {
+  position: absolute;
+  top: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 100%;
+  clip-path: polygon(42% 0%, 58% 0%, 100% 100%, 0% 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 252, 235, 0.40) 0%,
+    rgba(255, 242, 205, 0.18) 24%,
+    rgba(255, 230, 175, 0.06) 55%,
+    transparent 85%
+  );
+  filter: blur(2.5px);
+}
+
+/* Soft Elliptical Light Pool on Floor/Furniture */
+.spot-floor-pool {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 130%;
+  height: 25%;
+  background: radial-gradient(
+    ellipse 90% 55% at 50% 82%,
+    rgba(255, 242, 190, 0.26) 0%,
+    rgba(255, 225, 140, 0.09) 50%,
+    transparent 78%
+  );
+  filter: blur(6px);
+}
+
+/* Subtle Wall Scallop for Artwork/Fireplace */
+.spot-wall-wash {
+  position: absolute;
+  top: 18%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120%;
+  height: 70%;
+  background: radial-gradient(
+    ellipse 75% 55% at 50% 55%,
+    rgba(255, 238, 195, 0.24) 0%,
+    rgba(255, 215, 140, 0.07) 50%,
+    transparent 78%
+  );
+  filter: blur(8px);
+}
+
+/* Calibrated Fixture Coordinates Aligned with Real Downlights */
+.spot-wall-art      { top: 5%;  left: 34%;  width: 12%; height: 56%; }
+.spot-lounge-chair  { top: 20%; left: 28%;  width: 10%; height: 52%; }
+.spot-hallway-run   { top: 36%; left: 6.8%; width: 9%;  height: 44%; }
+.spot-center-table  { top: 30%; left: 54%;  width: 11%; height: 50%; }
+.spot-window-column { top: 10%; left: 68%;  width: 11%; height: 52%; }
+
+/* 7. Cove — Architectural Ceiling Perimeter Tray Glow */
+.layer-cove {
+  mix-blend-mode: screen;
+}
+.layer-cove.is-lit {
+  opacity: 1;
+}
+.layer-cove.is-focused,
+.layer-cove.is-holding {
+  opacity: 1;
+  filter: brightness(1.30);
+}
+
+/* Soft ambient wash lifting the geometric tray ceiling lines */
+.cove-tray-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 38%;
+  background: radial-gradient(
+    ellipse 95% 42% at 50% 4%,
+    rgba(255, 225, 140, 0.38) 0%,
+    rgba(255, 195, 95, 0.16) 45%,
+    transparent 75%
+  );
+  filter: blur(6px);
+}
+
+/* 8. Relax Scene — 2200K Sunset Amber Soft Evening Mood */
+.layer-relax {
+  background: radial-gradient(ellipse 100% 80% at 50% 38%, rgba(255, 150, 50, 0.26) 0%, rgba(220, 110, 30, 0.09) 52%, transparent 85%);
+  mix-blend-mode: screen;
+}
+.layer-relax.is-lit {
+  opacity: 1;
+}
+.layer-relax.is-focused,
+.layer-relax.is-holding {
+  opacity: 1;
+  filter: brightness(1.30);
+}
+
+/* 9. Master Living On — 3200K Balanced Ambient Harmony */
+.layer-master-on {
+  background: radial-gradient(ellipse 100% 75% at 50% 28%, rgba(255, 245, 225, 0.24) 0%, rgba(245, 230, 205, 0.09) 50%, transparent 82%);
+  mix-blend-mode: screen;
+}
+.layer-master-on.is-lit {
+  opacity: 1;
+}
+.layer-master-on.is-focused,
+.layer-master-on.is-holding {
+  opacity: 1;
+  filter: brightness(1.20);
+}
+
+/* Master Living Off Hold Reaction */
+.ambience-canvas.hold-living-off .ambience-layer:not(.layer-night-standby) {
+  opacity: 0 !important;
+  transition: opacity 0.5s ease-out;
+}
+.ambience-canvas.hold-living-on .layer-master-on {
+  opacity: 1;
+  filter: brightness(1.25);
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .ambience-room-photo,
+  .ambience-layer {
+    transition-duration: 0.01ms !important;
+    transform: none !important;
+  }
+}
