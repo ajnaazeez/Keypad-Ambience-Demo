@@ -1,0 +1,413 @@
+/* ==========================================================================
+   ARISS Island Series — Wall AC Unit Component Styling
+   Architectural Split Indoor AC Unit with Dynamic Airflow Waves
+   ========================================================================== */
+
+.wall-ac-fixture {
+  position: absolute;
+  top: 42.5%;
+  left: 21%;
+  transform: translate(-50%, -50%);
+  width: 186px;
+  height: 58px;
+  pointer-events: auto;
+  cursor: pointer;
+  z-index: 25;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: filter 0.3s ease;
+}
+
+.wall-ac-fixture:hover {
+  filter: drop-shadow(0 0 14px rgba(56, 189, 248, 0.6));
+}
+
+/* Wall Shadow behind chassis */
+.ac-wall-shadow {
+  position: absolute;
+  inset: -3px 0 -8px 0;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.45);
+  filter: blur(6px);
+  pointer-events: none;
+}
+
+/* Slim Indoor AC Chassis */
+.ac-chassis {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  background: linear-gradient(180deg, #f5f7fa 0%, #e8ecf1 45%, #dce1e8 85%, #cfd5de 100%);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.95),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.22),
+    0 4px 12px rgba(0, 0, 0, 0.4);
+  border: 0.5px solid rgba(255, 255, 255, 0.5);
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
+}
+
+/* Top Air Intake Grille */
+.ac-intake-grille {
+  height: 6px;
+  padding: 1px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 4px 4px 0 0;
+}
+
+.grille-slat {
+  width: 100%;
+  height: 0.8px;
+  background: rgba(0, 0, 0, 0.18);
+  border-radius: 1px;
+}
+
+/* Front Panel */
+.ac-front-panel {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+/* ARISS Climate Micro Brand Mark */
+.ac-brand-mark {
+  font-size: 7px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: #7d8895;
+  opacity: 0.75;
+}
+
+/* Digital LED Segment Display */
+.ac-digital-display {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  padding: 2px 6px;
+  border-radius: 3px;
+  background: rgba(15, 23, 42, 0.12);
+}
+
+.ac-digital-display.display-lit {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.display-temp {
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'JetBrains Mono', monospace, sans-serif;
+  color: #0284c7;
+  letter-spacing: -0.02em;
+  text-shadow: 0 0 6px rgba(56, 189, 248, 0.6);
+}
+
+.mode-dry .display-temp  { color: #0d9488; text-shadow: 0 0 6px rgba(20, 184, 166, 0.6); }
+.mode-fan .display-temp  { color: #475569; text-shadow: none; }
+
+.display-unit {
+  font-size: 8px;
+  font-weight: 500;
+  color: #0284c7;
+}
+.mode-dry .display-unit { color: #0d9488; }
+.mode-fan .display-unit { color: #475569; }
+
+.display-mode-icon {
+  font-size: 8px;
+  margin-left: 2px;
+  color: #0284c7;
+}
+
+.display-fan-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 1.5px;
+  height: 8px;
+  margin-left: 3px;
+}
+
+.display-fan-bars .bar {
+  width: 1.5px;
+  background: rgba(0, 0, 0, 0.18);
+  border-radius: 1px;
+}
+.display-fan-bars .bar:nth-child(1) { height: 3px; }
+.display-fan-bars .bar:nth-child(2) { height: 5px; }
+.display-fan-bars .bar:nth-child(3) { height: 8px; }
+
+.display-fan-bars .bar.lit {
+  background: #0284c7;
+  box-shadow: 0 0 3px rgba(56, 189, 248, 0.6);
+}
+
+/* Micro LED on front edge */
+.ac-status-led {
+  width: 3.5px;
+  height: 3.5px;
+  border-radius: 50%;
+  background: #94a3b8;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.ac-status-led.led-on {
+  background: #38bdf8;
+  box-shadow: 0 0 5px #0284c7, 0 0 8px rgba(56, 189, 248, 0.8);
+}
+
+/* Motorized Deflector Flap / Louver */
+.ac-louver-vane {
+  position: absolute;
+  bottom: -2px;
+  left: 6px;
+  right: 6px;
+  height: 6px;
+  border-radius: 1px 1px 3px 3px;
+  background: linear-gradient(180deg, #d3d8df 0%, #b8c0cc 100%);
+  transform-origin: top center;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.8s ease;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 2px 4px rgba(0, 0, 0, 0.25);
+  z-index: 2;
+}
+
+.ac-louver-vane.louver-open {
+  transform: perspective(300px) rotateX(46deg) translateY(2px);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.7),
+    0 5px 10px rgba(0, 0, 0, 0.35);
+  animation: louverSway 4s ease-in-out infinite alternate;
+}
+
+@keyframes louverSway {
+  0%   { transform: perspective(300px) rotateX(44deg) translateY(2px); }
+  100% { transform: perspective(300px) rotateX(50deg) translateY(2.5px); }
+}
+
+.ac-louver-vane.louver-closed {
+  transform: perspective(300px) rotateX(0deg) translateY(0);
+}
+
+/* Realistic Animated Airflow Streams */
+.ac-airflow-container {
+  position: absolute;
+  top: 90%;
+  left: 20%;
+  width: 240px;
+  height: 180px;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 15;
+}
+
+.airflow-svg-stream {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.airflow-wave {
+  stroke-linecap: round;
+  fill: none;
+  stroke-dasharray: 18 10;
+  animation: airWaveFlow 1.8s linear infinite;
+  opacity: 0.65;
+}
+
+.speed-low .airflow-wave   { animation-duration: 2.6s; opacity: 0.45; }
+.speed-med .airflow-wave   { animation-duration: 1.8s; opacity: 0.65; }
+.speed-high .airflow-wave  { animation-duration: 1.1s; opacity: 0.85; }
+
+/* Circular Concentric Airflow Ripple Visualization */
+.ac-circular-airflow-svg {
+  position: absolute;
+  top: 15px;
+  left: 20px;
+  width: 280px;
+  height: 200px;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.circular-arc {
+  fill: none;
+  stroke: rgba(56, 189, 248, 0.75);
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.6));
+  transform-origin: 20px 0px;
+  animation: circularWaveExpand 2.2s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+}
+
+.mode-dry .circular-arc {
+  stroke: rgba(45, 212, 191, 0.75);
+  filter: drop-shadow(0 0 6px rgba(45, 212, 191, 0.6));
+}
+
+.mode-fan .circular-arc {
+  stroke: rgba(186, 230, 253, 0.7);
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+}
+
+.arc-1 { stroke-width: 2.6; animation-delay: 0s; }
+.arc-2 { stroke-width: 2.2; animation-delay: 0.55s; }
+.arc-3 { stroke-width: 1.8; animation-delay: 1.1s; }
+.arc-4 { stroke-width: 1.4; animation-delay: 1.65s; }
+
+@keyframes circularWaveExpand {
+  0% {
+    opacity: 0;
+    transform: scale(0.7) translate(-10px, -5px);
+  }
+  25% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.35) translate(28px, 22px);
+  }
+}
+
+.airflow-circular-aura {
+  position: absolute;
+  top: 10px;
+  left: 25px;
+  width: 180px;
+  height: 140px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%);
+  filter: blur(12px);
+  pointer-events: none;
+  animation: auraPulse 2.2s ease-in-out infinite alternate;
+}
+
+@keyframes auraPulse {
+  0%   { opacity: 0.4; transform: scale(0.9); }
+  100% { opacity: 0.8; transform: scale(1.15); }
+}
+
+/* AC Hover HUD Badge */
+.ac-hover-badge {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  opacity: 0;
+  pointer-events: none;
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  padding: 4px 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  font-size: 11px;
+  color: #f1f5f9;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.6);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  z-index: 30;
+}
+
+.ac-hover-badge.badge-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.ac-hover-badge .badge-icon {
+  font-size: 11px;
+}
+
+.ac-hover-badge .badge-text {
+  font-weight: 500;
+  color: #e2e8f0;
+}
+
+.ac-hover-badge .badge-action {
+  font-size: 9.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #38bdf8;
+  padding-left: 4px;
+  border-left: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Permanent Architectural Identification Beacon */
+.ac-beacon-pill {
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(10, 16, 26, 0.78);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  font-size: 9.5px;
+  color: #cbd5e1;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+  z-index: 28;
+}
+
+.ac-beacon-pill.is-on {
+  background: rgba(2, 44, 76, 0.88);
+  border-color: rgba(56, 189, 248, 0.45);
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.35);
+  color: #f0f9ff;
+}
+
+.ac-beacon-pill .beacon-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #64748b;
+  transition: background-color 0.3s;
+}
+
+.ac-beacon-pill.is-on .beacon-dot {
+  background: #38bdf8;
+  box-shadow: 0 0 6px #38bdf8;
+  animation: beaconPulse 2s infinite ease-in-out;
+}
+
+@keyframes beaconPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.55; transform: scale(0.85); }
+}
+
+.ac-beacon-pill .beacon-label {
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.ac-beacon-pill .beacon-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: #94a3b8;
+}
+
+.ac-beacon-pill.is-on .beacon-val {
+  color: #38bdf8;
+}

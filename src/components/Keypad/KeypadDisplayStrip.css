@@ -1,0 +1,235 @@
+/* ==========================================================================
+   ARISS Island Series — Continuous Glass OLED Display Strip Styling
+   ========================================================================== */
+
+.keypad-display-strip {
+  position: relative;
+  width: 100%;
+  height: 52px;
+  border-radius: 26px;
+  background: #000000;
+  border: 1.5px solid rgba(255, 255, 255, 0.14);
+  box-shadow:
+    inset 0 2px 20px rgba(0, 0, 0, 0.95),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 4px 10px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  margin-bottom: 12px;
+  box-sizing: border-box;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* Glass Specular Reflection Highlight */
+.display-glass-specular {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    75deg,
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 255, 255, 0.08) 35%,
+    transparent 65%
+  );
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Individual OLED Screen Panes */
+.display-pane {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 5;
+}
+
+.pane-left {
+  align-items: flex-start;
+}
+
+.pane-right {
+  align-items: flex-end;
+}
+
+/* Center Divider Seam */
+.display-center-divider {
+  width: 1px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.12);
+  margin: 0 8px;
+}
+
+/* Clock & Date Cluster */
+.oled-time-cluster {
+  display: flex;
+  align-items: baseline;
+  gap: 1.5px;
+  line-height: 1;
+}
+
+.time-hours,
+.time-minutes {
+  font-family: 'JetBrains Mono', 'Plus Jakarta Sans', monospace;
+  font-size: 17px;
+  font-weight: 400;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+
+.time-colon {
+  font-family: monospace;
+  font-size: 15px;
+  color: #60a5fa;
+  animation: colonBlink 1s step-end infinite;
+}
+
+@keyframes colonBlink {
+  50% { opacity: 0.2; }
+}
+
+.time-ampm {
+  font-size: 9px;
+  font-weight: 500;
+  color: #94a3b8;
+  margin-left: 3px;
+}
+
+.oled-sub-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 3px;
+  line-height: 1;
+}
+
+.sub-date {
+  font-size: 9px;
+  font-weight: 400;
+  color: #64748b;
+  letter-spacing: 0.04em;
+}
+
+.sub-temp {
+  font-size: 9.5px;
+  font-weight: 600;
+  color: #38bdf8;
+}
+
+/* OLED Feedback States (Right Pane) */
+.oled-idle-feedback {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+}
+
+.feedback-badge {
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #3b82f6;
+}
+
+.feedback-status-line {
+  font-size: 9.5px;
+  color: #94a3b8;
+  white-space: nowrap;
+}
+
+.oled-device-feedback {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+  width: 100%;
+}
+
+.device-feedback-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.feedback-title {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #94a3b8;
+}
+
+.feedback-state {
+  font-size: 12px;
+  font-weight: 700;
+  color: #ffffff;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Fan Segments on OLED (Matching Reference Website) */
+.fan-display-segments {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.fan-seg-bar {
+  width: 14px;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.12);
+  transition: all 0.2s ease;
+}
+
+.fan-seg-bar.seg-lit {
+  background: linear-gradient(180deg, #2E7EF2 10%, #0052C9 50%, #00409C 100%);
+  box-shadow: 0 0 5px rgba(46, 126, 242, 0.6);
+}
+
+/* AC Indicators on OLED */
+.ac-display-indicators {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.ac-mode-tag {
+  font-size: 8.5px;
+  font-weight: 600;
+  padding: 1px 4px;
+  border-radius: 2px;
+  background: rgba(56, 189, 248, 0.2);
+  color: #38bdf8;
+}
+
+.ac-fan-tag {
+  font-size: 8.5px;
+  font-weight: 500;
+  color: #94a3b8;
+}
+
+/* Curtain Progress Bar on OLED */
+.curtain-display-progress {
+  width: 80px;
+  height: 5px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+}
+
+.curtain-progress-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #3b82f6 0%, #60a5fa 100%);
+  transition: width 0.3s ease;
+}
+
+/* Lighting Scene Name on OLED */
+.lighting-scene-name {
+  font-size: 9.5px;
+  font-weight: 500;
+  color: #f59e0b;
+}

@@ -1,0 +1,229 @@
+/* ==========================================================================
+   ARISS Island Series — Custom Smart Keypad Styles
+   Brushed Satin-Anodized Aluminum Architecture with OLED Glass Crown
+   ========================================================================== */
+
+.smart-keypad-station {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 380px;
+  perspective: 1200px;
+  user-select: none;
+  -webkit-user-select: none;
+  gap: 8px;
+}
+
+/* Glass OLED Crown Bar at top of keypad */
+.keypad-oled-crown {
+  width: 100%;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+/* Satin-Aluminum Faceplate */
+.smart-keypad-faceplate {
+  position: relative;
+  width: 100%;
+  border-radius: 20px;
+  background: linear-gradient(155deg, #e8eaee 0%, #dde0e6 30%, #d2d6dd 65%, #dde1e7 100%);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  box-shadow:
+    0 35px 80px -15px rgba(0, 0, 0, 0.92),
+    0 20px 40px -10px rgba(0, 0, 0, 0.75),
+    inset 0 1.5px 2px rgba(255, 255, 255, 0.95),
+    inset 0 -1.5px 2px rgba(0, 0, 0, 0.25),
+    inset 1px 0 2px rgba(255, 255, 255, 0.5),
+    inset -1px 0 2px rgba(0, 0, 0, 0.18);
+  padding: 14px 12px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Brushed specular sheen overlay */
+.smart-keypad-faceplate::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    ellipse at 38% 12%,
+    rgba(255, 255, 255, 0.45) 0%,
+    rgba(255, 255, 255, 0.10) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+/* Bay Section (2 Columns) */
+.keypad-bay-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  width: 100%;
+}
+
+.bay-column {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Architectural Divider Seam */
+.keypad-section-divider {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 4px;
+}
+
+.divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.04), rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.04));
+}
+
+.divider-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 7.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+/* Machined Tactile Keypad Button */
+.smart-button {
+  position: relative;
+  width: 100%;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  background: linear-gradient(180deg, #edf0f4 0%, #e2e5ea 55%, #d6dbe2 100%);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  outline: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.95),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.15),
+    0 1px 2px rgba(0, 0, 0, 0.08);
+
+  transition:
+    transform 0.08s ease-out,
+    background 0.15s ease-out,
+    box-shadow 0.12s ease-out,
+    filter 0.12s ease-out;
+}
+
+.smart-button:hover {
+  background: linear-gradient(180deg, #f1f4f8 0%, #e7eaef 55%, #dce0e8 100%);
+  filter: brightness(1.02);
+}
+
+.smart-button.smart-button-full {
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
+/* Tactile Physical Press */
+.smart-button.is-pressed {
+  transform: translateY(1.5px) scale(0.995);
+  background: linear-gradient(180deg, #d3d7de 0%, #cacfd6 55%, #c0c5cc 100%);
+  box-shadow:
+    inset 0 2px 3px rgba(0, 0, 0, 0.22),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.45);
+}
+
+/* Active Illumination */
+.smart-button.is-active {
+  background: linear-gradient(180deg, #f5f8fc 0%, #ebedf3 55%, #e0e4eb 100%);
+  border-color: rgba(56, 189, 248, 0.35);
+  box-shadow:
+    inset 0 1px 1.5px rgba(255, 255, 255, 0.95),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.1),
+    0 0 12px rgba(56, 189, 248, 0.16);
+}
+
+/* Optical Status Pinhole LED */
+.smart-status-led {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: rgba(30, 41, 59, 0.25);
+  transition: background-color 0.25s, box-shadow 0.25s;
+  flex-shrink: 0;
+}
+
+.smart-status-led.is-lit {
+  background-color: #0284c7;
+  box-shadow: 0 0 5px #38bdf8;
+}
+
+/* Button Labels Stack */
+.smart-button-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  flex: 1;
+}
+
+.smart-button-title {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: #1e293b;
+  letter-spacing: -0.01em;
+  transition: color 0.15s ease;
+}
+
+.smart-button.is-active .smart-button-title {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.smart-button-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8.5px;
+  font-weight: 600;
+  color: #64748b;
+  letter-spacing: 0.02em;
+  margin-top: 1px;
+}
+
+.smart-button.is-active .smart-button-sub {
+  color: #0284c7;
+}
+
+/* Real-time hold charge bar along bottom seam */
+.smart-hold-charge-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 0%;
+  background: #2563eb;
+  border-radius: 0 0 2px 2px;
+  transition: width 0.36s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.smart-button.is-holding .smart-hold-charge-bar {
+  width: 100%;
+  box-shadow: 0 0 8px #3b82f6;
+}

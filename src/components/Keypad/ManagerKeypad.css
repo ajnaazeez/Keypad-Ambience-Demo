@@ -1,0 +1,114 @@
+/* ==========================================================================
+   ARISS Island Series — Manager's Exact 8-Button Architectural Keypad
+   Matching Screenshot 2: Satin-Anodized Brushed Aluminum Square Wall Plate
+   ========================================================================== */
+
+.manager-keypad-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 360px;
+  perspective: 1200px;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Gang Selector Pills above plate */
+.manager-gang-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(15, 23, 42, 0.65);
+  padding: 3px 4px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.gang-tab-pill {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  color: #94a3b8;
+  font-size: 10.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.gang-tab-pill:hover {
+  color: #f1f5f9;
+}
+
+.gang-tab-pill.is-active {
+  background: #2563eb;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
+}
+
+.gang-tab-pill .tab-glyph {
+  font-size: 11px;
+}
+
+/* Outer Square Faceplate (Matching Screenshot 2) */
+.manager-keypad-faceplate {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1.08;
+  border-radius: 20px;
+  background: linear-gradient(155deg, #e8ebed 0%, #dde1e6 30%, #d0d5db 62%, #dce0e6 100%);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow:
+    0 40px 90px -15px rgba(0, 0, 0, 0.9),
+    0 24px 45px -10px rgba(0, 0, 0, 0.75),
+    inset 0 1px 2px rgba(255, 255, 255, 0.92),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.25),
+    inset 1px 0 2px rgba(255, 255, 255, 0.5),
+    inset -1px 0 2px rgba(0, 0, 0, 0.18);
+  padding: 16px 14px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Brushed aluminum specular sheen */
+.manager-keypad-faceplate::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    ellipse at 38% 12%,
+    rgba(255, 255, 255, 0.48) 0%,
+    rgba(255, 255, 255, 0.12) 38%,
+    transparent 68%
+  );
+  pointer-events: none;
+}
+
+/* 8-Button Bay */
+.manager-keypad-bay {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  box-sizing: border-box;
+}
+
+/* Columns */
+.manager-column {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  height: 100%;
+}

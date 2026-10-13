@@ -1,0 +1,427 @@
+/* ==========================================================================
+   KeypadCrownDisplay.css — Capsule Crown OLED Display Strip
+   Dedicated exclusively to FAN, AC, and CURTAINS with zero white background
+   ========================================================================== */
+
+.keypad-crown-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 6px;
+  position: relative;
+  z-index: 10;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Mount Frame — Background is completely transparent (NO WHITE/SILVER PLATE) */
+.crown-mount-frame {
+  width: 320px;
+  max-width: 100%;
+  padding: 4px 0 8px;
+  box-sizing: border-box;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+/* The Dark Glass Capsule / Pill Display Strip */
+.crown-capsule-display {
+  width: 100%;
+  height: 62px;
+  background: linear-gradient(180deg, #181a20 0%, #0d0f13 60%, #08090c 100%);
+  border: 2px solid #ffffff;
+  border-radius: 999px; /* Pure Pill Stadium Capsule */
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.75),
+    inset 0 1px 2px rgba(255, 255, 255, 0.28),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.95);
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 6px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* Specular Glass Glare across upper portion */
+.capsule-glass-glare {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 48%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.02) 75%, transparent 100%);
+  border-radius: 999px 999px 0 0;
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* ==========================================================================
+   VIEW 1: FAN LIVE CONTROL (Matches Example Reference Image Exactly!)
+   - Upper: Large centered speed number (e.g. 2)
+   - Lower: 4 oval speed pill buttons (1) (2) (3) (4)
+   ========================================================================== */
+
+.crown-fan-live-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 125px;
+  height: 100%;
+  z-index: 2;
+  cursor: pointer;
+}
+
+/* Large speed number centered above pills */
+.fan-speed-large-num {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 23px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1;
+  margin-bottom: 3.5px;
+  letter-spacing: -0.02em;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
+}
+
+/* 4 Pills Row */
+.fan-pills-row {
+  display: flex;
+  align-items: center;
+  gap: 4.5px;
+}
+
+/* Individual Oval Speed Pill Button matching reference image */
+.fan-pill-btn {
+  width: 22px;
+  height: 14.5px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: #252830;
+  box-sizing: border-box;
+  line-height: 1;
+}
+
+/* Active pills (e.g. pills 1 and 2 when speed is 2) filled with solid blue */
+.fan-pill-btn.is-active {
+  background: #2563eb;
+  border-color: #3b82f6;
+  box-shadow: 0 0 8px rgba(37, 99, 235, 0.85);
+  color: #ffffff;
+}
+
+.fan-pill-btn:hover {
+  filter: brightness(1.2);
+  transform: scale(1.05);
+}
+
+/* ==========================================================================
+   COMPANION SIDE CHIPS (Fan, AC, Curtain — NO Lights, Switch, or Relax!)
+   ========================================================================== */
+
+.crown-side-chips-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  height: 100%;
+  z-index: 2;
+}
+
+.status-chip-row {
+  display: flex;
+  align-items: center;
+  gap: 6.5px;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+}
+
+.status-chip-row:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.chip-icon {
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.chip-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: #94a3b8;
+  letter-spacing: 0.01em;
+  transition: color 0.2s ease;
+}
+
+/* Fan active state: vibrant orange (#f97316) */
+.status-chip-row.is-active.is-fan .chip-icon {
+  color: #f97316;
+  filter: drop-shadow(0 0 6px rgba(249, 115, 22, 0.85));
+}
+.status-chip-row.is-active.is-fan .chip-label {
+  color: #ffffff;
+}
+
+/* AC active state: electric blue (#0ea5e9) */
+.status-chip-row.is-active.is-ac .chip-icon {
+  color: #0ea5e9;
+  filter: drop-shadow(0 0 6px rgba(14, 165, 233, 0.85));
+}
+.status-chip-row.is-active.is-ac .chip-label {
+  color: #ffffff;
+}
+
+/* Curtain active state: emerald green (#10b981) */
+.status-chip-row.is-active.is-curtain .chip-icon {
+  color: #10b981;
+  filter: drop-shadow(0 0 6px rgba(16, 185, 129, 0.85));
+}
+.status-chip-row.is-active.is-curtain .chip-label {
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   VIEW 2: AC LIVE CONTROL
+   Top: AC [ON]/[OFF] | Bottom: 22°C + Steppers
+   ========================================================================== */
+
+.crown-right-ac-view {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  height: 100%;
+  min-width: 115px;
+  z-index: 2;
+}
+
+.ac-header-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  line-height: 1;
+}
+
+.ac-title-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.ac-pill-badge {
+  font-family: 'Inter', sans-serif;
+  font-size: 9.5px;
+  font-weight: 700;
+  padding: 1.5px 7px;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.ac-pill-badge:hover {
+  filter: brightness(1.2);
+}
+
+.ac-pill-badge.badge-on {
+  background: #2563eb;
+  color: #ffffff;
+  box-shadow: 0 0 8px rgba(37, 99, 235, 0.7);
+}
+
+.ac-pill-badge.badge-off {
+  background: #334155;
+  color: #94a3b8;
+}
+
+.ac-temp-row {
+  margin-top: 2px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.ac-temp-stepper {
+  background: rgba(255, 255, 255, 0.12);
+  border: none;
+  color: #cbd5e1;
+  font-size: 13px;
+  font-weight: 700;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transition: all 0.15s ease;
+  padding: 0;
+}
+
+.ac-temp-stepper:hover {
+  background: rgba(255, 255, 255, 0.28);
+  color: #ffffff;
+}
+
+.ac-temp-number {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 21px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* ==========================================================================
+   VIEW 3: CURTAIN LIVE CONTROL
+   Top: "Open" / "Closed" | Middle: Slider | Bottom: [Close], [Pause], [Open]
+   ========================================================================== */
+
+.crown-right-curtain-view {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  width: 140px;
+  box-sizing: border-box;
+  padding: 2px 0;
+  z-index: 2;
+}
+
+.curtain-header-row {
+  line-height: 1;
+}
+
+.curtain-title-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.01em;
+}
+
+.curtain-slider-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.slider-icon {
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.curtain-track-wrap {
+  flex: 1;
+  position: relative;
+  height: 14px;
+  display: flex;
+  align-items: center;
+}
+
+.curtain-range-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 10;
+  margin: 0;
+}
+
+.curtain-track-bg {
+  width: 100%;
+  height: 3.5px;
+  background: #334155;
+  border-radius: 999px;
+  position: relative;
+  pointer-events: none;
+}
+
+.curtain-track-fill {
+  height: 100%;
+  background: #2563eb;
+  border-radius: 999px;
+  transition: width 0.2s ease;
+}
+
+.curtain-track-thumb {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  transition: left 0.2s ease;
+}
+
+.curtain-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.curtain-action-btn {
+  height: 15px;
+  min-width: 20px;
+  padding: 0 5px;
+  border-radius: 999px;
+  border: none;
+  background: #1e222b;
+  color: #94a3b8;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.curtain-action-btn:hover {
+  background: #2b3240;
+  color: #ffffff;
+}
+
+.curtain-action-btn.is-active-btn.is-blue {
+  background: #2563eb;
+  color: #ffffff;
+  box-shadow: 0 0 6px rgba(37, 99, 235, 0.7);
+}

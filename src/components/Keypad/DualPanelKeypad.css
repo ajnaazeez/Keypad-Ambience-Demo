@@ -1,0 +1,286 @@
+/* ==========================================================================
+   DualPanelKeypad.css — Reference Image 2 Exact Architectural Keypad
+   Frameless Split Dual-Panel Touch/Rocker Plate with Corner-Aligned Labels
+   ========================================================================== */
+
+.dual-keypad-enclosure {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  -webkit-user-select: none;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+/* Frameless Architectural Square Plate */
+.dual-keypad-plate {
+  width: 320px;
+  height: 320px;
+  max-width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+
+/* Black Body Finish */
+.dual-keypad-enclosure.body-black .dual-keypad-plate {
+  border: 10px solid #141518;
+  box-shadow:
+    0 24px 65px rgba(0, 0, 0, 0.9),
+    0 8px 24px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.dual-keypad-enclosure.body-black .dual-center-divider {
+  background: #090a0c;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.12),
+    0 -1px 0 rgba(0, 0, 0, 0.9);
+}
+
+/* White Body Finish */
+.dual-keypad-enclosure.body-white .dual-keypad-plate {
+  border: 10px solid #ffffff;
+  box-shadow:
+    0 24px 65px rgba(0, 0, 0, 0.35),
+    0 8px 24px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(0, 0, 0, 0.12);
+}
+
+.dual-keypad-enclosure.body-white .dual-center-divider {
+  background: #e2e6ed;
+  box-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.15),
+    0 -1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.dual-keypad-enclosure.body-white .divider-channel-groove {
+  background: #cbd2dc;
+}
+
+/* Center Horizontal Divider Bar */
+.dual-center-divider {
+  height: 8px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 10;
+}
+
+.divider-channel-groove {
+  height: 2px;
+  width: 100%;
+  background: #050608;
+}
+
+/* Top Plate and Bottom Plate Halves */
+.dual-plate-half {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  position: relative;
+  background: var(--keypad-btn-bg, #26384d);
+  transition: background 0.25s ease;
+}
+
+.dual-plate-half::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(170deg, rgba(255, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0.22) 100%);
+  pointer-events: none;
+}
+
+.dual-plate-top {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.dual-plate-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Individual Quadrant Touch Button */
+.dual-quadrant-btn {
+  position: relative;
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 16px 20px;
+  margin: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  transition: background 0.2s ease, transform 0.08s ease;
+  overflow: hidden;
+  touch-action: manipulation;
+}
+
+.dual-quadrant-btn:hover {
+  background: rgba(255, 255, 255, 0.025);
+}
+
+/* Corner Alignments matching Reference Image 2 */
+.dual-quadrant-btn.quad-top-left {
+  justify-content: flex-start;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.dual-quadrant-btn.quad-top-right {
+  justify-content: flex-start;
+  align-items: flex-end;
+  text-align: right;
+}
+
+.dual-quadrant-btn.quad-bottom-left {
+  justify-content: flex-end;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.dual-quadrant-btn.quad-bottom-right {
+  justify-content: flex-end;
+  align-items: flex-end;
+  text-align: right;
+}
+
+/* Quadrant Label & Sublabel */
+.dual-quadrant-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.dual-quadrant-label {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: var(--keypad-btn-text, #ffffff);
+  white-space: nowrap;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.dual-quadrant-sublabel {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--keypad-btn-sublabel, rgba(255, 255, 255, 0.65));
+  text-transform: uppercase;
+  transition: color 0.2s ease;
+}
+
+/* Active State (Illuminated Luminous Clean White Glow) */
+.dual-quadrant-btn.is-active {
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.04) 0%, transparent 80%);
+}
+
+.dual-quadrant-btn.is-active .dual-quadrant-label {
+  color: #ffffff;
+  font-weight: 500;
+  text-shadow:
+    0 0 10px rgba(255, 255, 255, 0.85),
+    0 0 2px rgba(255, 255, 255, 1);
+}
+
+.dual-quadrant-btn.is-active .dual-quadrant-sublabel {
+  color: #38bdf8;
+}
+
+/* Subtle Status Pip Indicator */
+.dual-status-pip {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: transparent;
+  transition: all 0.25s ease;
+  z-index: 3;
+}
+
+.quad-top-left .dual-status-pip {
+  top: 10px;
+  left: 10px;
+}
+
+.quad-top-right .dual-status-pip {
+  top: 10px;
+  right: 10px;
+}
+
+.quad-bottom-left .dual-status-pip {
+  bottom: 10px;
+  left: 10px;
+}
+
+.quad-bottom-right .dual-status-pip {
+  bottom: 10px;
+  right: 10px;
+}
+
+.dual-quadrant-btn.is-active .dual-status-pip {
+  background: #38bdf8;
+  box-shadow: 0 0 8px #38bdf8;
+}
+
+/* Tactile Depression on Press */
+.dual-quadrant-btn.is-pressed {
+  transform: scale(0.985);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* Long-Press Hold Radial & Bar */
+.dual-hold-radial {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.22) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.dual-quadrant-btn.is-holding .dual-hold-radial {
+  opacity: 1;
+}
+
+.dual-hold-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 0%;
+  background: linear-gradient(90deg, #38bdf8, #818cf8);
+  box-shadow: 0 0 6px rgba(56, 189, 248, 0.9);
+  transition: width 0.1s linear;
+  z-index: 4;
+}
+
+.dual-quadrant-btn.is-holding .dual-hold-bar {
+  width: 100%;
+}
+
+@media (max-width: 480px) {
+  .dual-keypad-plate {
+    width: 290px;
+    height: 290px;
+  }
+  .dual-quadrant-btn {
+    padding: 12px 14px;
+  }
+  .dual-quadrant-label {
+    font-size: 13px;
+  }
+}

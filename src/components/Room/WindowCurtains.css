@@ -1,0 +1,271 @@
+/* ==========================================================================
+   ARISS Island Series — Window Curtains Component Styling
+   Motorized Luxury Floor-to-Ceiling Drapery with Ripple Folds
+   ========================================================================== */
+
+.window-curtains-system {
+  position: absolute;
+  top: 44.5%;
+  left: 54%;
+  right: 7%;
+  height: 33%;
+  pointer-events: auto;
+  cursor: pointer;
+  z-index: 18;
+  user-select: none;
+  -webkit-user-select: none;
+  overflow: visible;
+  transition: filter 0.3s ease;
+}
+
+.window-curtains-system:hover {
+  filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.35));
+}
+
+/* Concealed Ceiling Header Track */
+.curtain-header-track {
+  position: absolute;
+  top: -6px;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: linear-gradient(180deg, #1c1f24 0%, #323842 50%, #15181c 100%);
+  border-radius: 2px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+}
+
+.track-rail {
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, #475569 0%, #94a3b8 50%, #475569 100%);
+}
+
+.track-bracket {
+  position: absolute;
+  top: -3px;
+  width: 8px;
+  height: 12px;
+  background: #2b3038;
+  border-radius: 1px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+.bracket-left   { left: 15px; }
+.bracket-center { left: 50%; transform: translateX(-50%); }
+.bracket-right  { right: 15px; }
+
+/* Behind-Curtain Window Light Diffuser (dims window brightness when closed) */
+.curtain-window-backdrop-diffuser {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    rgba(15, 23, 42, 0.65) 0%,
+    rgba(8, 12, 20, 0.85) 100%
+  );
+  pointer-events: none;
+  transition: opacity 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+  z-index: 1;
+}
+
+/* Drapery Bay */
+.curtain-drape-bay {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  overflow: hidden;
+  z-index: 5;
+}
+
+/* Individual Drapery Panel (Left & Right) */
+.curtain-panel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  transition: width 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: width;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.55);
+}
+
+.panel-left {
+  left: 0;
+  border-right: 1px solid rgba(0, 0, 0, 0.35);
+}
+
+.panel-right {
+  right: 0;
+  border-left: 1px solid rgba(0, 0, 0, 0.35);
+}
+
+/* Ripple Fold Fabric Pleats Container */
+.pleat-folds-container {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  background: #1c2027;
+  overflow: hidden;
+}
+
+/* Vertical Wave Pleats with Realistic Fabric Highlights and Deep Shadows */
+.pleat {
+  flex: 1;
+  height: 100%;
+  position: relative;
+  background: linear-gradient(
+    90deg,
+    #2c323c 0%,
+    #414955 22%,
+    #586272 45%,
+    #414955 68%,
+    #252a32 88%,
+    #181c22 100%
+  );
+  box-shadow:
+    inset -1px 0 2px rgba(0, 0, 0, 0.4),
+    inset 1px 0 2px rgba(255, 255, 255, 0.12);
+}
+
+/* Subtle linen texture simulation via micro-stripes */
+.pleat::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.03) 0px,
+    rgba(255, 255, 255, 0.03) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  pointer-events: none;
+}
+
+/* Bottom Weighted Architectural Hem */
+.panel-bottom-hem {
+  height: 8px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.8) 100%);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Curtains Open State Styling (Tightly Gathered at Sides) */
+.is-open .panel-left {
+  border-radius: 0 4px 4px 0;
+}
+.is-open .panel-right {
+  border-radius: 4px 0 0 4px;
+}
+
+/* Curtains Hover HUD Badge */
+.curtain-hover-badge {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  opacity: 0;
+  pointer-events: none;
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  padding: 4px 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  font-size: 11px;
+  color: #f1f5f9;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.6);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  z-index: 30;
+}
+
+.curtain-hover-badge.badge-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.curtain-hover-badge .badge-icon {
+  font-size: 11px;
+}
+
+.curtain-hover-badge .badge-text {
+  font-weight: 500;
+  color: #e2e8f0;
+}
+
+.curtain-hover-badge .badge-action {
+  font-size: 9.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #38bdf8;
+  padding-left: 4px;
+  border-left: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Permanent Architectural Identification Beacon */
+.curtain-beacon-pill {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(10, 16, 26, 0.78);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  font-size: 9.5px;
+  color: #cbd5e1;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+  z-index: 28;
+}
+
+.curtain-beacon-pill.is-open {
+  background: rgba(16, 40, 70, 0.88);
+  border-color: rgba(56, 189, 248, 0.45);
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.35);
+  color: #f0f9ff;
+}
+
+.curtain-beacon-pill .beacon-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #64748b;
+  transition: background-color 0.3s;
+}
+
+.curtain-beacon-pill.is-open .beacon-dot {
+  background: #38bdf8;
+  box-shadow: 0 0 6px #38bdf8;
+  animation: beaconPulse 2s infinite ease-in-out;
+}
+
+.curtain-beacon-pill .beacon-label {
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.curtain-beacon-pill .beacon-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: #94a3b8;
+}
+
+.curtain-beacon-pill.is-open .beacon-val {
+  color: #38bdf8;
+}

@@ -1,0 +1,205 @@
+/* ==========================================================================
+   ArchitecturalToolbar.css
+   Recreates the exact header control toolbar from Reference Image 2 & 4
+   ========================================================================== */
+
+.arch-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  user-select: none;
+  -webkit-user-select: none;
+  flex-wrap: wrap;
+}
+
+/* Shared base button style */
+.arch-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 999px;
+  background: rgba(18, 20, 28, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #e2e8f0;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+}
+
+.arch-btn:hover {
+  background: rgba(30, 34, 46, 0.95);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
+}
+
+/* 1. APP Button */
+.arch-btn-app {
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.arch-btn-app .app-icon {
+  display: flex;
+  align-items: center;
+  color: #94a3b8;
+}
+
+.arch-btn-app:hover .app-icon {
+  color: #38bdf8;
+}
+
+/* 2. LIGHT / DARK Toggle Button */
+.arch-btn-theme {
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  padding: 0 18px;
+}
+
+.arch-btn-theme.is-dark-active {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: #ffffff;
+  color: #ffffff;
+  box-shadow: 0 0 14px rgba(255, 255, 255, 0.25);
+}
+
+.arch-btn-theme.is-light-active {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: #ffffff;
+  color: #ffffff;
+  box-shadow: 0 0 14px rgba(255, 255, 255, 0.25);
+}
+
+.theme-badge-icon {
+  display: flex;
+  align-items: center;
+}
+
+/* 3. Customizer Bay Enclosure (BODY + BUTTONS) */
+.arch-customizer-bay {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 999px;
+  background: rgba(18, 20, 28, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+}
+
+.bay-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* White architectural labels for BODY and BUTTONS */
+.bay-label {
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #ffffff;
+}
+
+.swatches-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Vertical Divider Hairline */
+.bay-divider-line {
+  width: 1px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Swatch base circle */
+.body-swatch,
+.color-swatch {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: all 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
+  position: relative;
+  box-sizing: border-box;
+}
+
+.body-swatch:hover,
+.color-swatch:hover {
+  transform: scale(1.15);
+}
+
+/* Body White Swatch */
+.swatch-white {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+/* Body Black Swatch */
+.swatch-black {
+  background: #181a20;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+/* Selected state: Crisp architectural white outline ring */
+.body-swatch.is-selected,
+.color-swatch.is-selected {
+  outline: 2.2px solid #ffffff;
+  outline-offset: 2px;
+  transform: scale(1.08);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.45);
+}
+
+/* Checkmark inside active swatch */
+.swatch-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+/* ==========================================================================
+   LIGHT MODE OVERRIDES FOR TOOLBAR (When website theme is LIGHT)
+   ========================================================================== */
+
+body.theme-light .arch-btn,
+body.theme-light .arch-customizer-bay {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(0, 0, 0, 0.12);
+  color: #1e293b;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+body.theme-light .arch-btn:hover {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.22);
+}
+
+body.theme-light .arch-btn-app .app-icon {
+  color: #64748b;
+}
+
+body.theme-light .bay-divider-line {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+body.theme-light .bay-label,
+.theme-light .bay-label {
+  color: #0f172a;
+}

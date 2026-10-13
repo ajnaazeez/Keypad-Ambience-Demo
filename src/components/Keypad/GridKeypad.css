@@ -1,0 +1,240 @@
+/* ==========================================================================
+   GridKeypad.css — Reference Image 1 Exact Architectural Keypad
+   Matte Black Square Outer Bezel, 2 Columns x 4 Rows Push-Button Layout
+   ========================================================================== */
+
+.grid-keypad-enclosure {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  -webkit-user-select: none;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+/* Outer Square Faceplate with Bezel Frame */
+.grid-keypad-faceplate {
+  width: 320px;
+  height: 320px;
+  max-width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 6px;
+  padding: 30px; /* Outer bezel border matching Reference Images */
+  box-sizing: border-box;
+  display: flex;
+  position: relative;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Black Body Finish (Reference Image 1) */
+.grid-keypad-enclosure.body-black .grid-keypad-faceplate {
+  background: linear-gradient(145deg, #1f2125 0%, #17181b 45%, #131416 100%);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.85),
+    0 6px 18px rgba(0, 0, 0, 0.6),
+    inset 0 1px 1px rgba(255, 255, 255, 0.12),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.9),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+.grid-keypad-enclosure.body-black .grid-keypad-bay {
+  background: #0d0e10;
+  box-shadow:
+    inset 0 2px 6px rgba(0, 0, 0, 0.8),
+    inset 0 -1px 2px rgba(255, 255, 255, 0.04),
+    0 0 0 1px rgba(0, 0, 0, 0.9);
+}
+
+/* White Body Finish (Reference Image 4 & 5) */
+.grid-keypad-enclosure.body-white .grid-keypad-faceplate {
+  background: linear-gradient(145deg, #ffffff 0%, #f6f7fa 45%, #ebeef3 100%);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.32),
+    0 6px 18px rgba(0, 0, 0, 0.18),
+    inset 0 1px 1.5px rgba(255, 255, 255, 1),
+    inset 0 -1.5px 2px rgba(0, 0, 0, 0.22),
+    0 0 0 1px rgba(0, 0, 0, 0.1);
+}
+
+.grid-keypad-enclosure.body-white .grid-keypad-bay {
+  background: #d4d9e2;
+  box-shadow:
+    inset 0 2px 6px rgba(0, 0, 0, 0.3),
+    inset 0 -1px 2px rgba(255, 255, 255, 0.9),
+    0 0 0 1px rgba(0, 0, 0, 0.18);
+}
+
+/* Recessed Inner Button Bay */
+.grid-keypad-bay {
+  flex: 1;
+  display: flex;
+  gap: 8px; /* Clean vertical seam between Column 1 and Column 2 */
+  border-radius: 3px;
+  padding: 2px;
+  position: relative;
+  transition: background 0.3s ease;
+}
+
+/* Individual Columns */
+.grid-keypad-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px; /* Fine horizontal hairline seam between buttons */
+}
+
+/* Individual Button Item */
+.grid-keypad-btn {
+  flex: 1;
+  position: relative;
+  background: var(--keypad-btn-bg, #26384d);
+  border: none;
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.35);
+  transition: background 0.25s ease, transform 0.08s ease, box-shadow 0.15s ease, filter 0.2s ease;
+  overflow: hidden;
+  touch-action: manipulation;
+}
+
+.grid-keypad-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(0, 0, 0, 0.18) 100%);
+  pointer-events: none;
+}
+
+.grid-keypad-btn:hover {
+  filter: brightness(1.1);
+}
+
+/* Button Surface & Typography */
+.grid-btn-surface {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  z-index: 2;
+  pointer-events: none;
+  padding: 4px;
+}
+
+.grid-btn-label {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 13.5px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: var(--keypad-btn-text, #ffffff);
+  text-align: center;
+  white-space: nowrap;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.grid-btn-sublabel {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--keypad-btn-sublabel, rgba(255, 255, 255, 0.65));
+  text-transform: uppercase;
+  transition: color 0.2s ease;
+}
+
+/* Active State (Illuminated) */
+.grid-keypad-btn.is-active {
+  filter: brightness(1.2);
+  box-shadow:
+    0 1px 4px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 0 14px rgba(255, 255, 255, 0.15);
+}
+
+.grid-keypad-btn.is-active .grid-btn-label {
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 2px rgba(255, 255, 255, 0.9);
+}
+
+.grid-keypad-btn.is-active .grid-btn-sublabel {
+  color: #38bdf8;
+}
+
+/* Subtle Active Status Accent Line along bottom */
+.grid-btn-status-accent {
+  position: absolute;
+  bottom: 0;
+  left: 20%;
+  right: 20%;
+  height: 2px;
+  border-radius: 2px 2px 0 0;
+  background: transparent;
+  transition: all 0.25s ease;
+  z-index: 3;
+}
+
+.grid-keypad-btn.is-active .grid-btn-status-accent {
+  background: #38bdf8;
+  box-shadow: 0 0 6px #38bdf8;
+}
+
+/* Tactile Depression on Press */
+.grid-keypad-btn.is-pressed {
+  transform: translateY(1.2px) scale(0.99);
+  background: linear-gradient(180deg, #191a1d 0%, #202226 100%);
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.8),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.04);
+}
+
+/* Long-Press Hold Bar & Surface Aura */
+.grid-btn-hold-fill {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(56, 189, 248, 0.22) 0%, transparent 75%);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.grid-keypad-btn.is-holding .grid-btn-hold-fill {
+  opacity: 1;
+}
+
+.grid-btn-hold-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2.5px;
+  width: 0%;
+  background: linear-gradient(90deg, #38bdf8, #818cf8);
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.9);
+  transition: width 0.1s linear;
+  z-index: 4;
+}
+
+.grid-keypad-btn.is-holding .grid-btn-hold-bar {
+  width: 100%;
+}
+
+@media (max-width: 480px) {
+  .grid-keypad-faceplate {
+    width: 290px;
+    height: 290px;
+    padding: 24px;
+  }
+  .grid-btn-label {
+    font-size: 12.5px;
+  }
+}

@@ -1,0 +1,307 @@
+/* ==========================================================================
+   ARISS Island Series — Ceiling Fan Component Styling
+   Photorealistic 3D Perspective Architecture
+   ========================================================================== */
+
+.ceiling-fan-fixture {
+  position: absolute;
+  top: 13.5%;
+  left: 33.5%;
+  transform: translate(-50%, -50%);
+  width: 190px;
+  height: 190px;
+  pointer-events: auto;
+  cursor: pointer;
+  z-index: 25;
+  user-select: none;
+  -webkit-user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: filter 0.3s ease;
+}
+
+.ceiling-fan-fixture:hover {
+  filter: drop-shadow(0 0 12px rgba(59, 130, 246, 0.45));
+}
+
+/* Ceiling Flange & Downrod */
+.fan-mounting-canopy {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.fan-ceiling-flange {
+  width: 22px;
+  height: 6px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 30%, #525a66 0%, #20242a 70%, #101216 100%);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
+  border: 0.5px solid rgba(255, 255, 255, 0.2);
+}
+
+.fan-downrod {
+  width: 4px;
+  height: 24px;
+  background: linear-gradient(90deg, #2b3038 0%, #687280 45%, #8f9ba8 55%, #2b3038 100%);
+  box-shadow: 1px 0 2px rgba(0, 0, 0, 0.6);
+}
+
+/* 3D Perspective Rotor Stage */
+.fan-rotor-assembly {
+  position: relative;
+  width: 170px;
+  height: 170px;
+  transform: perspective(700px) rotateX(62deg);
+  transform-style: preserve-3d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Dynamic Ambient Ceiling Shadow */
+.fan-ceiling-shadow {
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(0, 0, 0, 0.38) 0%,
+    rgba(0, 0, 0, 0.22) 45%,
+    transparent 72%
+  );
+  filter: blur(8px);
+  pointer-events: none;
+  transform-origin: center center;
+  transition: opacity 0.5s ease;
+}
+
+.fan-ceiling-shadow.shadow-blur {
+  opacity: 0.85;
+  filter: blur(12px);
+}
+
+/* Rotating Blades Disk */
+.fan-blades-disc {
+  position: absolute;
+  inset: 0;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.fan-blades-disc.has-motion-blur {
+  filter: blur(1.2px);
+}
+
+/* Individual Sculpted Aerodynamic Blades */
+.fan-blade {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 82px;
+  height: 24px;
+  transform-origin: 0% 50%;
+  pointer-events: none;
+}
+
+.fan-blade-0   { transform: rotate(0deg); }
+.fan-blade-90  { transform: rotate(90deg); }
+.fan-blade-180 { transform: rotate(180deg); }
+.fan-blade-270 { transform: rotate(270deg); }
+
+/* Blade Fin: Natural Matte Walnut / Architectural Graphite Texture */
+.blade-fin {
+  position: absolute;
+  left: 14px;
+  top: 2px;
+  width: 68px;
+  height: 20px;
+  border-radius: 4px 18px 18px 4px;
+  background: linear-gradient(
+    180deg,
+    #3f454d 0%,
+    #2a2e34 45%,
+    #1b1e22 80%,
+    #25292f 100%
+  );
+  border: 0.5px solid rgba(255, 255, 255, 0.15);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.25),
+    0 4px 8px rgba(0, 0, 0, 0.55);
+}
+
+/* Realistic Blade Bracket Connection */
+.blade-bracket {
+  position: absolute;
+  left: 0;
+  top: 7px;
+  width: 16px;
+  height: 10px;
+  background: linear-gradient(90deg, #1f2328 0%, #525a66 60%, #303640 100%);
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* Central Motor Housing */
+.fan-motor-housing {
+  position: absolute;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #5a6370 0%, #2f343c 65%, #181b20 100%);
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.85),
+    inset 0 1px 1.5px rgba(255, 255, 255, 0.4),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+}
+
+.motor-casing-rim {
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+}
+
+.motor-center-cap {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #768190 0%, #252a32 80%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.fan-status-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: #4b5563;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.fan-status-dot.dot-active {
+  background-color: #3b82f6;
+  box-shadow: 0 0 6px #60a5fa, 0 0 10px rgba(59, 130, 246, 0.8);
+}
+
+/* Hover HUD Badge */
+.fan-hover-badge {
+  position: absolute;
+  bottom: -28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  opacity: 0;
+  pointer-events: none;
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  padding: 4px 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  font-size: 11px;
+  color: #f1f5f9;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.6);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  z-index: 30;
+}
+
+.fan-hover-badge.badge-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.fan-hover-badge .badge-icon {
+  font-size: 11px;
+}
+
+.fan-hover-badge .badge-text {
+  font-weight: 500;
+  color: #e2e8f0;
+}
+
+.fan-hover-badge .badge-action {
+  font-size: 9.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #60a5fa;
+  padding-left: 4px;
+  border-left: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Permanent Architectural Identification Beacon */
+.fan-beacon-pill {
+  position: absolute;
+  bottom: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(10, 16, 26, 0.78);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  font-size: 9.5px;
+  color: #cbd5e1;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+  z-index: 28;
+}
+
+.fan-beacon-pill.is-on {
+  background: rgba(12, 44, 90, 0.88);
+  border-color: rgba(96, 165, 250, 0.45);
+  box-shadow: 0 0 10px rgba(96, 165, 250, 0.35);
+  color: #eff6ff;
+}
+
+.fan-beacon-pill .beacon-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #64748b;
+  transition: background-color 0.3s;
+}
+
+.fan-beacon-pill.is-on .beacon-dot {
+  background: #60a5fa;
+  box-shadow: 0 0 6px #60a5fa;
+  animation: beaconPulse 2s infinite ease-in-out;
+}
+
+.fan-beacon-pill .beacon-label {
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.fan-beacon-pill .beacon-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: #94a3b8;
+}
+
+.fan-beacon-pill.is-on .beacon-val {
+  color: #60a5fa;
+}
