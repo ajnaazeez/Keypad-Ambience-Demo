@@ -1,0 +1,305 @@
+import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/components/Keypad/DualPanelKeypad.jsx");const React = __vite__cjsImport0_react;const _jsxDEV = __vite__cjsImport3_react_jsxDevRuntime["jsxDEV"];import __vite__cjsImport0_react from "/node_modules/.vite/deps/react.js?v=18b89b20";
+import { useLongPress } from "/src/hooks/useLongPress.js?t=1791964509732";
+import "/src/components/Keypad/DualPanelKeypad.css?t=1791965727480";
+var _jsxFileName = "C:/Projects/ariss_island_series/src/components/Keypad/DualPanelKeypad.jsx";
+import __vite__cjsImport3_react_jsxDevRuntime from "/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=18b89b20";
+var _s = $RefreshSig$();
+/**
+* DualPanelQuadrant - Individual touch quadrant for Keypad Type 2
+*/
+function DualPanelQuadrant({ id, label, sublabel, positionClass, isActive = false, onShortPress, onLongPress, onLongPressEnd }) {
+	_s();
+	const { isPressed, isHolding, handlers } = useLongPress({
+		thresholdMs: 380,
+		onShortPress: () => onShortPress?.(id, label),
+		onLongPress: () => onLongPress?.(id, label),
+		onLongPressEnd: () => onLongPressEnd?.(id, label)
+	});
+	return /* @__PURE__ */ _jsxDEV("button", {
+		type: "button",
+		id: `dual-btn-${id}`,
+		className: `dual-quadrant-btn ${positionClass} ${isActive ? "is-active" : ""} ${isPressed ? "is-pressed" : ""} ${isHolding ? "is-holding" : ""}`,
+		"aria-label": `${label}${sublabel ? ` (${sublabel})` : ""} - ${isActive ? "Active" : "Inactive"}`,
+		"aria-pressed": isActive,
+		...handlers,
+		children: [
+			/* @__PURE__ */ _jsxDEV("div", {
+				className: "dual-quadrant-content",
+				children: [/* @__PURE__ */ _jsxDEV("span", {
+					className: "dual-quadrant-label",
+					children: label
+				}, void 0, false, {
+					fileName: _jsxFileName,
+					lineNumber: 35,
+					columnNumber: 9
+				}, this), sublabel && /* @__PURE__ */ _jsxDEV("span", {
+					className: "dual-quadrant-sublabel",
+					children: sublabel
+				}, void 0, false, {
+					fileName: _jsxFileName,
+					lineNumber: 36,
+					columnNumber: 22
+				}, this)]
+			}, void 0, true, {
+				fileName: _jsxFileName,
+				lineNumber: 34,
+				columnNumber: 7
+			}, this),
+			/* @__PURE__ */ _jsxDEV("span", {
+				className: "dual-status-pip",
+				"aria-hidden": "true"
+			}, void 0, false, {
+				fileName: _jsxFileName,
+				lineNumber: 40,
+				columnNumber: 7
+			}, this),
+			/* @__PURE__ */ _jsxDEV("span", {
+				className: "dual-hold-radial",
+				"aria-hidden": "true"
+			}, void 0, false, {
+				fileName: _jsxFileName,
+				lineNumber: 43,
+				columnNumber: 7
+			}, this),
+			/* @__PURE__ */ _jsxDEV("span", {
+				className: "dual-hold-bar",
+				"aria-hidden": "true"
+			}, void 0, false, {
+				fileName: _jsxFileName,
+				lineNumber: 44,
+				columnNumber: 7
+			}, this)
+		]
+	}, void 0, true, {
+		fileName: _jsxFileName,
+		lineNumber: 26,
+		columnNumber: 5
+	}, this);
+}
+_s(DualPanelQuadrant, "dp5iKZh0aBNFcUtOeRmHteuN88w=", false, function() {
+	return [useLongPress];
+});
+_c = DualPanelQuadrant;
+/**
+* DualPanelKeypad Component (Reference Image 2)
+* 
+* Recreates the exact physical architectural touch/rocker plate shown in Reference Image 2:
+* - Two large horizontal plates (Top Plate & Bottom Plate)
+* - Sleek horizontal center divider bar / groove
+* - 4 corner touch zones per plate = 8 functional zones
+* - Exact layout:
+*     Top Plate:
+*       Top-Left: Living On       | Top-Right: Living Off
+*       Bottom-Left: AC           | Bottom-Right: Fan
+*     Bottom Plate:
+*       Top-Left: Curtain         | Top-Right: Spotlights
+*       Bottom-Left: Morning      | Bottom-Right: Night
+* - Frameless flush architectural dark charcoal metallic finish
+* - Crisp corner-aligned typography, tactile depression, short/long press support
+*/
+export default function DualPanelKeypad({ circuits = {}, dimmers = {}, fanState = {
+	on: false,
+	speed: 3
+}, acState = {
+	on: false,
+	temp: 22,
+	mode: "cool"
+}, curtainState = {
+	position: 100,
+	isOpen: true
+}, activeScene = "living-on", bodyFinish = "black", buttonColor = "#1c1c1e", isButtonColorDark = true, onShortPress, onLongPress, onLongPressEnd }) {
+	return /* @__PURE__ */ _jsxDEV("div", {
+		className: `dual-keypad-enclosure body-${bodyFinish}`,
+		style: {
+			"--keypad-btn-bg": buttonColor,
+			"--keypad-btn-text": isButtonColorDark ? "#ffffff" : "#1e293b",
+			"--keypad-btn-sublabel": isButtonColorDark ? "rgba(255,255,255,0.65)" : "rgba(30,41,59,0.7)"
+		},
+		role: "region",
+		"aria-label": "Dual-Panel Architectural Touch Keypad (Type 2)",
+		children: /* @__PURE__ */ _jsxDEV("div", {
+			className: "dual-keypad-plate",
+			children: [
+				/* @__PURE__ */ _jsxDEV("div", {
+					className: "dual-plate-half dual-plate-top",
+					children: [
+						/* @__PURE__ */ _jsxDEV(DualPanelQuadrant, {
+							id: "living-on",
+							label: "Living On",
+							sublabel: activeScene === "living-on" ? "Active" : null,
+							positionClass: "quad-top-left",
+							isActive: activeScene === "living-on" || Boolean(circuits["living-on"]),
+							onShortPress,
+							onLongPress,
+							onLongPressEnd
+						}, void 0, false, {
+							fileName: _jsxFileName,
+							lineNumber: 95,
+							columnNumber: 11
+						}, this),
+						/* @__PURE__ */ _jsxDEV(DualPanelQuadrant, {
+							id: "living-off",
+							label: "Living Off",
+							sublabel: activeScene === "living-off" ? "Standby" : null,
+							positionClass: "quad-top-right",
+							isActive: activeScene === "living-off" || Boolean(circuits["living-off"]),
+							onShortPress,
+							onLongPress,
+							onLongPressEnd
+						}, void 0, false, {
+							fileName: _jsxFileName,
+							lineNumber: 107,
+							columnNumber: 11
+						}, this),
+						/* @__PURE__ */ _jsxDEV(DualPanelQuadrant, {
+							id: "ac",
+							label: "AC",
+							sublabel: acState.on ? `${acState.temp}°C` : null,
+							positionClass: "quad-bottom-left",
+							isActive: Boolean(acState.on),
+							onShortPress,
+							onLongPress,
+							onLongPressEnd
+						}, void 0, false, {
+							fileName: _jsxFileName,
+							lineNumber: 119,
+							columnNumber: 11
+						}, this),
+						/* @__PURE__ */ _jsxDEV(DualPanelQuadrant, {
+							id: "fan",
+							label: "Fan",
+							sublabel: fanState.on ? `Spd ${fanState.speed}` : null,
+							positionClass: "quad-bottom-right",
+							isActive: Boolean(fanState.on),
+							onShortPress,
+							onLongPress,
+							onLongPressEnd
+						}, void 0, false, {
+							fileName: _jsxFileName,
+							lineNumber: 131,
+							columnNumber: 11
+						}, this)
+					]
+				}, void 0, true, {
+					fileName: _jsxFileName,
+					lineNumber: 93,
+					columnNumber: 9
+				}, this),
+				/* @__PURE__ */ _jsxDEV("div", {
+					className: "dual-center-divider",
+					"aria-hidden": "true",
+					children: /* @__PURE__ */ _jsxDEV("div", { className: "divider-channel-groove" }, void 0, false, {
+						fileName: _jsxFileName,
+						lineNumber: 145,
+						columnNumber: 11
+					}, this)
+				}, void 0, false, {
+					fileName: _jsxFileName,
+					lineNumber: 144,
+					columnNumber: 9
+				}, this),
+				/* @__PURE__ */ _jsxDEV("div", {
+					className: "dual-plate-half dual-plate-bottom",
+					children: [
+						/* @__PURE__ */ _jsxDEV(DualPanelQuadrant, {
+							id: "curtain",
+							label: "Curtain",
+							sublabel: curtainState.position > 0 ? `${curtainState.position}%` : "Closed",
+							positionClass: "quad-top-left",
+							isActive: curtainState.position > 0,
+							onShortPress,
+							onLongPress,
+							onLongPressEnd
+						}, void 0, false, {
+							fileName: _jsxFileName,
+							lineNumber: 151,
+							columnNumber: 11
+						}, this),
+						/* @__PURE__ */ _jsxDEV(DualPanelQuadrant, {
+							id: "spotlights",
+							label: "Spotlights",
+							sublabel: circuits["spotlights"] ? `${dimmers["spotlights"] || 100}%` : null,
+							positionClass: "quad-top-right",
+							isActive: Boolean(circuits["spotlights"]),
+							onShortPress,
+							onLongPress,
+							onLongPressEnd
+						}, void 0, false, {
+							fileName: _jsxFileName,
+							lineNumber: 163,
+							columnNumber: 11
+						}, this),
+						/* @__PURE__ */ _jsxDEV(DualPanelQuadrant, {
+							id: "morning",
+							label: "Morning",
+							sublabel: activeScene === "morning" ? "Sunrise" : null,
+							positionClass: "quad-bottom-left",
+							isActive: activeScene === "morning" || Boolean(circuits["morning"]),
+							onShortPress,
+							onLongPress,
+							onLongPressEnd
+						}, void 0, false, {
+							fileName: _jsxFileName,
+							lineNumber: 175,
+							columnNumber: 11
+						}, this),
+						/* @__PURE__ */ _jsxDEV(DualPanelQuadrant, {
+							id: "night",
+							label: "Night",
+							sublabel: activeScene === "night" ? "Nightfall" : null,
+							positionClass: "quad-bottom-right",
+							isActive: activeScene === "night" || Boolean(circuits["night"]),
+							onShortPress,
+							onLongPress,
+							onLongPressEnd
+						}, void 0, false, {
+							fileName: _jsxFileName,
+							lineNumber: 187,
+							columnNumber: 11
+						}, this)
+					]
+				}, void 0, true, {
+					fileName: _jsxFileName,
+					lineNumber: 149,
+					columnNumber: 9
+				}, this)
+			]
+		}, void 0, true, {
+			fileName: _jsxFileName,
+			lineNumber: 91,
+			columnNumber: 7
+		}, this)
+	}, void 0, false, {
+		fileName: _jsxFileName,
+		lineNumber: 81,
+		columnNumber: 5
+	}, this);
+}
+_c2 = DualPanelKeypad;
+var _c, _c2;
+$RefreshReg$(_c, "DualPanelQuadrant");
+$RefreshReg$(_c2, "DualPanelKeypad");
+import * as RefreshRuntime from "/@react-refresh";
+const inWebWorker = typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope;
+import * as __vite_react_currentExports from "/src/components/Keypad/DualPanelKeypad.jsx?t=1791965727480";
+if (import.meta.hot && !inWebWorker) {
+  if (!window.$RefreshReg$) {
+    throw new Error(
+      "@vitejs/plugin-react can't detect preamble. Something is wrong."
+    );
+  }
+
+  const currentExports = __vite_react_currentExports;
+  queueMicrotask(() => {
+    RefreshRuntime.registerExportsForReactRefresh("C:/Projects/ariss_island_series/src/components/Keypad/DualPanelKeypad.jsx", currentExports);
+    import.meta.hot.accept((nextExports) => {
+      if (!nextExports) return;
+      const invalidateMessage = RefreshRuntime.validateRefreshBoundaryAndEnqueueUpdate("C:/Projects/ariss_island_series/src/components/Keypad/DualPanelKeypad.jsx", currentExports, nextExports);
+      if (invalidateMessage) import.meta.hot.invalidate(invalidateMessage);
+    });
+  });
+}
+function $RefreshReg$(type, id) { return RefreshRuntime.register(type, "C:/Projects/ariss_island_series/src/components/Keypad/DualPanelKeypad.jsx" + ' ' + id); }
+function $RefreshSig$() { return RefreshRuntime.createSignatureFunctionForTransform(); }
+
+//# sourceMappingURL=data:application/json;base64,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QUFEO0tBQUssV0FBVTtLQUFzQixlQUFZO2VBQy9DLHdCQUFDLE9BQUQsRUFBSyxXQUFVLHlCQUEwQjs7Ozs7SUFDdEM7Ozs7O0lBR0wsd0JBQUMsT0FBRDtLQUFLLFdBQVU7ZUFBZjtNQUVFLHdCQUFDLG1CQUFEO09BQ0UsSUFBRztPQUNILE9BQU07T0FDTixVQUFVLGFBQWEsV0FBVyxJQUFJLEdBQUcsYUFBYSxTQUFTLEtBQUs7T0FDcEUsZUFBYztPQUNkLFVBQVUsYUFBYSxXQUFXO09BQ3BCO09BQ0Q7T0FDRztNQUNqQjs7Ozs7TUFHRCx3QkFBQyxtQkFBRDtPQUNFLElBQUc7T0FDSCxPQUFNO09BQ04sVUFBVSxTQUFTLGdCQUFnQixHQUFHLFFBQVEsaUJBQWlCLElBQUksS0FBSztPQUN4RSxlQUFjO09BQ2QsVUFBVSxRQUFRLFNBQVMsYUFBYTtPQUMxQjtPQUNEO09BQ0c7TUFDakI7Ozs7O01BR0Qsd0JBQUMsbUJBQUQ7T0FDRSxJQUFHO09BQ0gsT0FBTTtPQUNOLFVBQVUsZ0JBQWdCLFlBQVksWUFBWTtPQUNsRCxlQUFjO09BQ2QsVUFBVSxnQkFBZ0IsYUFBYSxRQUFRLFNBQVMsVUFBVTtPQUNwRDtPQUNEO09BQ0c7TUFDakI7Ozs7O01BR0Qsd0JBQUMsbUJBQUQ7T0FDRSxJQUFHO09BQ0gsT0FBTTtPQUNOLFVBQVUsZ0JBQWdCLFVBQVUsY0FBYztPQUNsRCxlQUFjO09BQ2QsVUFBVSxnQkFBZ0IsV0FBVyxRQUFRLFNBQVMsUUFBUTtPQUNoRDtPQUNEO09BQ0c7TUFDakI7Ozs7O0tBQ0U7Ozs7OztHQUNGOzs7Ozs7Q0FDRjs7Ozs7QUFFVCIsIm5hbWVzIjpbXSwic291cmNlcyI6WyJEdWFsUGFuZWxLZXlwYWQuanN4Il0sInZlcnNpb24iOjMsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCBmcm9tICdyZWFjdCc7XG5pbXBvcnQgeyB1c2VMb25nUHJlc3MgfSBmcm9tICcuLi8uLi9ob29rcy91c2VMb25nUHJlc3MnO1xuaW1wb3J0ICcuL0R1YWxQYW5lbEtleXBhZC5jc3MnO1xuXG4vKipcbiAqIER1YWxQYW5lbFF1YWRyYW50IC0gSW5kaXZpZHVhbCB0b3VjaCBxdWFkcmFudCBmb3IgS2V5cGFkIFR5cGUgMlxuICovXG5mdW5jdGlvbiBEdWFsUGFuZWxRdWFkcmFudCh7XG4gIGlkLFxuICBsYWJlbCxcbiAgc3VibGFiZWwsXG4gIHBvc2l0aW9uQ2xhc3MsXG4gIGlzQWN0aXZlID0gZmFsc2UsXG4gIG9uU2hvcnRQcmVzcyxcbiAgb25Mb25nUHJlc3MsXG4gIG9uTG9uZ1ByZXNzRW5kLFxufSkge1xuICBjb25zdCB7IGlzUHJlc3NlZCwgaXNIb2xkaW5nLCBoYW5kbGVycyB9ID0gdXNlTG9uZ1ByZXNzKHtcbiAgICB0aHJlc2hvbGRNczogMzgwLFxuICAgIG9uU2hvcnRQcmVzczogKCkgPT4gb25TaG9ydFByZXNzPy4oaWQsIGxhYmVsKSxcbiAgICBvbkxvbmdQcmVzczogKCkgPT4gb25Mb25nUHJlc3M/LihpZCwgbGFiZWwpLFxuICAgIG9uTG9uZ1ByZXNzRW5kOiAoKSA9PiBvbkxvbmdQcmVzc0VuZD8uKGlkLCBsYWJlbCksXG4gIH0pO1xuXG4gIHJldHVybiAoXG4gICAgPGJ1dHRvblxuICAgICAgdHlwZT1cImJ1dHRvblwiXG4gICAgICBpZD17YGR1YWwtYnRuLSR7aWR9YH1cbiAgICAgIGNsYXNzTmFtZT17YGR1YWwtcXVhZHJhbnQtYnRuICR7cG9zaXRpb25DbGFzc30gJHtpc0FjdGl2ZSA/ICdpcy1hY3RpdmUnIDogJyd9ICR7aXNQcmVzc2VkID8gJ2lzLXByZXNzZWQnIDogJyd9ICR7aXNIb2xkaW5nID8gJ2lzLWhvbGRpbmcnIDogJyd9YH1cbiAgICAgIGFyaWEtbGFiZWw9e2Ake2xhYmVsfSR7c3VibGFiZWwgPyBgICgke3N1YmxhYmVsfSlgIDogJyd9IC0gJHtpc0FjdGl2ZSA/ICdBY3RpdmUnIDogJ0luYWN0aXZlJ31gfVxuICAgICAgYXJpYS1wcmVzc2VkPXtpc0FjdGl2ZX1cbiAgICAgIHsuLi5oYW5kbGVyc31cbiAgICA+XG4gICAgICA8ZGl2IGNsYXNzTmFtZT1cImR1YWwtcXVhZHJhbnQtY29udGVudFwiPlxuICAgICAgICA8c3BhbiBjbGFzc05hbWU9XCJkdWFsLXF1YWRyYW50LWxhYmVsXCI+e2xhYmVsfTwvc3Bhbj5cbiAgICAgICAge3N1YmxhYmVsICYmIDxzcGFuIGNsYXNzTmFtZT1cImR1YWwtcXVhZHJhbnQtc3VibGFiZWxcIj57c3VibGFiZWx9PC9zcGFuPn1cbiAgICAgIDwvZGl2PlxuXG4gICAgICB7LyogU3VidGxlIGNvcm5lciB0b3VjaCBzdGF0dXMgaW5kaWNhdG9yICovfVxuICAgICAgPHNwYW4gY2xhc3NOYW1lPVwiZHVhbC1zdGF0dXMtcGlwXCIgYXJpYS1oaWRkZW49XCJ0cnVlXCIgLz5cblxuICAgICAgey8qIEhvbGQgcmFkaWFsIGdsb3cgYW5kIGVkZ2UgYmFyICovfVxuICAgICAgPHNwYW4gY2xhc3NOYW1lPVwiZHVhbC1ob2xkLXJhZGlhbFwiIGFyaWEtaGlkZGVuPVwidHJ1ZVwiIC8+XG4gICAgICA8c3BhbiBjbGFzc05hbWU9XCJkdWFsLWhvbGQtYmFyXCIgYXJpYS1oaWRkZW49XCJ0cnVlXCIgLz5cbiAgICA8L2J1dHRvbj5cbiAgKTtcbn1cblxuLyoqXG4gKiBEdWFsUGFuZWxLZXlwYWQgQ29tcG9uZW50IChSZWZlcmVuY2UgSW1hZ2UgMilcbiAqIFxuICogUmVjcmVhdGVzIHRoZSBleGFjdCBwaHlzaWNhbCBhcmNoaXRlY3R1cmFsIHRvdWNoL3JvY2tlciBwbGF0ZSBzaG93biBpbiBSZWZlcmVuY2UgSW1hZ2UgMjpcbiAqIC0gVHdvIGxhcmdlIGhvcml6b250YWwgcGxhdGVzIChUb3AgUGxhdGUgJiBCb3R0b20gUGxhdGUpXG4gKiAtIFNsZWVrIGhvcml6b250YWwgY2VudGVyIGRpdmlkZXIgYmFyIC8gZ3Jvb3ZlXG4gKiAtIDQgY29ybmVyIHRvdWNoIHpvbmVzIHBlciBwbGF0ZSA9IDggZnVuY3Rpb25hbCB6b25lc1xuICogLSBFeGFjdCBsYXlvdXQ6XG4gKiAgICAgVG9wIFBsYXRlOlxuICogICAgICAgVG9wLUxlZnQ6IExpdmluZyBPbiAgICAgICB8IFRvcC1SaWdodDogTGl2aW5nIE9mZlxuICogICAgICAgQm90dG9tLUxlZnQ6IEFDICAgICAgICAgICB8IEJvdHRvbS1SaWdodDogRmFuXG4gKiAgICAgQm90dG9tIFBsYXRlOlxuICogICAgICAgVG9wLUxlZnQ6IEN1cnRhaW4gICAgICAgICB8IFRvcC1SaWdodDogU3BvdGxpZ2h0c1xuICogICAgICAgQm90dG9tLUxlZnQ6IE1vcm5pbmcgICAgICB8IEJvdHRvbS1SaWdodDogTmlnaHRcbiAqIC0gRnJhbWVsZXNzIGZsdXNoIGFyY2hpdGVjdHVyYWwgZGFyayBjaGFyY29hbCBtZXRhbGxpYyBmaW5pc2hcbiAqIC0gQ3Jpc3AgY29ybmVyLWFsaWduZWQgdHlwb2dyYXBoeSwgdGFjdGlsZSBkZXByZXNzaW9uLCBzaG9ydC9sb25nIHByZXNzIHN1cHBvcnRcbiAqL1xuZXhwb3J0IGRlZmF1bHQgZnVuY3Rpb24gRHVhbFBhbmVsS2V5cGFkKHtcbiAgY2lyY3VpdHMgPSB7fSxcbiAgZGltbWVycyA9IHt9LFxuICBmYW5TdGF0ZSA9IHsgb246IGZhbHNlLCBzcGVlZDogMyB9LFxuICBhY1N0YXRlID0geyBvbjogZmFsc2UsIHRlbXA6IDIyLCBtb2RlOiAnY29vbCcgfSxcbiAgY3VydGFpblN0YXRlID0geyBwb3NpdGlvbjogMTAwLCBpc09wZW46IHRydWUgfSxcbiAgYWN0aXZlU2NlbmUgPSAnbGl2aW5nLW9uJyxcbiAgYm9keUZpbmlzaCA9ICdibGFjaycsXG4gIGJ1dHRvbkNvbG9yID0gJyMxYzFjMWUnLFxuICBpc0J1dHRvbkNvbG9yRGFyayA9IHRydWUsXG4gIG9uU2hvcnRQcmVzcyxcbiAgb25Mb25nUHJlc3MsXG4gIG9uTG9uZ1ByZXNzRW5kLFxufSkge1xuICByZXR1cm4gKFxuICAgIDxkaXZcbiAgICAgIGNsYXNzTmFtZT17YGR1YWwta2V5cGFkLWVuY2xvc3VyZSBib2R5LSR7Ym9keUZpbmlzaH1gfVxuICAgICAgc3R5bGU9e3tcbiAgICAgICAgJy0ta2V5cGFkLWJ0bi1iZyc6IGJ1dHRvbkNvbG9yLFxuICAgICAgICAnLS1rZXlwYWQtYnRuLXRleHQnOiBpc0J1dHRvbkNvbG9yRGFyayA/ICcjZmZmZmZmJyA6ICcjMWUyOTNiJyxcbiAgICAgICAgJy0ta2V5cGFkLWJ0bi1zdWJsYWJlbCc6IGlzQnV0dG9uQ29sb3JEYXJrID8gJ3JnYmEoMjU1LDI1NSwyNTUsMC42NSknIDogJ3JnYmEoMzAsNDEsNTksMC43KScsXG4gICAgICB9fVxuICAgICAgcm9sZT1cInJlZ2lvblwiXG4gICAgICBhcmlhLWxhYmVsPVwiRHVhbC1QYW5lbCBBcmNoaXRlY3R1cmFsIFRvdWNoIEtleXBhZCAoVHlwZSAyKVwiXG4gICAgPlxuICAgICAgPGRpdiBjbGFzc05hbWU9XCJkdWFsLWtleXBhZC1wbGF0ZVwiPlxuICAgICAgICB7LyogVE9QIFBMQVRFICovfVxuICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImR1YWwtcGxhdGUtaGFsZiBkdWFsLXBsYXRlLXRvcFwiPlxuICAgICAgICAgIHsvKiBUb3AtTGVmdDogTGl2aW5nIE9uICovfVxuICAgICAgICAgIDxEdWFsUGFuZWxRdWFkcmFudFxuICAgICAgICAgICAgaWQ9XCJsaXZpbmctb25cIlxuICAgICAgICAgICAgbGFiZWw9XCJMaXZpbmcgT25cIlxuICAgICAgICAgICAgc3VibGFiZWw9e2FjdGl2ZVNjZW5lID09PSAnbGl2aW5nLW9uJyA/ICdBY3RpdmUnIDogbnVsbH1cbiAgICAgICAgICAgIHBvc2l0aW9uQ2xhc3M9XCJxdWFkLXRvcC1sZWZ0XCJcbiAgICAgICAgICAgIGlzQWN0aXZlPXthY3RpdmVTY2VuZSA9PT0gJ2xpdmluZy1vbicgfHwgQm9vbGVhbihjaXJjdWl0c1snbGl2aW5nLW9uJ10pfVxuICAgICAgICAgICAgb25TaG9ydFByZXNzPXtvblNob3J0UHJlc3N9XG4gICAgICAgICAgICBvbkxvbmdQcmVzcz17b25Mb25nUHJlc3N9XG4gICAgICAgICAgICBvbkxvbmdQcmVzc0VuZD17b25Mb25nUHJlc3NFbmR9XG4gICAgICAgICAgLz5cblxuICAgICAgICAgIHsvKiBUb3AtUmlnaHQ6IExpdmluZyBPZmYgKi99XG4gICAgICAgICAgPER1YWxQYW5lbFF1YWRyYW50XG4gICAgICAgICAgICBpZD1cImxpdmluZy1vZmZcIlxuICAgICAgICAgICAgbGFiZWw9XCJMaXZpbmcgT2ZmXCJcbiAgICAgICAgICAgIHN1YmxhYmVsPXthY3RpdmVTY2VuZSA9PT0gJ2xpdmluZy1vZmYnID8gJ1N0YW5kYnknIDogbnVsbH1cbiAgICAgICAgICAgIHBvc2l0aW9uQ2xhc3M9XCJxdWFkLXRvcC1yaWdodFwiXG4gICAgICAgICAgICBpc0FjdGl2ZT17YWN0aXZlU2NlbmUgPT09ICdsaXZpbmctb2ZmJyB8fCBCb29sZWFuKGNpcmN1aXRzWydsaXZpbmctb2ZmJ10pfVxuICAgICAgICAgICAgb25TaG9ydFByZXNzPXtvblNob3J0UHJlc3N9XG4gICAgICAgICAgICBvbkxvbmdQcmVzcz17b25Mb25nUHJlc3N9XG4gICAgICAgICAgICBvbkxvbmdQcmVzc0VuZD17b25Mb25nUHJlc3NFbmR9XG4gICAgICAgICAgLz5cblxuICAgICAgICAgIHsvKiBCb3R0b20tTGVmdDogQUMgKi99XG4gICAgICAgICAgPER1YWxQYW5lbFF1YWRyYW50XG4gICAgICAgICAgICBpZD1cImFjXCJcbiAgICAgICAgICAgIGxhYmVsPVwiQUNcIlxuICAgICAgICAgICAgc3VibGFiZWw9e2FjU3RhdGUub24gPyBgJHthY1N0YXRlLnRlbXB9wrBDYCA6IG51bGx9XG4gICAgICAgICAgICBwb3NpdGlvbkNsYXNzPVwicXVhZC1ib3R0b20tbGVmdFwiXG4gICAgICAgICAgICBpc0FjdGl2ZT17Qm9vbGVhbihhY1N0YXRlLm9uKX1cbiAgICAgICAgICAgIG9uU2hvcnRQcmVzcz17b25TaG9ydFByZXNzfVxuICAgICAgICAgICAgb25Mb25nUHJlc3M9e29uTG9uZ1ByZXNzfVxuICAgICAgICAgICAgb25Mb25nUHJlc3NFbmQ9e29uTG9uZ1ByZXNzRW5kfVxuICAgICAgICAgIC8+XG5cbiAgICAgICAgICB7LyogQm90dG9tLVJpZ2h0OiBGYW4gKi99XG4gICAgICAgICAgPER1YWxQYW5lbFF1YWRyYW50XG4gICAgICAgICAgICBpZD1cImZhblwiXG4gICAgICAgICAgICBsYWJlbD1cIkZhblwiXG4gICAgICAgICAgICBzdWJsYWJlbD17ZmFuU3RhdGUub24gPyBgU3BkICR7ZmFuU3RhdGUuc3BlZWR9YCA6IG51bGx9XG4gICAgICAgICAgICBwb3NpdGlvbkNsYXNzPVwicXVhZC1ib3R0b20tcmlnaHRcIlxuICAgICAgICAgICAgaXNBY3RpdmU9e0Jvb2xlYW4oZmFuU3RhdGUub24pfVxuICAgICAgICAgICAgb25TaG9ydFByZXNzPXtvblNob3J0UHJlc3N9XG4gICAgICAgICAgICBvbkxvbmdQcmVzcz17b25Mb25nUHJlc3N9XG4gICAgICAgICAgICBvbkxvbmdQcmVzc0VuZD17b25Mb25nUHJlc3NFbmR9XG4gICAgICAgICAgLz5cbiAgICAgICAgPC9kaXY+XG5cbiAgICAgICAgey8qIENlbnRlciBIb3Jpem9udGFsIERpdmlkZXIgQmFyICovfVxuICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImR1YWwtY2VudGVyLWRpdmlkZXJcIiBhcmlhLWhpZGRlbj1cInRydWVcIj5cbiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImRpdmlkZXItY2hhbm5lbC1ncm9vdmVcIiAvPlxuICAgICAgICA8L2Rpdj5cblxuICAgICAgICB7LyogQk9UVE9NIFBMQVRFICovfVxuICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImR1YWwtcGxhdGUtaGFsZiBkdWFsLXBsYXRlLWJvdHRvbVwiPlxuICAgICAgICAgIHsvKiBUb3AtTGVmdDogQ3VydGFpbiAqL31cbiAgICAgICAgICA8RHVhbFBhbmVsUXVhZHJhbnRcbiAgICAgICAgICAgIGlkPVwiY3VydGFpblwiXG4gICAgICAgICAgICBsYWJlbD1cIkN1cnRhaW5cIlxuICAgICAgICAgICAgc3VibGFiZWw9e2N1cnRhaW5TdGF0ZS5wb3NpdGlvbiA+IDAgPyBgJHtjdXJ0YWluU3RhdGUucG9zaXRpb259JWAgOiAnQ2xvc2VkJ31cbiAgICAgICAgICAgIHBvc2l0aW9uQ2xhc3M9XCJxdWFkLXRvcC1sZWZ0XCJcbiAgICAgICAgICAgIGlzQWN0aXZlPXtjdXJ0YWluU3RhdGUucG9zaXRpb24gPiAwfVxuICAgICAgICAgICAgb25TaG9ydFByZXNzPXtvblNob3J0UHJlc3N9XG4gICAgICAgICAgICBvbkxvbmdQcmVzcz17b25Mb25nUHJlc3N9XG4gICAgICAgICAgICBvbkxvbmdQcmVzc0VuZD17b25Mb25nUHJlc3NFbmR9XG4gICAgICAgICAgLz5cblxuICAgICAgICAgIHsvKiBUb3AtUmlnaHQ6IFNwb3RsaWdodHMgKi99XG4gICAgICAgICAgPER1YWxQYW5lbFF1YWRyYW50XG4gICAgICAgICAgICBpZD1cInNwb3RsaWdodHNcIlxuICAgICAgICAgICAgbGFiZWw9XCJTcG90bGlnaHRzXCJcbiAgICAgICAgICAgIHN1YmxhYmVsPXtjaXJjdWl0c1snc3BvdGxpZ2h0cyddID8gYCR7ZGltbWVyc1snc3BvdGxpZ2h0cyddIHx8IDEwMH0lYCA6IG51bGx9XG4gICAgICAgICAgICBwb3NpdGlvbkNsYXNzPVwicXVhZC10b3AtcmlnaHRcIlxuICAgICAgICAgICAgaXNBY3RpdmU9e0Jvb2xlYW4oY2lyY3VpdHNbJ3Nwb3RsaWdodHMnXSl9XG4gICAgICAgICAgICBvblNob3J0UHJlc3M9e29uU2hvcnRQcmVzc31cbiAgICAgICAgICAgIG9uTG9uZ1ByZXNzPXtvbkxvbmdQcmVzc31cbiAgICAgICAgICAgIG9uTG9uZ1ByZXNzRW5kPXtvbkxvbmdQcmVzc0VuZH1cbiAgICAgICAgICAvPlxuXG4gICAgICAgICAgey8qIEJvdHRvbS1MZWZ0OiBNb3JuaW5nICovfVxuICAgICAgICAgIDxEdWFsUGFuZWxRdWFkcmFudFxuICAgICAgICAgICAgaWQ9XCJtb3JuaW5nXCJcbiAgICAgICAgICAgIGxhYmVsPVwiTW9ybmluZ1wiXG4gICAgICAgICAgICBzdWJsYWJlbD17YWN0aXZlU2NlbmUgPT09ICdtb3JuaW5nJyA/ICdTdW5yaXNlJyA6IG51bGx9XG4gICAgICAgICAgICBwb3NpdGlvbkNsYXNzPVwicXVhZC1ib3R0b20tbGVmdFwiXG4gICAgICAgICAgICBpc0FjdGl2ZT17YWN0aXZlU2NlbmUgPT09ICdtb3JuaW5nJyB8fCBCb29sZWFuKGNpcmN1aXRzWydtb3JuaW5nJ10pfVxuICAgICAgICAgICAgb25TaG9ydFByZXNzPXtvblNob3J0UHJlc3N9XG4gICAgICAgICAgICBvbkxvbmdQcmVzcz17b25Mb25nUHJlc3N9XG4gICAgICAgICAgICBvbkxvbmdQcmVzc0VuZD17b25Mb25nUHJlc3NFbmR9XG4gICAgICAgICAgLz5cblxuICAgICAgICAgIHsvKiBCb3R0b20tUmlnaHQ6IE5pZ2h0ICovfVxuICAgICAgICAgIDxEdWFsUGFuZWxRdWFkcmFudFxuICAgICAgICAgICAgaWQ9XCJuaWdodFwiXG4gICAgICAgICAgICBsYWJlbD1cIk5pZ2h0XCJcbiAgICAgICAgICAgIHN1YmxhYmVsPXthY3RpdmVTY2VuZSA9PT0gJ25pZ2h0JyA/ICdOaWdodGZhbGwnIDogbnVsbH1cbiAgICAgICAgICAgIHBvc2l0aW9uQ2xhc3M9XCJxdWFkLWJvdHRvbS1yaWdodFwiXG4gICAgICAgICAgICBpc0FjdGl2ZT17YWN0aXZlU2NlbmUgPT09ICduaWdodCcgfHwgQm9vbGVhbihjaXJjdWl0c1snbmlnaHQnXSl9XG4gICAgICAgICAgICBvblNob3J0UHJlc3M9e29uU2hvcnRQcmVzc31cbiAgICAgICAgICAgIG9uTG9uZ1ByZXNzPXtvbkxvbmdQcmVzc31cbiAgICAgICAgICAgIG9uTG9uZ1ByZXNzRW5kPXtvbkxvbmdQcmVzc0VuZH1cbiAgICAgICAgICAvPlxuICAgICAgICA8L2Rpdj5cbiAgICAgIDwvZGl2PlxuICAgIDwvZGl2PlxuICApO1xufVxuIl19

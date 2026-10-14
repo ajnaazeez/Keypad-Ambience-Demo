@@ -33,11 +33,8 @@ function GridKeypadButtonItem({
       {/* Tactile beveled face of button */}
       <span className="grid-btn-surface">
         <span className="grid-btn-label">{label}</span>
-        {sublabel && <span className="grid-btn-sublabel">{sublabel}</span>}
+        {/* Sublabels removed per specification */}
       </span>
-
-      {/* Subtle active status line / LED accent */}
-      <span className="grid-btn-status-accent" aria-hidden="true" />
 
       {/* Long-press progressive charge glow & bar */}
       <span className="grid-btn-hold-fill" aria-hidden="true" />
@@ -65,9 +62,9 @@ export default function GridKeypad({
   fanState = { on: false, speed: 3 },
   acState = { on: false, temp: 22, mode: 'cool' },
   curtainState = { position: 100, isOpen: true },
-  activeScene = 'living-off',
-  bodyFinish = 'white',
-  buttonColor = '#26384d',
+  activeScene = 'living-on',
+  bodyFinish = 'black',
+  buttonColor = '#000000',
   isButtonColorDark = true,
   onShortPress,
   onLongPress,
@@ -78,25 +75,25 @@ export default function GridKeypad({
     {
       id: 'living-on',
       label: 'Living On',
-      sublabel: activeScene === 'living-on' ? 'Active' : null,
+
       isActive: activeScene === 'living-on' || Boolean(circuits['living-on']),
     },
     {
       id: 'ac',
       label: 'AC',
-      sublabel: acState.on ? `${acState.temp}°C` : null,
+
       isActive: Boolean(acState.on),
     },
     {
       id: 'curtain',
       label: 'Curtain',
-      sublabel: curtainState.position > 0 ? `${curtainState.position}%` : 'Closed',
+
       isActive: curtainState.position > 0,
     },
     {
       id: 'morning',
       label: 'Morning',
-      sublabel: activeScene === 'morning' ? 'Sunrise' : null,
+
       isActive: activeScene === 'morning' || Boolean(circuits['morning']),
     },
   ];
@@ -106,25 +103,25 @@ export default function GridKeypad({
     {
       id: 'living-off',
       label: 'Living Off',
-      sublabel: activeScene === 'living-off' ? 'Standby' : null,
+
       isActive: activeScene === 'living-off' || Boolean(circuits['living-off']),
     },
     {
       id: 'fan',
       label: 'Fan',
-      sublabel: fanState.on ? `Spd ${fanState.speed}` : null,
+
       isActive: Boolean(fanState.on),
     },
     {
       id: 'spotlights',
       label: 'Spotlights',
-      sublabel: circuits['spotlights'] ? `${dimmers['spotlights'] || 100}%` : null,
+
       isActive: Boolean(circuits['spotlights']),
     },
     {
       id: 'night',
       label: 'Night',
-      sublabel: activeScene === 'night' ? 'Nightfall' : null,
+
       isActive: activeScene === 'night' || Boolean(circuits['night']),
     },
   ];

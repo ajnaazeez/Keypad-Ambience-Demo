@@ -88,7 +88,7 @@
 .grid-keypad-btn {
   flex: 1;
   position: relative;
-  background: var(--keypad-btn-bg, #26384d);
+  background: var(--keypad-btn-bg, #000000);
   border: none;
   border-radius: 2px;
   outline: none;
@@ -152,40 +152,36 @@
   transition: color 0.2s ease;
 }
 
-/* Active State (Illuminated) */
+/* Active State - Selecting highlight effect removed per user request */
 .grid-keypad-btn.is-active {
-  filter: brightness(1.2);
+  filter: none;
   box-shadow:
-    0 1px 4px rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3),
-    inset 0 0 14px rgba(255, 255, 255, 0.15);
+    0 1px 2px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.35);
 }
 
 .grid-keypad-btn.is-active .grid-btn-label {
-  font-weight: 600;
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 2px rgba(255, 255, 255, 0.9);
+  font-weight: 400;
+  text-shadow: none;
 }
 
 .grid-keypad-btn.is-active .grid-btn-sublabel {
-  color: #38bdf8;
+  display: none !important;
 }
 
-/* Subtle Active Status Accent Line along bottom */
+/* Blue dot / status accent removed per requirement */
 .grid-btn-status-accent {
-  position: absolute;
-  bottom: 0;
-  left: 20%;
-  right: 20%;
-  height: 2px;
-  border-radius: 2px 2px 0 0;
-  background: transparent;
-  transition: all 0.25s ease;
-  z-index: 3;
+  display: none !important;
 }
 
 .grid-keypad-btn.is-active .grid-btn-status-accent {
-  background: #38bdf8;
-  box-shadow: 0 0 6px #38bdf8;
+  display: none !important;
+}
+
+/* Hide sublabel elements entirely */
+.grid-btn-sublabel {
+  display: none !important;
 }
 
 /* Tactile Depression on Press */
@@ -228,13 +224,4 @@
   width: 100%;
 }
 
-@media (max-width: 480px) {
-  .grid-keypad-faceplate {
-    width: 290px;
-    height: 290px;
-    padding: 24px;
-  }
-  .grid-btn-label {
-    font-size: 12.5px;
-  }
-}
+

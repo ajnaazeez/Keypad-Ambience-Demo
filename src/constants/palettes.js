@@ -6,6 +6,6 @@ export const BUTTON_PALETTES = [
   { id: 'navy',       name: 'Midnight Navy',  color: '#26384d', isDark: true }, // Highlighted in ref images 4 & 5
   { id: 'platinum',   name: 'Silver Platinum',color: '#a4abb2', isDark: false },
   { id: 'terracotta', name: 'Terracotta',     color: '#b85e3a', isDark: true },
-  { id: 'black',      name: 'Obsidian Black', color: '#1c1c1e', isDark: true },
+  { id: 'black',      name: 'Obsidian Black', color: '#000000', isDark: true },
   { id: 'ivory',      name: 'Ivory Bouclé',   color: '#f0ece1', isDark: false },
 ];

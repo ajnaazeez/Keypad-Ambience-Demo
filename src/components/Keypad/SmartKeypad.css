@@ -149,29 +149,16 @@
     inset 0 -1px 1px rgba(255, 255, 255, 0.45);
 }
 
-/* Active Illumination */
+/* Active Illumination - Removed per user request */
 .smart-button.is-active {
-  background: linear-gradient(180deg, #f5f8fc 0%, #ebedf3 55%, #e0e4eb 100%);
-  border-color: rgba(56, 189, 248, 0.35);
-  box-shadow:
-    inset 0 1px 1.5px rgba(255, 255, 255, 0.95),
-    inset 0 -1px 1px rgba(0, 0, 0, 0.1),
-    0 0 12px rgba(56, 189, 248, 0.16);
+  background: inherit;
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: none;
 }
 
 /* Optical Status Pinhole LED */
 .smart-status-led {
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background-color: rgba(30, 41, 59, 0.25);
-  transition: background-color 0.25s, box-shadow 0.25s;
-  flex-shrink: 0;
-}
-
-.smart-status-led.is-lit {
-  background-color: #0284c7;
-  box-shadow: 0 0 5px #38bdf8;
+  display: none !important;
 }
 
 /* Button Labels Stack */
@@ -198,16 +185,11 @@
 }
 
 .smart-button-sub {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 8.5px;
-  font-weight: 600;
-  color: #64748b;
-  letter-spacing: 0.02em;
-  margin-top: 1px;
+  display: none !important;
 }
 
 .smart-button.is-active .smart-button-sub {
-  color: #0284c7;
+  display: none !important;
 }
 
 /* Real-time hold charge bar along bottom seam */

@@ -5,7 +5,7 @@ import DualPanelKeypad from "./components/Keypad/DualPanelKeypad";
 import KeypadCrownDisplay from "./components/Keypad/KeypadCrownDisplay";
 import ArchitecturalToolbar from "./components/Header/ArchitecturalToolbar";
 import { BUTTON_PALETTES } from "./constants/palettes";
-import MobileAppModal from "./components/AppSimulator/MobileAppModal";
+import InlineAppView from "./components/AppSimulator/InlineAppView";
 import "./App.css";
 
 // All architectural lighting circuits for global shutoff (Living Off)
@@ -16,12 +16,13 @@ const LIVING_ROOM_FIXTURES = ["chandelier", "cove", "main-light", "ceiling"];
 export default function App() {
   // Keypad design selector: 'grid' (Reference Image 1) vs 'dual-panel' (Reference Image 2)
   const [keypadType, setKeypadType] = useState("grid");
+  // Controller view mode: 'keypad' (default physical wall keypad) vs 'app' (in-place smartphone app simulator)
+  const [controllerView, setControllerView] = useState("keypad");
 
   // Customization & Architectural Mode States (Reference Images 2, 3, 4, 5)
   const [theme, setTheme] = useState("dark"); // 'dark' | 'light' (website background theme)
-  const [bodyFinish, setBodyFinish] = useState("white"); // 'white' | 'black' (keypad bezel body finish)
-  const [buttonColor, setButtonColor] = useState("#26384d"); // '#26384d' Midnight Navy default
-  const [isAppModalOpen, setIsAppModalOpen] = useState(false);
+  const [bodyFinish, setBodyFinish] = useState("black"); // 'white' | 'black' (keypad bezel body finish)
+  const [buttonColor, setButtonColor] = useState("#000000"); // '#000000' Obsidian Black default
 
   // Compute label text contrast based on selected button color
   const selectedPalette = BUTTON_PALETTES.find(
@@ -29,15 +30,15 @@ export default function App() {
   );
   const isButtonColorDark = selectedPalette ? selectedPalette.isDark : true;
 
-  // 1. Lighting Circuit ON/OFF States (DEFAULT: Completely OFF)
+  // 1. Lighting Circuit ON/OFF States (DEFAULT: Living On active)
   const [circuits, setCircuits] = useState({
-    "living-on":  false,
-    "living-off": true,
+    "living-on":  true,
+    "living-off": false,
     "spotlights": false,
-    "chandelier": false,
-    "cove":       false,
-    "main-light": false,
-    "ceiling":    false,
+    "chandelier": true,
+    "cove":       true,
+    "main-light": true,
+    "ceiling":    true,
     "morning":    false,
     "night":      false,
     "relax":      false,
@@ -52,8 +53,8 @@ export default function App() {
     "ceiling":    100,
   });
 
-  // Current active lighting & environment scene (DEFAULT: 'living-off')
-  const [activeScene, setActiveScene] = useState("living-off");
+  // Current active lighting & environment scene (DEFAULT: 'living-on')
+  const [activeScene, setActiveScene] = useState("living-on");
 
   // 3. Ceiling Fan State (DEFAULT: OFF)
   const [fanState, setFanState] = useState({
@@ -74,12 +75,12 @@ export default function App() {
     isOpen: false,
   });
 
-  // 6. Live Interaction HUD (DEFAULT: Standby OFF)
+  // 6. Live Interaction HUD (DEFAULT: Living On active)
   const [lastInteraction, setLastInteraction] = useState({
-    type:   "ready",
-    id:     "ready",
-    label:  "Lumina Architectural",
-    detail: "System standby (all circuits OFF). Select any keypad button to activate lighting or devices.",
+    type:   "scene",
+    id:     "living-on",
+    label:  "Living On",
+    detail: "Living On engaged · chandelier and cove lighting illuminated (Spotlights remain independent)",
   });
 
   // Direct Fan Speed Setter (from Crown Display pills 1, 2, 3, 4)
@@ -543,7 +544,8 @@ export default function App() {
           onSelectBodyFinish={setBodyFinish}
           selectedButtonColor={buttonColor}
           onSelectButtonColor={setButtonColor}
-          onOpenAppModal={() => setIsAppModalOpen(true)}
+          activeViewMode={controllerView}
+          onToggleViewMode={() => setControllerView((prev) => (prev === "app" ? "keypad" : "app"))}
         />
       </header>
 
@@ -562,150 +564,127 @@ export default function App() {
               onToggleDevice={(dev) => handleShortPress(dev, dev)}
               onToggleFixture={(fix) => handleShortPress(fix, fix)}
             />
-
-
           </div>
         </section>
 
         {/* Right Pane: Keypad Selector & Architectural Keypad Station */}
         <aside className="showroom-control-pane" aria-label="Smart Wall Controller Keypad">
           <div className="controller-wall-panel">
+            {/* Keypad Type Selection Option (visible in Keypad mode) */}
+            {controllerView === "keypad" && (
+              <div className="keypad-type-bar" role="tablist" aria-label="Select Keypad Type">
+                <button
+                  type="button"
+                  role="tab"
+                  id="tab-keypad-grid"
+                  aria-selected={keypadType === "grid"}
+                  aria-controls="keypad-grid-view"
+                  className={`keypad-type-btn ${keypadType === "grid" ? "is-active" : ""}`}
+                  onClick={() => setKeypadType("grid")}
+                >
+                  <div className="type-icon-grid" aria-hidden="true">
+                    <span /><span />
+                    <span /><span />
+                    <span /><span />
+                    <span /><span />
+                  </div>
+                  <div className="type-btn-text">
+                    <span className="type-btn-title">8-Button Grid</span>
+                    <span className="type-btn-ref">Keypad Type 1</span>
+                  </div>
+                </button>
 
+                <button
+                  type="button"
+                  role="tab"
+                  id="tab-keypad-dual"
+                  aria-selected={keypadType === "dual-panel"}
+                  aria-controls="keypad-dual-view"
+                  className={`keypad-type-btn ${keypadType === "dual-panel" ? "is-active" : ""}`}
+                  onClick={() => setKeypadType("dual-panel")}
+                >
+                  <div className="type-icon-dual" aria-hidden="true">
+                    <span className="dual-bar-top" />
+                    <span className="dual-divider-line" />
+                    <span className="dual-bar-bottom" />
+                  </div>
+                  <div className="type-btn-text">
+                    <span className="type-btn-title">Dual-Panel Rocker</span>
+                    <span className="type-btn-ref">Keypad Type 2</span>
+                  </div>
+                </button>
+              </div>
+            )}
 
-            {/* Keypad Type Selection Option */}
-            <div className="keypad-type-bar" role="tablist" aria-label="Select Keypad Type">
-              <button
-                type="button"
-                role="tab"
-                id="tab-keypad-grid"
-                aria-selected={keypadType === "grid"}
-                aria-controls="keypad-grid-view"
-                className={`keypad-type-btn ${keypadType === "grid" ? "is-active" : ""}`}
-                onClick={() => setKeypadType("grid")}
-              >
-                <div className="type-icon-grid" aria-hidden="true">
-                  <span /><span />
-                  <span /><span />
-                  <span /><span />
-                  <span /><span />
-                </div>
-                <div className="type-btn-text">
-                  <span className="type-btn-title">8-Button Grid</span>
-                  <span className="type-btn-ref">Keypad Type 1</span>
-                </div>
-              </button>
-
-              <button
-                type="button"
-                role="tab"
-                id="tab-keypad-dual"
-                aria-selected={keypadType === "dual-panel"}
-                aria-controls="keypad-dual-view"
-                className={`keypad-type-btn ${keypadType === "dual-panel" ? "is-active" : ""}`}
-                onClick={() => setKeypadType("dual-panel")}
-              >
-                <div className="type-icon-dual" aria-hidden="true">
-                  <span className="dual-bar-top" />
-                  <span className="dual-divider-line" />
-                  <span className="dual-bar-bottom" />
-                </div>
-                <div className="type-btn-text">
-                  <span className="type-btn-title">Dual-Panel Rocker</span>
-                  <span className="type-btn-ref">Keypad Type 2</span>
-                </div>
-              </button>
-            </div>
-
-            {/* Display Selected Keypad Design with Crown Display Strip above */}
+            {/* Display Selected Keypad Design or Inline Smart App Interface */}
             <div className="keypad-mount-area">
-              <div className="keypad-unified-station">
-                {/* Capsule OLED Crown Display matching Reference Images */}
-                <KeypadCrownDisplay
+              {controllerView === "keypad" ? (
+                <div className="keypad-unified-station">
+                  {/* Capsule OLED Crown Display matching Reference Images */}
+                  <KeypadCrownDisplay
+                    circuits={circuits}
+                    dimmers={dimmers}
+                    fanState={fanState}
+                    acState={acState}
+                    curtainState={curtainState}
+                    activeScene={activeScene}
+                    lastInteraction={lastInteraction}
+                    onControlAction={handleShortPress}
+                    onStepCurtain={(pos) => setCurtainState({ position: pos, isOpen: pos > 0 })}
+                    onSetFanSpeed={handleSetFanSpeed}
+                  />
+
+                  {/* The Selected Keypad itself */}
+                  {keypadType === "grid" ? (
+                    <GridKeypad
+                      circuits={circuits}
+                      dimmers={dimmers}
+                      fanState={fanState}
+                      acState={acState}
+                      curtainState={curtainState}
+                      activeScene={activeScene}
+                      bodyFinish={bodyFinish}
+                      buttonColor={buttonColor}
+                      isButtonColorDark={isButtonColorDark}
+                      onShortPress={handleShortPress}
+                      onLongPress={handleLongPress}
+                      onLongPressEnd={handleLongPressEnd}
+                    />
+                  ) : (
+                    <DualPanelKeypad
+                      circuits={circuits}
+                      dimmers={dimmers}
+                      fanState={fanState}
+                      acState={acState}
+                      curtainState={curtainState}
+                      activeScene={activeScene}
+                      bodyFinish={bodyFinish}
+                      buttonColor={buttonColor}
+                      isButtonColorDark={isButtonColorDark}
+                      onShortPress={handleShortPress}
+                      onLongPress={handleLongPress}
+                      onLongPressEnd={handleLongPressEnd}
+                    />
+                  )}
+                </div>
+              ) : (
+                <InlineAppView
                   circuits={circuits}
                   dimmers={dimmers}
                   fanState={fanState}
                   acState={acState}
                   curtainState={curtainState}
                   activeScene={activeScene}
-                  lastInteraction={lastInteraction}
                   onControlAction={handleShortPress}
                   onStepCurtain={(pos) => setCurtainState({ position: pos, isOpen: pos > 0 })}
                   onSetFanSpeed={handleSetFanSpeed}
+                  onClose={() => setControllerView("keypad")}
                 />
-
-                {/* The Selected Keypad itself */}
-                {keypadType === "grid" ? (
-                  <GridKeypad
-                    circuits={circuits}
-                    dimmers={dimmers}
-                    fanState={fanState}
-                    acState={acState}
-                    curtainState={curtainState}
-                    activeScene={activeScene}
-                    bodyFinish={bodyFinish}
-                    buttonColor={buttonColor}
-                    isButtonColorDark={isButtonColorDark}
-                    onShortPress={handleShortPress}
-                    onLongPress={handleLongPress}
-                    onLongPressEnd={handleLongPressEnd}
-                  />
-                ) : (
-                  <DualPanelKeypad
-                    circuits={circuits}
-                    dimmers={dimmers}
-                    fanState={fanState}
-                    acState={acState}
-                    curtainState={curtainState}
-                    activeScene={activeScene}
-                    bodyFinish={bodyFinish}
-                    buttonColor={buttonColor}
-                    isButtonColorDark={isButtonColorDark}
-                    onShortPress={handleShortPress}
-                    onLongPress={handleLongPress}
-                    onLongPressEnd={handleLongPressEnd}
-                  />
-                )}
-              </div>
-            </div>
-
-            {/* Live Interactive Action Feedback HUD */}
-            <div className="panel-hud">
-              <div className="hud-action-row">
-                <span className={`hud-action-tag tag-${lastInteraction.type}`}>
-                  {lastInteraction.type === "fan"        && "Fan"}
-                  {lastInteraction.type === "ac"         && "Climate"}
-                  {lastInteraction.type === "curtain"    && "Drapes"}
-                  {lastInteraction.type === "dimmer"     && "Dimmer"}
-                  {lastInteraction.type === "spotlights" && "Spots"}
-                  {lastInteraction.type === "morning"    && "Morning"}
-                  {lastInteraction.type === "night"      && "Night"}
-                  {lastInteraction.type === "scene"      && "Scene"}
-                  {lastInteraction.type === "ready"      && "Ready"}
-                </span>
-                <span className="hud-action-label">
-                  {lastInteraction.label && <strong>{lastInteraction.label}: </strong>}
-                  {lastInteraction.detail}
-                </span>
-              </div>
+              )}
             </div>
           </div>
         </aside>
       </main>
-
-      {/* Companion Mobile Phone Simulator Modal (Reference Image 3) */}
-      <MobileAppModal
-        isOpen={isAppModalOpen}
-        onClose={() => setIsAppModalOpen(false)}
-        circuits={circuits}
-        dimmers={dimmers}
-        fanState={fanState}
-        acState={acState}
-        curtainState={curtainState}
-        activeScene={activeScene}
-        onControlAction={handleShortPress}
-        onStepCurtain={(pos) => setCurtainState({ position: pos, isOpen: pos > 0 })}
-        onSetFanSpeed={handleSetFanSpeed}
-      />
     </div>
   );
 }

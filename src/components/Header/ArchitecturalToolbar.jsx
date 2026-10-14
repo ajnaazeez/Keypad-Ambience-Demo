@@ -13,10 +13,12 @@ import './ArchitecturalToolbar.css';
 export default function ArchitecturalToolbar({
   theme = 'dark',
   onToggleTheme,
-  bodyFinish = 'white',
+  bodyFinish = 'black',
   onSelectBodyFinish,
-  selectedButtonColor = '#26384d',
+  selectedButtonColor = '#1c1c1e',
   onSelectButtonColor,
+  activeViewMode = 'keypad',
+  onToggleViewMode,
   onOpenAppModal,
 }) {
   return (
@@ -24,9 +26,10 @@ export default function ArchitecturalToolbar({
       {/* 1. Mobile App Companion Button */}
       <button
         type="button"
-        className="arch-btn arch-btn-app"
-        onClick={onOpenAppModal}
-        title="Open Mobile Companion App Simulator"
+        className={`arch-btn arch-btn-app ${activeViewMode === 'app' ? 'is-active' : ''}`}
+        onClick={onToggleViewMode || onOpenAppModal}
+        title={activeViewMode === 'app' ? 'Return to Physical Keypad' : 'Switch to Mobile App Controller'}
+        aria-pressed={activeViewMode === 'app'}
       >
         <span className="app-icon" aria-hidden="true">
           <svg viewBox="0 0 16 16" width="13" height="13" fill="currentColor">
@@ -116,7 +119,7 @@ export default function ArchitecturalToolbar({
           <span className="bay-label">BUTTONS</span>
           <div className="swatches-row">
             {BUTTON_PALETTES.map((palette) => {
-              const isSelected = selectedButtonColor.toLowerCase() === palette.color.toLowerCase();
+              const isSelected = (selectedButtonColor || '').toLowerCase() === palette.color.toLowerCase();
               return (
                 <button
                   key={palette.id}

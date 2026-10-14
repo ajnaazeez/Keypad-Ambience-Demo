@@ -18,7 +18,7 @@ import '../Ambience/AmbienceBackdrop.css';
  */
 export default function InteractiveRoom({
   circuits = {},
-  activeScene = 'living-off',
+  activeScene = 'living-on',
   activeHold = null,
   fanState = { on: false, speed: 3 },
   acState = { on: false, temp: 22, mode: 'cool', fanSpeed: 'med' },

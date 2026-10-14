@@ -87,7 +87,7 @@
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   position: relative;
-  background: var(--keypad-btn-bg, #26384d);
+  background: var(--keypad-btn-bg, #000000);
   transition: background 0.25s ease;
 }
 
@@ -173,66 +173,27 @@
 }
 
 .dual-quadrant-sublabel {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 9px;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  color: var(--keypad-btn-sublabel, rgba(255, 255, 255, 0.65));
-  text-transform: uppercase;
-  transition: color 0.2s ease;
+  display: none !important;
 }
 
-/* Active State (Illuminated Luminous Clean White Glow) */
+/* Active State - Selecting highlight effect removed per user request */
 .dual-quadrant-btn.is-active {
-  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.04) 0%, transparent 80%);
+  background: transparent;
 }
 
 .dual-quadrant-btn.is-active .dual-quadrant-label {
-  color: #ffffff;
-  font-weight: 500;
-  text-shadow:
-    0 0 10px rgba(255, 255, 255, 0.85),
-    0 0 2px rgba(255, 255, 255, 1);
+  color: var(--keypad-btn-text, #ffffff);
+  font-weight: 400;
+  text-shadow: none;
 }
 
 .dual-quadrant-btn.is-active .dual-quadrant-sublabel {
-  color: #38bdf8;
+  display: none !important;
 }
 
-/* Subtle Status Pip Indicator */
+/* Subtle Status Pip Indicator (Removed / Hidden per user request) */
 .dual-status-pip {
-  position: absolute;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: transparent;
-  transition: all 0.25s ease;
-  z-index: 3;
-}
-
-.quad-top-left .dual-status-pip {
-  top: 10px;
-  left: 10px;
-}
-
-.quad-top-right .dual-status-pip {
-  top: 10px;
-  right: 10px;
-}
-
-.quad-bottom-left .dual-status-pip {
-  bottom: 10px;
-  left: 10px;
-}
-
-.quad-bottom-right .dual-status-pip {
-  bottom: 10px;
-  right: 10px;
-}
-
-.dual-quadrant-btn.is-active .dual-status-pip {
-  background: #38bdf8;
-  box-shadow: 0 0 8px #38bdf8;
+  display: none !important;
 }
 
 /* Tactile Depression on Press */
@@ -272,15 +233,4 @@
   width: 100%;
 }
 
-@media (max-width: 480px) {
-  .dual-keypad-plate {
-    width: 290px;
-    height: 290px;
-  }
-  .dual-quadrant-btn {
-    padding: 12px 14px;
-  }
-  .dual-quadrant-label {
-    font-size: 13px;
-  }
-}
+

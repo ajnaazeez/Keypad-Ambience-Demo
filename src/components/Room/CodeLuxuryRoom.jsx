@@ -554,7 +554,7 @@ export default function CodeLuxuryRoom({
     'spotlights': 100,
     'cove': 100,
   },
-  activeScene = 'living-off',
+  activeScene = 'living-on',
   fanState = { on: true, speed: 3 },
   acState = { on: true, temp: 22, mode: 'cool' },
   curtainState = { position: 100, isOpen: true },
@@ -695,7 +695,7 @@ export default function CodeLuxuryRoom({
     skylineCanvas.width = 2048;
     skylineCanvas.height = 1024;
     skylineCanvasRef.current = skylineCanvas;
-    updateSkylineCanvas(skylineCanvas, 'living-off');
+    updateSkylineCanvas(skylineCanvas, activeScene || 'living-on');
     const skylineTex = new THREE.CanvasTexture(skylineCanvas);
     skylineTextureRef.current = skylineTex;
 

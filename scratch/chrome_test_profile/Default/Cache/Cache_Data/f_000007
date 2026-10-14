@@ -1,0 +1,248 @@
+import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/components/Keypad/GridKeypad.jsx");const React = __vite__cjsImport0_react;const _jsxDEV = __vite__cjsImport3_react_jsxDevRuntime["jsxDEV"];import __vite__cjsImport0_react from "/node_modules/.vite/deps/react.js?v=18b89b20";
+import { useLongPress } from "/src/hooks/useLongPress.js?t=1791964509732";
+import "/src/components/Keypad/GridKeypad.css?t=1791965711146";
+var _jsxFileName = "C:/Projects/ariss_island_series/src/components/Keypad/GridKeypad.jsx";
+import __vite__cjsImport3_react_jsxDevRuntime from "/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=18b89b20";
+var _s = $RefreshSig$();
+/**
+* GridKeypadButtonItem - Individual precision tactile button for Keypad Type 1
+*/
+function GridKeypadButtonItem({ id, label, sublabel, isActive = false, onShortPress, onLongPress, onLongPressEnd }) {
+	_s();
+	const { isPressed, isHolding, handlers } = useLongPress({
+		thresholdMs: 380,
+		onShortPress: () => onShortPress?.(id, label),
+		onLongPress: () => onLongPress?.(id, label),
+		onLongPressEnd: () => onLongPressEnd?.(id, label)
+	});
+	return /* @__PURE__ */ _jsxDEV("button", {
+		type: "button",
+		id: `grid-btn-${id}`,
+		className: `grid-keypad-btn ${isActive ? "is-active" : ""} ${isPressed ? "is-pressed" : ""} ${isHolding ? "is-holding" : ""}`,
+		"aria-label": `${label}${sublabel ? ` (${sublabel})` : ""} - ${isActive ? "Active" : "Inactive"}`,
+		"aria-pressed": isActive,
+		...handlers,
+		children: [
+			/* @__PURE__ */ _jsxDEV("span", {
+				className: "grid-btn-surface",
+				children: [/* @__PURE__ */ _jsxDEV("span", {
+					className: "grid-btn-label",
+					children: label
+				}, void 0, false, {
+					fileName: _jsxFileName,
+					lineNumber: 35,
+					columnNumber: 9
+				}, this), sublabel && /* @__PURE__ */ _jsxDEV("span", {
+					className: "grid-btn-sublabel",
+					children: sublabel
+				}, void 0, false, {
+					fileName: _jsxFileName,
+					lineNumber: 36,
+					columnNumber: 22
+				}, this)]
+			}, void 0, true, {
+				fileName: _jsxFileName,
+				lineNumber: 34,
+				columnNumber: 7
+			}, this),
+			/* @__PURE__ */ _jsxDEV("span", {
+				className: "grid-btn-hold-fill",
+				"aria-hidden": "true"
+			}, void 0, false, {
+				fileName: _jsxFileName,
+				lineNumber: 40,
+				columnNumber: 7
+			}, this),
+			/* @__PURE__ */ _jsxDEV("span", {
+				className: "grid-btn-hold-bar",
+				"aria-hidden": "true"
+			}, void 0, false, {
+				fileName: _jsxFileName,
+				lineNumber: 41,
+				columnNumber: 7
+			}, this)
+		]
+	}, void 0, true, {
+		fileName: _jsxFileName,
+		lineNumber: 25,
+		columnNumber: 5
+	}, this);
+}
+_s(GridKeypadButtonItem, "dp5iKZh0aBNFcUtOeRmHteuN88w=", false, function() {
+	return [useLongPress];
+});
+_c = GridKeypadButtonItem;
+/**
+* GridKeypad Component (Reference Image 1)
+* 
+* Recreates the exact physical architectural keypad shown in Reference Image 1:
+* - Matte black outer bezel frame
+* - Recessed button bay
+* - 2 columns x 4 rows = 8 tactile rectangular push buttons
+* - Exact layout:
+*     Column 1: Living On, AC, Curtain, Morning
+*     Column 2: Living Off, Fan, Spotlights, Night
+* - Perfectly centered white labels, clean sans-serif typography
+* - Tactile depression, short-press and long-press support
+*/
+export default function GridKeypad({ circuits = {}, dimmers = {}, fanState = {
+	on: false,
+	speed: 3
+}, acState = {
+	on: false,
+	temp: 22,
+	mode: "cool"
+}, curtainState = {
+	position: 100,
+	isOpen: true
+}, activeScene = "living-on", bodyFinish = "black", buttonColor = "#1c1c1e", isButtonColorDark = true, onShortPress, onLongPress, onLongPressEnd }) {
+	// Column 1 buttons (Left)
+	const leftColumnButtons = [
+		{
+			id: "living-on",
+			label: "Living On",
+			sublabel: activeScene === "living-on" ? "Active" : null,
+			isActive: activeScene === "living-on" || Boolean(circuits["living-on"])
+		},
+		{
+			id: "ac",
+			label: "AC",
+			sublabel: acState.on ? `${acState.temp}°C` : null,
+			isActive: Boolean(acState.on)
+		},
+		{
+			id: "curtain",
+			label: "Curtain",
+			sublabel: curtainState.position > 0 ? `${curtainState.position}%` : "Closed",
+			isActive: curtainState.position > 0
+		},
+		{
+			id: "morning",
+			label: "Morning",
+			sublabel: activeScene === "morning" ? "Sunrise" : null,
+			isActive: activeScene === "morning" || Boolean(circuits["morning"])
+		}
+	];
+	// Column 2 buttons (Right)
+	const rightColumnButtons = [
+		{
+			id: "living-off",
+			label: "Living Off",
+			sublabel: activeScene === "living-off" ? "Standby" : null,
+			isActive: activeScene === "living-off" || Boolean(circuits["living-off"])
+		},
+		{
+			id: "fan",
+			label: "Fan",
+			sublabel: fanState.on ? `Spd ${fanState.speed}` : null,
+			isActive: Boolean(fanState.on)
+		},
+		{
+			id: "spotlights",
+			label: "Spotlights",
+			sublabel: circuits["spotlights"] ? `${dimmers["spotlights"] || 100}%` : null,
+			isActive: Boolean(circuits["spotlights"])
+		},
+		{
+			id: "night",
+			label: "Night",
+			sublabel: activeScene === "night" ? "Nightfall" : null,
+			isActive: activeScene === "night" || Boolean(circuits["night"])
+		}
+	];
+	return /* @__PURE__ */ _jsxDEV("div", {
+		className: `grid-keypad-enclosure body-${bodyFinish}`,
+		style: {
+			"--keypad-btn-bg": buttonColor,
+			"--keypad-btn-text": isButtonColorDark ? "#ffffff" : "#1e293b",
+			"--keypad-btn-sublabel": isButtonColorDark ? "rgba(255,255,255,0.65)" : "rgba(30,41,59,0.7)"
+		},
+		role: "region",
+		"aria-label": "8-Button Architectural Keypad (Type 1)",
+		children: /* @__PURE__ */ _jsxDEV("div", {
+			className: "grid-keypad-faceplate",
+			children: /* @__PURE__ */ _jsxDEV("div", {
+				className: "grid-keypad-bay",
+				children: [/* @__PURE__ */ _jsxDEV("div", {
+					className: "grid-keypad-column grid-col-left",
+					children: leftColumnButtons.map((btn) => /* @__PURE__ */ _jsxDEV(GridKeypadButtonItem, {
+						id: btn.id,
+						label: btn.label,
+						sublabel: btn.sublabel,
+						isActive: btn.isActive,
+						onShortPress,
+						onLongPress,
+						onLongPressEnd
+					}, btn.id, false, {
+						fileName: _jsxFileName,
+						lineNumber: 147,
+						columnNumber: 15
+					}, this))
+				}, void 0, false, {
+					fileName: _jsxFileName,
+					lineNumber: 145,
+					columnNumber: 11
+				}, this), /* @__PURE__ */ _jsxDEV("div", {
+					className: "grid-keypad-column grid-col-right",
+					children: rightColumnButtons.map((btn) => /* @__PURE__ */ _jsxDEV(GridKeypadButtonItem, {
+						id: btn.id,
+						label: btn.label,
+						sublabel: btn.sublabel,
+						isActive: btn.isActive,
+						onShortPress,
+						onLongPress,
+						onLongPressEnd
+					}, btn.id, false, {
+						fileName: _jsxFileName,
+						lineNumber: 163,
+						columnNumber: 15
+					}, this))
+				}, void 0, false, {
+					fileName: _jsxFileName,
+					lineNumber: 161,
+					columnNumber: 11
+				}, this)]
+			}, void 0, true, {
+				fileName: _jsxFileName,
+				lineNumber: 143,
+				columnNumber: 9
+			}, this)
+		}, void 0, false, {
+			fileName: _jsxFileName,
+			lineNumber: 141,
+			columnNumber: 7
+		}, this)
+	}, void 0, false, {
+		fileName: _jsxFileName,
+		lineNumber: 130,
+		columnNumber: 5
+	}, this);
+}
+_c2 = GridKeypad;
+var _c, _c2;
+$RefreshReg$(_c, "GridKeypadButtonItem");
+$RefreshReg$(_c2, "GridKeypad");
+import * as RefreshRuntime from "/@react-refresh";
+const inWebWorker = typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope;
+import * as __vite_react_currentExports from "/src/components/Keypad/GridKeypad.jsx?t=1791965711146";
+if (import.meta.hot && !inWebWorker) {
+  if (!window.$RefreshReg$) {
+    throw new Error(
+      "@vitejs/plugin-react can't detect preamble. Something is wrong."
+    );
+  }
+
+  const currentExports = __vite_react_currentExports;
+  queueMicrotask(() => {
+    RefreshRuntime.registerExportsForReactRefresh("C:/Projects/ariss_island_series/src/components/Keypad/GridKeypad.jsx", currentExports);
+    import.meta.hot.accept((nextExports) => {
+      if (!nextExports) return;
+      const invalidateMessage = RefreshRuntime.validateRefreshBoundaryAndEnqueueUpdate("C:/Projects/ariss_island_series/src/components/Keypad/GridKeypad.jsx", currentExports, nextExports);
+      if (invalidateMessage) import.meta.hot.invalidate(invalidateMessage);
+    });
+  });
+}
+function $RefreshReg$(type, id) { return RefreshRuntime.register(type, "C:/Projects/ariss_island_series/src/components/Keypad/GridKeypad.jsx" + ' ' + id); }
+function $RefreshSig$() { return RefreshRuntime.createSignatureFunctionForTransform(); }
+
+//# sourceMappingURL=data:application/json;base64,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QyxPQUFEO0VBQ0UsV0FBVyw4QkFBOEI7RUFDekMsT0FBTztHQUNMLG1CQUFtQjtHQUNuQixxQkFBcUIsb0JBQW9CLFlBQVk7R0FDckQseUJBQXlCLG9CQUFvQiwyQkFBMkI7RUFDMUU7RUFDQSxNQUFLO0VBQ0wsY0FBVztZQUdYLHdCQUFDLE9BQUQ7R0FBSyxXQUFVO2FBRWIsd0JBQUMsT0FBRDtJQUFLLFdBQVU7Y0FBZixDQUVFLHdCQUFDLE9BQUQ7S0FBSyxXQUFVO2VBQ1osa0JBQWtCLEtBQUssUUFDdEIsd0JBQUMsc0JBQUQ7TUFFRSxJQUFJLElBQUk7TUFDUixPQUFPLElBQUk7TUFDWCxVQUFVLElBQUk7TUFDZCxVQUFVLElBQUk7TUFDQTtNQUNEO01BQ0c7S0FDakIsR0FSTSxJQUFJOzs7O1lBUVYsQ0FDRjtJQUNFOzs7O2NBR0wsd0JBQUMsT0FBRDtLQUFLLFdBQVU7ZUFDWixtQkFBbUIsS0FBSyxRQUN2Qix3QkFBQyxzQkFBRDtNQUVFLElBQUksSUFBSTtNQUNSLE9BQU8sSUFBSTtNQUNYLFVBQVUsSUFBSTtNQUNkLFVBQVUsSUFBSTtNQUNBO01BQ0Q7TUFDRztLQUNqQixHQVJNLElBQUk7Ozs7WUFRVixDQUNGO0lBQ0U7Ozs7WUFDRjs7Ozs7O0VBQ0Y7Ozs7O0NBQ0Y7Ozs7O0FBRVQiLCJuYW1lcyI6W10sInNvdXJjZXMiOlsiR3JpZEtleXBhZC5qc3giXSwidmVyc2lvbiI6Mywic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0IGZyb20gJ3JlYWN0JztcbmltcG9ydCB7IHVzZUxvbmdQcmVzcyB9IGZyb20gJy4uLy4uL2hvb2tzL3VzZUxvbmdQcmVzcyc7XG5pbXBvcnQgJy4vR3JpZEtleXBhZC5jc3MnO1xuXG4vKipcbiAqIEdyaWRLZXlwYWRCdXR0b25JdGVtIC0gSW5kaXZpZHVhbCBwcmVjaXNpb24gdGFjdGlsZSBidXR0b24gZm9yIEtleXBhZCBUeXBlIDFcbiAqL1xuZnVuY3Rpb24gR3JpZEtleXBhZEJ1dHRvbkl0ZW0oe1xuICBpZCxcbiAgbGFiZWwsXG4gIHN1YmxhYmVsLFxuICBpc0FjdGl2ZSA9IGZhbHNlLFxuICBvblNob3J0UHJlc3MsXG4gIG9uTG9uZ1ByZXNzLFxuICBvbkxvbmdQcmVzc0VuZCxcbn0pIHtcbiAgY29uc3QgeyBpc1ByZXNzZWQsIGlzSG9sZGluZywgaGFuZGxlcnMgfSA9IHVzZUxvbmdQcmVzcyh7XG4gICAgdGhyZXNob2xkTXM6IDM4MCxcbiAgICBvblNob3J0UHJlc3M6ICgpID0+IG9uU2hvcnRQcmVzcz8uKGlkLCBsYWJlbCksXG4gICAgb25Mb25nUHJlc3M6ICgpID0+IG9uTG9uZ1ByZXNzPy4oaWQsIGxhYmVsKSxcbiAgICBvbkxvbmdQcmVzc0VuZDogKCkgPT4gb25Mb25nUHJlc3NFbmQ/LihpZCwgbGFiZWwpLFxuICB9KTtcblxuICByZXR1cm4gKFxuICAgIDxidXR0b25cbiAgICAgIHR5cGU9XCJidXR0b25cIlxuICAgICAgaWQ9e2BncmlkLWJ0bi0ke2lkfWB9XG4gICAgICBjbGFzc05hbWU9e2BncmlkLWtleXBhZC1idG4gJHtpc0FjdGl2ZSA/ICdpcy1hY3RpdmUnIDogJyd9ICR7aXNQcmVzc2VkID8gJ2lzLXByZXNzZWQnIDogJyd9ICR7aXNIb2xkaW5nID8gJ2lzLWhvbGRpbmcnIDogJyd9YH1cbiAgICAgIGFyaWEtbGFiZWw9e2Ake2xhYmVsfSR7c3VibGFiZWwgPyBgICgke3N1YmxhYmVsfSlgIDogJyd9IC0gJHtpc0FjdGl2ZSA/ICdBY3RpdmUnIDogJ0luYWN0aXZlJ31gfVxuICAgICAgYXJpYS1wcmVzc2VkPXtpc0FjdGl2ZX1cbiAgICAgIHsuLi5oYW5kbGVyc31cbiAgICA+XG4gICAgICB7LyogVGFjdGlsZSBiZXZlbGVkIGZhY2Ugb2YgYnV0dG9uICovfVxuICAgICAgPHNwYW4gY2xhc3NOYW1lPVwiZ3JpZC1idG4tc3VyZmFjZVwiPlxuICAgICAgICA8c3BhbiBjbGFzc05hbWU9XCJncmlkLWJ0bi1sYWJlbFwiPntsYWJlbH08L3NwYW4+XG4gICAgICAgIHtzdWJsYWJlbCAmJiA8c3BhbiBjbGFzc05hbWU9XCJncmlkLWJ0bi1zdWJsYWJlbFwiPntzdWJsYWJlbH08L3NwYW4+fVxuICAgICAgPC9zcGFuPlxuXG4gICAgICB7LyogTG9uZy1wcmVzcyBwcm9ncmVzc2l2ZSBjaGFyZ2UgZ2xvdyAmIGJhciAqL31cbiAgICAgIDxzcGFuIGNsYXNzTmFtZT1cImdyaWQtYnRuLWhvbGQtZmlsbFwiIGFyaWEtaGlkZGVuPVwidHJ1ZVwiIC8+XG4gICAgICA8c3BhbiBjbGFzc05hbWU9XCJncmlkLWJ0bi1ob2xkLWJhclwiIGFyaWEtaGlkZGVuPVwidHJ1ZVwiIC8+XG4gICAgPC9idXR0b24+XG4gICk7XG59XG5cbi8qKlxuICogR3JpZEtleXBhZCBDb21wb25lbnQgKFJlZmVyZW5jZSBJbWFnZSAxKVxuICogXG4gKiBSZWNyZWF0ZXMgdGhlIGV4YWN0IHBoeXNpY2FsIGFyY2hpdGVjdHVyYWwga2V5cGFkIHNob3duIGluIFJlZmVyZW5jZSBJbWFnZSAxOlxuICogLSBNYXR0ZSBibGFjayBvdXRlciBiZXplbCBmcmFtZVxuICogLSBSZWNlc3NlZCBidXR0b24gYmF5XG4gKiAtIDIgY29sdW1ucyB4IDQgcm93cyA9IDggdGFjdGlsZSByZWN0YW5ndWxhciBwdXNoIGJ1dHRvbnNcbiAqIC0gRXhhY3QgbGF5b3V0OlxuICogICAgIENvbHVtbiAxOiBMaXZpbmcgT24sIEFDLCBDdXJ0YWluLCBNb3JuaW5nXG4gKiAgICAgQ29sdW1uIDI6IExpdmluZyBPZmYsIEZhbiwgU3BvdGxpZ2h0cywgTmlnaHRcbiAqIC0gUGVyZmVjdGx5IGNlbnRlcmVkIHdoaXRlIGxhYmVscywgY2xlYW4gc2Fucy1zZXJpZiB0eXBvZ3JhcGh5XG4gKiAtIFRhY3RpbGUgZGVwcmVzc2lvbiwgc2hvcnQtcHJlc3MgYW5kIGxvbmctcHJlc3Mgc3VwcG9ydFxuICovXG5leHBvcnQgZGVmYXVsdCBmdW5jdGlvbiBHcmlkS2V5cGFkKHtcbiAgY2lyY3VpdHMgPSB7fSxcbiAgZGltbWVycyA9IHt9LFxuICBmYW5TdGF0ZSA9IHsgb246IGZhbHNlLCBzcGVlZDogMyB9LFxuICBhY1N0YXRlID0geyBvbjogZmFsc2UsIHRlbXA6IDIyLCBtb2RlOiAnY29vbCcgfSxcbiAgY3VydGFpblN0YXRlID0geyBwb3NpdGlvbjogMTAwLCBpc09wZW46IHRydWUgfSxcbiAgYWN0aXZlU2NlbmUgPSAnbGl2aW5nLW9uJyxcbiAgYm9keUZpbmlzaCA9ICdibGFjaycsXG4gIGJ1dHRvbkNvbG9yID0gJyMxYzFjMWUnLFxuICBpc0J1dHRvbkNvbG9yRGFyayA9IHRydWUsXG4gIG9uU2hvcnRQcmVzcyxcbiAgb25Mb25nUHJlc3MsXG4gIG9uTG9uZ1ByZXNzRW5kLFxufSkge1xuICAvLyBDb2x1bW4gMSBidXR0b25zIChMZWZ0KVxuICBjb25zdCBsZWZ0Q29sdW1uQnV0dG9ucyA9IFtcbiAgICB7XG4gICAgICBpZDogJ2xpdmluZy1vbicsXG4gICAgICBsYWJlbDogJ0xpdmluZyBPbicsXG4gICAgICBzdWJsYWJlbDogYWN0aXZlU2NlbmUgPT09ICdsaXZpbmctb24nID8gJ0FjdGl2ZScgOiBudWxsLFxuICAgICAgaXNBY3RpdmU6IGFjdGl2ZVNjZW5lID09PSAnbGl2aW5nLW9uJyB8fCBCb29sZWFuKGNpcmN1aXRzWydsaXZpbmctb24nXSksXG4gICAgfSxcbiAgICB7XG4gICAgICBpZDogJ2FjJyxcbiAgICAgIGxhYmVsOiAnQUMnLFxuICAgICAgc3VibGFiZWw6IGFjU3RhdGUub24gPyBgJHthY1N0YXRlLnRlbXB9wrBDYCA6IG51bGwsXG4gICAgICBpc0FjdGl2ZTogQm9vbGVhbihhY1N0YXRlLm9uKSxcbiAgICB9LFxuICAgIHtcbiAgICAgIGlkOiAnY3VydGFpbicsXG4gICAgICBsYWJlbDogJ0N1cnRhaW4nLFxuICAgICAgc3VibGFiZWw6IGN1cnRhaW5TdGF0ZS5wb3NpdGlvbiA+IDAgPyBgJHtjdXJ0YWluU3RhdGUucG9zaXRpb259JWAgOiAnQ2xvc2VkJyxcbiAgICAgIGlzQWN0aXZlOiBjdXJ0YWluU3RhdGUucG9zaXRpb24gPiAwLFxuICAgIH0sXG4gICAge1xuICAgICAgaWQ6ICdtb3JuaW5nJyxcbiAgICAgIGxhYmVsOiAnTW9ybmluZycsXG4gICAgICBzdWJsYWJlbDogYWN0aXZlU2NlbmUgPT09ICdtb3JuaW5nJyA/ICdTdW5yaXNlJyA6IG51bGwsXG4gICAgICBpc0FjdGl2ZTogYWN0aXZlU2NlbmUgPT09ICdtb3JuaW5nJyB8fCBCb29sZWFuKGNpcmN1aXRzWydtb3JuaW5nJ10pLFxuICAgIH0sXG4gIF07XG5cbiAgLy8gQ29sdW1uIDIgYnV0dG9ucyAoUmlnaHQpXG4gIGNvbnN0IHJpZ2h0Q29sdW1uQnV0dG9ucyA9IFtcbiAgICB7XG4gICAgICBpZDogJ2xpdmluZy1vZmYnLFxuICAgICAgbGFiZWw6ICdMaXZpbmcgT2ZmJyxcbiAgICAgIHN1YmxhYmVsOiBhY3RpdmVTY2VuZSA9PT0gJ2xpdmluZy1vZmYnID8gJ1N0YW5kYnknIDogbnVsbCxcbiAgICAgIGlzQWN0aXZlOiBhY3RpdmVTY2VuZSA9PT0gJ2xpdmluZy1vZmYnIHx8IEJvb2xlYW4oY2lyY3VpdHNbJ2xpdmluZy1vZmYnXSksXG4gICAgfSxcbiAgICB7XG4gICAgICBpZDogJ2ZhbicsXG4gICAgICBsYWJlbDogJ0ZhbicsXG4gICAgICBzdWJsYWJlbDogZmFuU3RhdGUub24gPyBgU3BkICR7ZmFuU3RhdGUuc3BlZWR9YCA6IG51bGwsXG4gICAgICBpc0FjdGl2ZTogQm9vbGVhbihmYW5TdGF0ZS5vbiksXG4gICAgfSxcbiAgICB7XG4gICAgICBpZDogJ3Nwb3RsaWdodHMnLFxuICAgICAgbGFiZWw6ICdTcG90bGlnaHRzJyxcbiAgICAgIHN1YmxhYmVsOiBjaXJjdWl0c1snc3BvdGxpZ2h0cyddID8gYCR7ZGltbWVyc1snc3BvdGxpZ2h0cyddIHx8IDEwMH0lYCA6IG51bGwsXG4gICAgICBpc0FjdGl2ZTogQm9vbGVhbihjaXJjdWl0c1snc3BvdGxpZ2h0cyddKSxcbiAgICB9LFxuICAgIHtcbiAgICAgIGlkOiAnbmlnaHQnLFxuICAgICAgbGFiZWw6ICdOaWdodCcsXG4gICAgICBzdWJsYWJlbDogYWN0aXZlU2NlbmUgPT09ICduaWdodCcgPyAnTmlnaHRmYWxsJyA6IG51bGwsXG4gICAgICBpc0FjdGl2ZTogYWN0aXZlU2NlbmUgPT09ICduaWdodCcgfHwgQm9vbGVhbihjaXJjdWl0c1snbmlnaHQnXSksXG4gICAgfSxcbiAgXTtcblxuICByZXR1cm4gKFxuICAgIDxkaXZcbiAgICAgIGNsYXNzTmFtZT17YGdyaWQta2V5cGFkLWVuY2xvc3VyZSBib2R5LSR7Ym9keUZpbmlzaH1gfVxuICAgICAgc3R5bGU9e3tcbiAgICAgICAgJy0ta2V5cGFkLWJ0bi1iZyc6IGJ1dHRvbkNvbG9yLFxuICAgICAgICAnLS1rZXlwYWQtYnRuLXRleHQnOiBpc0J1dHRvbkNvbG9yRGFyayA/ICcjZmZmZmZmJyA6ICcjMWUyOTNiJyxcbiAgICAgICAgJy0ta2V5cGFkLWJ0bi1zdWJsYWJlbCc6IGlzQnV0dG9uQ29sb3JEYXJrID8gJ3JnYmEoMjU1LDI1NSwyNTUsMC42NSknIDogJ3JnYmEoMzAsNDEsNTksMC43KScsXG4gICAgICB9fVxuICAgICAgcm9sZT1cInJlZ2lvblwiXG4gICAgICBhcmlhLWxhYmVsPVwiOC1CdXR0b24gQXJjaGl0ZWN0dXJhbCBLZXlwYWQgKFR5cGUgMSlcIlxuICAgID5cbiAgICAgIHsvKiBNYXR0ZSBCbGFjayBSZWNlc3NlZCBGYWNlcGxhdGUgKi99XG4gICAgICA8ZGl2IGNsYXNzTmFtZT1cImdyaWQta2V5cGFkLWZhY2VwbGF0ZVwiPlxuICAgICAgICB7LyogUmVjZXNzZWQgSW5uZXIgQnV0dG9uIEJheSAqL31cbiAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJncmlkLWtleXBhZC1iYXlcIj5cbiAgICAgICAgICB7LyogTGVmdCBDb2x1bW4gKExpdmluZyBPbiwgQUMsIEN1cnRhaW4sIE1vcm5pbmcpICovfVxuICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiZ3JpZC1rZXlwYWQtY29sdW1uIGdyaWQtY29sLWxlZnRcIj5cbiAgICAgICAgICAgIHtsZWZ0Q29sdW1uQnV0dG9ucy5tYXAoKGJ0bikgPT4gKFxuICAgICAgICAgICAgICA8R3JpZEtleXBhZEJ1dHRvbkl0ZW1cbiAgICAgICAgICAgICAgICBrZXk9e2J0bi5pZH1cbiAgICAgICAgICAgICAgICBpZD17YnRuLmlkfVxuICAgICAgICAgICAgICAgIGxhYmVsPXtidG4ubGFiZWx9XG4gICAgICAgICAgICAgICAgc3VibGFiZWw9e2J0bi5zdWJsYWJlbH1cbiAgICAgICAgICAgICAgICBpc0FjdGl2ZT17YnRuLmlzQWN0aXZlfVxuICAgICAgICAgICAgICAgIG9uU2hvcnRQcmVzcz17b25TaG9ydFByZXNzfVxuICAgICAgICAgICAgICAgIG9uTG9uZ1ByZXNzPXtvbkxvbmdQcmVzc31cbiAgICAgICAgICAgICAgICBvbkxvbmdQcmVzc0VuZD17b25Mb25nUHJlc3NFbmR9XG4gICAgICAgICAgICAgIC8+XG4gICAgICAgICAgICApKX1cbiAgICAgICAgICA8L2Rpdj5cblxuICAgICAgICAgIHsvKiBSaWdodCBDb2x1bW4gKExpdmluZyBPZmYsIEZhbiwgU3BvdGxpZ2h0cywgTmlnaHQpICovfVxuICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiZ3JpZC1rZXlwYWQtY29sdW1uIGdyaWQtY29sLXJpZ2h0XCI+XG4gICAgICAgICAgICB7cmlnaHRDb2x1bW5CdXR0b25zLm1hcCgoYnRuKSA9PiAoXG4gICAgICAgICAgICAgIDxHcmlkS2V5cGFkQnV0dG9uSXRlbVxuICAgICAgICAgICAgICAgIGtleT17YnRuLmlkfVxuICAgICAgICAgICAgICAgIGlkPXtidG4uaWR9XG4gICAgICAgICAgICAgICAgbGFiZWw9e2J0bi5sYWJlbH1cbiAgICAgICAgICAgICAgICBzdWJsYWJlbD17YnRuLnN1YmxhYmVsfVxuICAgICAgICAgICAgICAgIGlzQWN0aXZlPXtidG4uaXNBY3RpdmV9XG4gICAgICAgICAgICAgICAgb25TaG9ydFByZXNzPXtvblNob3J0UHJlc3N9XG4gICAgICAgICAgICAgICAgb25Mb25nUHJlc3M9e29uTG9uZ1ByZXNzfVxuICAgICAgICAgICAgICAgIG9uTG9uZ1ByZXNzRW5kPXtvbkxvbmdQcmVzc0VuZH1cbiAgICAgICAgICAgICAgLz5cbiAgICAgICAgICAgICkpfVxuICAgICAgICAgIDwvZGl2PlxuICAgICAgICA8L2Rpdj5cbiAgICAgIDwvZGl2PlxuICAgIDwvZGl2PlxuICApO1xufVxuIl19

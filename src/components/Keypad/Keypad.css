@@ -272,15 +272,11 @@
     0 0 1px rgba(0, 0, 0, 0.18);
 }
 
-/* Active (circuit or device is ON) */
+/* Active (circuit or device is ON) - Selecting effect removed */
 .keypad-button.is-active {
   background: var(--btn-metal-on);
   border-color: var(--btn-active-border-color);
-  box-shadow:
-    inset 0 1px 1.5px rgba(255, 255, 255, 0.95),
-    inset 0 -1px 1px rgba(0, 0, 0, 0.12),
-    0 0 10px rgba(59, 130, 246, 0.16),
-    0 1px 3px rgba(0, 0, 0, 0.10);
+  box-shadow: none;
 }
 
 .keypad-button.is-active .keypad-button-label {
@@ -288,25 +284,9 @@
   font-weight: 500;
 }
 
-/* Status LED */
+/* Status LED - Hidden */
 .keypad-status-led {
-  position: absolute;
-  top: 50%;
-  left: clamp(7px, 1.8vw, 12px);
-  transform: translateY(-50%);
-  width: 3.5px;
-  height: 3.5px;
-  border-radius: 50%;
-  background-color: transparent;
-  opacity: 0;
-  transition: opacity 0.28s ease, background-color 0.28s ease, box-shadow 0.28s ease;
-  pointer-events: none;
-}
-
-.keypad-status-led.is-lit {
-  opacity: 1;
-  background-color: var(--led-on-color);
-  box-shadow: var(--led-on-glow);
+  display: none !important;
 }
 
 /* Long-Press Hold & Charge Visuals */

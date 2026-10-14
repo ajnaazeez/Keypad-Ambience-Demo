@@ -41,28 +41,28 @@ export default function SmartKeypad({
     {
       id: 'living-on',
       label: 'Living On',
-      sublabel: 'Master Scene',
+
       isActive: Boolean(circuits['living-on']),
       indicatorColor: '#38bdf8',
     },
     {
       id: 'main-light',
       label: 'Main Light',
-      sublabel: circuits['main-light'] ? `${dimmers['main-light'] || 100}%` : '4000K',
+
       isActive: Boolean(circuits['main-light']),
       indicatorColor: '#e0f2fe',
     },
     {
       id: 'chandelier',
       label: 'Chandelier',
-      sublabel: circuits['chandelier'] ? `${dimmers['chandelier'] || 100}%` : '2700K',
+
       isActive: Boolean(circuits['chandelier'] || circuits['relax']),
       indicatorColor: '#f59e0b',
     },
     {
       id: 'cove',
       label: 'Cove',
-      sublabel: circuits['cove'] ? `${dimmers['cove'] || 100}%` : '2800K',
+
       isActive: Boolean(circuits['cove'] || circuits['relax']),
       indicatorColor: '#fbbf24',
     },
@@ -72,28 +72,28 @@ export default function SmartKeypad({
     {
       id: 'living-off',
       label: 'Living Off',
-      sublabel: 'Night Standby',
+
       isActive: Boolean(circuits['living-off']),
       indicatorColor: '#64748b',
     },
     {
       id: 'ceiling',
       label: 'Ceiling',
-      sublabel: circuits['ceiling'] ? `${dimmers['ceiling'] || 100}%` : '3000K',
+
       isActive: Boolean(circuits['ceiling']),
       indicatorColor: '#93c5fd',
     },
     {
       id: 'spotlights',
       label: 'Spotlights',
-      sublabel: circuits['spotlights'] ? `${dimmers['spotlights'] || 100}%` : '5 Cones',
+
       isActive: Boolean(circuits['spotlights']),
       indicatorColor: '#fbbf24',
     },
     {
       id: 'relax',
       label: 'Relax',
-      sublabel: '2200K Amber',
+
       isActive: Boolean(circuits['relax']),
       indicatorColor: '#f97316',
     },
@@ -103,7 +103,7 @@ export default function SmartKeypad({
   const fanButton = {
     id: 'fan',
     label: 'Fan',
-    sublabel: fanState.on ? `Speed ${fanState.speed}` : 'OFF',
+
     isActive: Boolean(fanState.on),
     indicatorColor: '#38bdf8',
   };
@@ -111,7 +111,7 @@ export default function SmartKeypad({
   const acButton = {
     id: 'ac',
     label: 'AC',
-    sublabel: acState.on ? `${acState.temp}°C ${acState.mode.toUpperCase()}` : 'OFF',
+
     isActive: Boolean(acState.on),
     indicatorColor: '#0284c7',
   };
@@ -119,7 +119,7 @@ export default function SmartKeypad({
   const curtainButton = {
     id: 'curtain',
     label: 'Curtains',
-    sublabel: `${curtainState.position}% ${curtainState.position === 100 ? 'Open' : curtainState.position === 0 ? 'Closed' : ''}`,
+
     isActive: curtainState.position > 0,
     indicatorColor: '#818cf8',
   };

@@ -18,7 +18,7 @@ import './AmbienceBackdrop.css';
  */
 export default function AmbienceBackdrop({
   circuits = {},
-  activeScene = 'living-off',
+  activeScene = 'living-on',
   activeHold = null,
 }) {
   // Current active scene ambience (or button actively held)

@@ -199,3 +199,38 @@
 .luxury-3d-room-container.mode-relax {
   filter: saturate(1.15);
 }
+
+@media (max-width: 1080px) {
+  .luxury-3d-room-container {
+    min-height: 380px;
+  }
+}
+
+@media (max-width: 640px) {
+  .luxury-3d-room-container {
+    min-height: 280px;
+  }
+
+  .room-3d-badges-overlay {
+    top: 48px;
+    right: 10px;
+    gap: 5px;
+  }
+
+  .badge-3d {
+    font-size: 9.5px;
+    padding: 3px 8px;
+  }
+
+  .camera-presets-bar {
+    bottom: 48px;
+    gap: 3px;
+    padding: 3px 5px;
+    max-width: 90%;
+  }
+
+  .cam-pill {
+    padding: 3px 8px;
+    font-size: 10px;
+  }
+}

@@ -36,9 +36,6 @@ function DualPanelQuadrant({
         {sublabel && <span className="dual-quadrant-sublabel">{sublabel}</span>}
       </div>
 
-      {/* Subtle corner touch status indicator */}
-      <span className="dual-status-pip" aria-hidden="true" />
-
       {/* Hold radial glow and edge bar */}
       <span className="dual-hold-radial" aria-hidden="true" />
       <span className="dual-hold-bar" aria-hidden="true" />
@@ -69,9 +66,9 @@ export default function DualPanelKeypad({
   fanState = { on: false, speed: 3 },
   acState = { on: false, temp: 22, mode: 'cool' },
   curtainState = { position: 100, isOpen: true },
-  activeScene = 'living-off',
-  bodyFinish = 'white',
-  buttonColor = '#26384d',
+  activeScene = 'living-on',
+  bodyFinish = 'black',
+  buttonColor = '#000000',
   isButtonColorDark = true,
   onShortPress,
   onLongPress,
@@ -95,7 +92,7 @@ export default function DualPanelKeypad({
           <DualPanelQuadrant
             id="living-on"
             label="Living On"
-            sublabel={activeScene === 'living-on' ? 'Active' : null}
+
             positionClass="quad-top-left"
             isActive={activeScene === 'living-on' || Boolean(circuits['living-on'])}
             onShortPress={onShortPress}
@@ -107,7 +104,7 @@ export default function DualPanelKeypad({
           <DualPanelQuadrant
             id="living-off"
             label="Living Off"
-            sublabel={activeScene === 'living-off' ? 'Standby' : null}
+
             positionClass="quad-top-right"
             isActive={activeScene === 'living-off' || Boolean(circuits['living-off'])}
             onShortPress={onShortPress}
@@ -119,7 +116,7 @@ export default function DualPanelKeypad({
           <DualPanelQuadrant
             id="ac"
             label="AC"
-            sublabel={acState.on ? `${acState.temp}°C` : null}
+
             positionClass="quad-bottom-left"
             isActive={Boolean(acState.on)}
             onShortPress={onShortPress}
@@ -131,7 +128,7 @@ export default function DualPanelKeypad({
           <DualPanelQuadrant
             id="fan"
             label="Fan"
-            sublabel={fanState.on ? `Spd ${fanState.speed}` : null}
+
             positionClass="quad-bottom-right"
             isActive={Boolean(fanState.on)}
             onShortPress={onShortPress}
@@ -151,7 +148,7 @@ export default function DualPanelKeypad({
           <DualPanelQuadrant
             id="curtain"
             label="Curtain"
-            sublabel={curtainState.position > 0 ? `${curtainState.position}%` : 'Closed'}
+
             positionClass="quad-top-left"
             isActive={curtainState.position > 0}
             onShortPress={onShortPress}
@@ -163,7 +160,7 @@ export default function DualPanelKeypad({
           <DualPanelQuadrant
             id="spotlights"
             label="Spotlights"
-            sublabel={circuits['spotlights'] ? `${dimmers['spotlights'] || 100}%` : null}
+
             positionClass="quad-top-right"
             isActive={Boolean(circuits['spotlights'])}
             onShortPress={onShortPress}
@@ -175,7 +172,7 @@ export default function DualPanelKeypad({
           <DualPanelQuadrant
             id="morning"
             label="Morning"
-            sublabel={activeScene === 'morning' ? 'Sunrise' : null}
+
             positionClass="quad-bottom-left"
             isActive={activeScene === 'morning' || Boolean(circuits['morning'])}
             onShortPress={onShortPress}
@@ -187,7 +184,7 @@ export default function DualPanelKeypad({
           <DualPanelQuadrant
             id="night"
             label="Night"
-            sublabel={activeScene === 'night' ? 'Nightfall' : null}
+
             positionClass="quad-bottom-right"
             isActive={activeScene === 'night' || Boolean(circuits['night'])}
             onShortPress={onShortPress}
