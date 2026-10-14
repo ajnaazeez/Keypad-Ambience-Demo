@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
 import './CodeLuxuryRoom.css';
 
 /**
@@ -144,43 +145,173 @@ function createFlutedWoodTexture() {
   return texture;
 }
 
-// 4. Textured Wool Area Rug
+// 4. Luxury Bouclé & Woven Fabric Texture (High-Res Albedo & Bump Maps)
+function createFabricTextures() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1024;
+  canvas.height = 1024;
+  const ctx = canvas.getContext('2d');
+
+  // Base luxury bouclé warm oatmeal ivory
+  ctx.fillStyle = '#eae5dc';
+  ctx.fillRect(0, 0, 1024, 1024);
+
+  // Woven micro-fiber grid with tactile loops
+  const step = 8;
+  for (let x = 0; x < 1024; x += step) {
+    for (let y = 0; y < 1024; y += step) {
+      const isAlt = (Math.floor(x / step) + Math.floor(y / step)) % 2 === 0;
+      const shade = isAlt ? 236 : 222;
+      const variation = (Math.random() - 0.5) * 14;
+      const v = Math.min(255, Math.max(0, shade + variation));
+      ctx.fillStyle = `rgb(${v},${v - 4},${v - 11})`;
+      ctx.fillRect(x, y, step, step);
+
+      // Micro yarn twist loop
+      if (Math.random() > 0.35) {
+        ctx.strokeStyle = Math.random() > 0.5 ? 'rgba(255,255,255,0.4)' : 'rgba(175,165,152,0.28)';
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.arc(x + step * 0.5, y + step * 0.5, step * 0.36, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+    }
+  }
+
+  // Soft directional fabric weave lines
+  ctx.strokeStyle = 'rgba(150, 140, 128, 0.09)';
+  ctx.lineWidth = 1;
+  for (let i = 0; i < 1024; i += 4) {
+    ctx.beginPath();
+    ctx.moveTo(0, i);
+    ctx.lineTo(1024, i);
+    ctx.stroke();
+  }
+
+  // Fine bump map for tactile relief
+  const bumpCanvas = document.createElement('canvas');
+  bumpCanvas.width = 512;
+  bumpCanvas.height = 512;
+  const bCtx = bumpCanvas.getContext('2d');
+  bCtx.fillStyle = '#808080';
+  bCtx.fillRect(0, 0, 512, 512);
+  for (let x = 0; x < 512; x += 4) {
+    for (let y = 0; y < 512; y += 4) {
+      const val = Math.floor(128 + (Math.random() - 0.5) * 65);
+      bCtx.fillStyle = `rgb(${val},${val},${val})`;
+      bCtx.fillRect(x, y, 4, 4);
+    }
+  }
+
+  const map = new THREE.CanvasTexture(canvas);
+  map.wrapS = THREE.RepeatWrapping;
+  map.wrapT = THREE.RepeatWrapping;
+  map.repeat.set(6, 6);
+
+  const bumpMap = new THREE.CanvasTexture(bumpCanvas);
+  bumpMap.wrapS = THREE.RepeatWrapping;
+  bumpMap.wrapT = THREE.RepeatWrapping;
+  bumpMap.repeat.set(12, 12);
+
+  return { map, bumpMap };
+}
+
+// 4.b High-End Ribbed Boucle & Wool Area Rug Texture
 function createRugTexture() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1024;
+  canvas.height = 1024;
+  const ctx = canvas.getContext('2d');
+
+  // Base warm woven wool cream
+  ctx.fillStyle = '#f2eee5';
+  ctx.fillRect(0, 0, 1024, 1024);
+
+  // Sheared linear ribs
+  const ribHeight = 12;
+  for (let y = 0; y < 1024; y += ribHeight) {
+    const grad = ctx.createLinearGradient(0, y, 0, y + ribHeight);
+    grad.addColorStop(0, 'rgba(215, 207, 194, 0.45)');
+    grad.addColorStop(0.35, 'rgba(255, 255, 255, 0.6)');
+    grad.addColorStop(0.7, 'rgba(235, 229, 218, 0.3)');
+    grad.addColorStop(1, 'rgba(185, 175, 160, 0.55)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, y, 1024, ribHeight);
+
+    // Deep rib valley shadow line
+    ctx.fillStyle = 'rgba(150, 138, 122, 0.4)';
+    ctx.fillRect(0, y + ribHeight - 2, 1024, 2);
+  }
+
+  // Cross-texture micro-loops
+  for (let i = 0; i < 1800; i++) {
+    const rx = Math.random() * 1024;
+    const ry = Math.random() * 1024;
+    ctx.fillStyle = Math.random() > 0.5 ? 'rgba(255,255,255,0.45)' : 'rgba(195,185,170,0.35)';
+    ctx.fillRect(rx, ry, 2.5, 2.5);
+  }
+
+  // Architectural Charcoal Border Frame
+  ctx.strokeStyle = '#2d2824';
+  ctx.lineWidth = 14;
+  ctx.strokeRect(32, 32, 960, 960);
+
+  // Inner subtle accent pinstripe
+  ctx.strokeStyle = 'rgba(180, 165, 145, 0.6)';
+  ctx.lineWidth = 3;
+  ctx.strokeRect(52, 52, 920, 920);
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.RepeatWrapping;
+  return texture;
+}
+
+// 4.c Procedural Contact Shadow Texture (Smooth Ambient Occlusion)
+function createContactShadowTexture() {
   const canvas = document.createElement('canvas');
   canvas.width = 512;
   canvas.height = 512;
   const ctx = canvas.getContext('2d');
 
-  ctx.fillStyle = '#eee8dc';
+  const grad = ctx.createRadialGradient(256, 256, 40, 256, 256, 240);
+  grad.addColorStop(0, 'rgba(0, 0, 0, 0.55)');
+  grad.addColorStop(0.4, 'rgba(0, 0, 0, 0.28)');
+  grad.addColorStop(0.75, 'rgba(0, 0, 0, 0.08)');
+  grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+  ctx.fillStyle = grad;
   ctx.fillRect(0, 0, 512, 512);
 
-  // Crosshatch weave
-  ctx.strokeStyle = 'rgba(80, 70, 60, 0.12)';
-  ctx.lineWidth = 1;
-  for (let i = 0; i < 512; i += 5) {
-    ctx.beginPath();
-    ctx.moveTo(i, 0);
-    ctx.lineTo(i, 512);
-    ctx.stroke();
+  return new THREE.CanvasTexture(canvas);
+}
 
-    ctx.beginPath();
-    ctx.moveTo(0, i);
-    ctx.lineTo(512, i);
-    ctx.stroke();
+// 4.d Procedural Cashmere Waffle Throw Blanket Texture
+function createThrowBlanketTexture() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 512;
+  canvas.height = 512;
+  const ctx = canvas.getContext('2d');
+
+  ctx.fillStyle = '#3a3e47'; // Sophisticated slate charcoal
+  ctx.fillRect(0, 0, 512, 512);
+
+  const wSize = 16;
+  for (let x = 0; x < 512; x += wSize) {
+    for (let y = 0; y < 512; y += wSize) {
+      const grad = ctx.createLinearGradient(x, y, x + wSize, y + wSize);
+      grad.addColorStop(0, 'rgba(255, 255, 255, 0.12)');
+      grad.addColorStop(0.5, 'rgba(0, 0, 0, 0.15)');
+      grad.addColorStop(1, 'rgba(255, 255, 255, 0.06)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(x + 1, y + 1, wSize - 2, wSize - 2);
+    }
   }
 
-  // Modern geometric border
-  ctx.strokeStyle = 'rgba(70, 58, 48, 0.3)';
-  ctx.lineWidth = 3;
-  ctx.strokeRect(36, 36, 440, 440);
-  ctx.beginPath();
-  ctx.moveTo(36, 256);
-  ctx.lineTo(476, 256);
-  ctx.moveTo(256, 36);
-  ctx.lineTo(256, 476);
-  ctx.stroke();
-
-  return new THREE.CanvasTexture(canvas);
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.RepeatWrapping;
+  texture.repeat.set(4, 4);
+  return texture;
 }
 
 // 5. Dynamic City Skyline Panorama Canvas (Morning, Night, Twilight)
@@ -402,30 +533,144 @@ function updateSkylineCanvas(canvas, sceneType) {
   }
 }
 
-// 6. Gallery Minimalist Textured Artwork
-function createArtTexture() {
+// 6. Ultra-Luxury 4K OLED Cinematic Ambient Display Texture
+function createTVScreenTexture() {
   const canvas = document.createElement('canvas');
-  canvas.width = 512;
-  canvas.height = 512;
+  canvas.width = 1920;
+  canvas.height = 1080;
   const ctx = canvas.getContext('2d');
 
-  ctx.fillStyle = '#e2ddd3';
-  ctx.fillRect(0, 0, 512, 512);
+  // Deep cinematic twilight gradient (OLED black into twilight indigo & warm golden amber)
+  const skyGrad = ctx.createLinearGradient(0, 0, 0, 720);
+  skyGrad.addColorStop(0, '#040711');
+  skyGrad.addColorStop(0.35, '#0b162c');
+  skyGrad.addColorStop(0.65, '#1e294b');
+  skyGrad.addColorStop(0.85, '#5c3a4d');
+  skyGrad.addColorStop(0.95, '#c86f43');
+  skyGrad.addColorStop(1, '#e8a860');
+  ctx.fillStyle = skyGrad;
+  ctx.fillRect(0, 0, 1920, 1080);
 
-  // Plaster layered strokes
-  ctx.fillStyle = '#b8aea4';
-  ctx.fillRect(70, 50, 250, 380);
+  // Soft luminous moon or dusk sun disc
+  const sunGrad = ctx.createRadialGradient(1350, 480, 10, 1350, 480, 240);
+  sunGrad.addColorStop(0, 'rgba(255, 248, 225, 0.95)');
+  sunGrad.addColorStop(0.25, 'rgba(255, 210, 140, 0.6)');
+  sunGrad.addColorStop(0.6, 'rgba(220, 120, 80, 0.2)');
+  sunGrad.addColorStop(1, 'rgba(200, 100, 60, 0)');
+  ctx.fillStyle = sunGrad;
+  ctx.beginPath();
+  ctx.arc(1350, 480, 240, 0, Math.PI * 2);
+  ctx.fill();
 
-  ctx.fillStyle = '#48413b';
-  ctx.fillRect(150, 110, 270, 290);
+  // Distant majestic mountain ridges - Layer 1 (Deep distant silhouette)
+  ctx.fillStyle = '#1c1b30';
+  ctx.beginPath();
+  ctx.moveTo(0, 700);
+  ctx.lineTo(260, 520);
+  ctx.lineTo(540, 620);
+  ctx.lineTo(820, 470);
+  ctx.lineTo(1100, 590);
+  ctx.lineTo(1420, 430);
+  ctx.lineTo(1700, 560);
+  ctx.lineTo(1920, 490);
+  ctx.lineTo(1920, 1080);
+  ctx.lineTo(0, 1080);
+  ctx.closePath();
+  ctx.fill();
 
-  ctx.fillStyle = '#cca163';
-  ctx.fillRect(200, 190, 150, 230);
+  // Layer 2 - Midground sharper mountain peaks with subtle snow/mist highlights
+  ctx.fillStyle = '#0f1422';
+  ctx.beginPath();
+  ctx.moveTo(0, 750);
+  ctx.lineTo(200, 610);
+  ctx.lineTo(480, 500);
+  ctx.lineTo(760, 640);
+  ctx.lineTo(1050, 520);
+  ctx.lineTo(1320, 670);
+  ctx.lineTo(1640, 510);
+  ctx.lineTo(1920, 650);
+  ctx.lineTo(1920, 1080);
+  ctx.lineTo(0, 1080);
+  ctx.closePath();
+  ctx.fill();
 
-  ctx.fillStyle = '#f5f0e9';
-  ctx.fillRect(120, 170, 190, 170);
+  // Misty alpine lake reflecting golden amber
+  const waterGrad = ctx.createLinearGradient(0, 720, 0, 1080);
+  waterGrad.addColorStop(0, '#0e1628');
+  waterGrad.addColorStop(0.3, '#1a233a');
+  waterGrad.addColorStop(0.7, '#0d1322');
+  waterGrad.addColorStop(1, '#05070f');
+  ctx.fillStyle = waterGrad;
+  ctx.fillRect(0, 720, 1920, 360);
 
-  return new THREE.CanvasTexture(canvas);
+  // Water golden reflection shimmer under the sun
+  const waterReflection = ctx.createLinearGradient(1200, 720, 1500, 720);
+  waterReflection.addColorStop(0, 'rgba(232, 168, 96, 0)');
+  waterReflection.addColorStop(0.5, 'rgba(232, 168, 96, 0.35)');
+  waterReflection.addColorStop(1, 'rgba(232, 168, 96, 0)');
+  ctx.fillStyle = waterReflection;
+  ctx.fillRect(1200, 720, 300, 260);
+
+  // Foreground dark pine silhouettes
+  ctx.fillStyle = '#060a12';
+  for (let x = 40; x < 650; x += 35 + (x % 20)) {
+    const treeH = 120 + ((x * 13) % 110);
+    const treeBase = 840 + ((x * 7) % 50);
+    ctx.beginPath();
+    ctx.moveTo(x, treeBase - treeH);
+    ctx.lineTo(x - 22, treeBase);
+    ctx.lineTo(x + 22, treeBase);
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  // Subtle Ambient Smart OLED UI Overlay (Luxury gallery / smart home ambient mode)
+  // Top-left subtle brand / mode
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.75)';
+  ctx.font = '500 28px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+  ctx.fillText('GALLERY AMBIENT', 84, 96);
+
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
+  ctx.font = '400 18px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+  ctx.fillText('Nordic Twilight • 4K HDR', 84, 126);
+
+  // Top-right clean minimalist digital clock
+  ctx.fillStyle = '#ffffff';
+  ctx.font = '300 64px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+  ctx.textAlign = 'right';
+  ctx.fillText('18:42', 1836, 105);
+
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+  ctx.font = '400 20px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+  ctx.fillText('Wednesday, October 14  •  24°C', 1836, 138);
+
+  // Subtle bottom-left discreet logo badge
+  ctx.textAlign = 'left';
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.35)';
+  ctx.font = '600 14px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+  ctx.fillText('ARISS VISION OLED 75"', 84, 1020);
+
+  // Subtle screen glass reflection sheen overlay
+  const sheenGrad = ctx.createLinearGradient(0, 0, 1920, 1080);
+  sheenGrad.addColorStop(0, 'rgba(255, 255, 255, 0.08)');
+  sheenGrad.addColorStop(0.3, 'rgba(255, 255, 255, 0.02)');
+  sheenGrad.addColorStop(0.6, 'rgba(255, 255, 255, 0)');
+  sheenGrad.addColorStop(0.85, 'rgba(255, 255, 255, 0.03)');
+  sheenGrad.addColorStop(1, 'rgba(255, 255, 255, 0.06)');
+  ctx.fillStyle = sheenGrad;
+  ctx.fillRect(0, 0, 1920, 1080);
+
+  // Vignette border
+  const vigGrad = ctx.createRadialGradient(960, 540, 600, 960, 540, 1100);
+  vigGrad.addColorStop(0, 'rgba(0,0,0,0)');
+  vigGrad.addColorStop(1, 'rgba(0,0,0,0.55)');
+  ctx.fillStyle = vigGrad;
+  ctx.fillRect(0, 0, 1920, 1080);
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.minFilter = THREE.LinearFilter;
+  texture.magFilter = THREE.LinearFilter;
+  return texture;
 }
 
 // 7. AC Digital Display Dynamic Canvas Texture
@@ -611,6 +856,13 @@ export default function CodeLuxuryRoom({
   const relaxLightRef = useRef(null);
   const twilightDirLightRef = useRef(null);
 
+  // TV Screen & Ambilight Bias Lighting Refs
+  const [tvOn, setTvOn] = useState(true);
+  const tvScreenMatRef = useRef(null);
+  const tvBiasMeshRef = useRef(null);
+  const tvBiasLightRef = useRef(null);
+  const tvLedMeshRef = useRef(null);
+
   // Camera targets for smooth cinematic gliding
   const targetCamPosRef = useRef(new THREE.Vector3(0.0, 1.95, 5.4));
   const targetCamLookRef = useRef(new THREE.Vector3(-0.15, 1.35, -1.0));
@@ -689,6 +941,9 @@ export default function CodeLuxuryRoom({
     const marbleTex = createMarbleTexture();
     const flutedWoodTex = createFlutedWoodTexture();
     const rugTex = createRugTexture();
+    const fabricTex = createFabricTextures();
+    const contactShadowTex = createContactShadowTexture();
+    const throwBlanketTex = createThrowBlanketTexture();
 
     // Dynamic Procedural Canvas Skyline
     const skylineCanvas = document.createElement('canvas');
@@ -699,7 +954,7 @@ export default function CodeLuxuryRoom({
     const skylineTex = new THREE.CanvasTexture(skylineCanvas);
     skylineTextureRef.current = skylineTex;
 
-    const artTex = createArtTexture();
+    const tvTex = createTVScreenTexture();
 
     // =========================================================================
     // A. ARCHITECTURAL ROOM ENVELOPE (8.6m Wide x 7.2m Deep x 3.5m High)
@@ -955,17 +1210,122 @@ export default function CodeLuxuryRoom({
     torusSculpture.castShadow = true;
     featureWallGroup.add(torusSculpture);
 
-    // 4. Contemporary Gallery Artwork on Marble Slab
-    const artMat = new THREE.MeshStandardMaterial({ map: artTex, roughness: 0.45 });
-    const artCanvas = new THREE.Mesh(new THREE.BoxGeometry(1.8, 1.15, 0.04), artMat);
-    artCanvas.position.set(0, 0.42, 0.06);
-    featureWallGroup.add(artCanvas);
+    // 4. Contemporary Architectural 75" Ultra-Slim OLED TV & Ambilight Setup
+    const tvGroup = new THREE.Group();
+    tvGroup.name = 'Smart OLED TV';
+    tvGroup.position.set(0, 0.40, 0.04);
 
-    // Thin Black Art Frame
-    const artFrameMat = new THREE.MeshStandardMaterial({ color: 0x151515, roughness: 0.3 });
-    const artFrame = new THREE.Mesh(new THREE.BoxGeometry(1.84, 1.19, 0.02), artFrameMat);
-    artFrame.position.set(0, 0.42, 0.04);
-    featureWallGroup.add(artFrame);
+    // 4.a Flush TV Wall Mount Bracket (connecting TV chassis to marble slab)
+    const mountMat = new THREE.MeshStandardMaterial({ color: 0x181a20, roughness: 0.8, metalness: 0.5 });
+    const wallBracket = new THREE.Mesh(new THREE.BoxGeometry(0.72, 0.46, 0.02), mountMat);
+    wallBracket.position.set(0, 0, 0.01);
+    tvGroup.add(wallBracket);
+
+    // 4.b Ambilight LED Bias Backlight Plane (Warm ambient halo glowing behind TV on marble)
+    const biasGlowMat = new THREE.MeshBasicMaterial({
+      color: 0xffe2bf,
+      transparent: true,
+      opacity: 0.48,
+    });
+    const biasBacklight = new THREE.Mesh(new THREE.PlaneGeometry(1.98, 1.20), biasGlowMat);
+    biasBacklight.position.set(0, 0, 0.012);
+    tvGroup.add(biasBacklight);
+    tvBiasMeshRef.current = biasBacklight;
+
+    // Soft rear bias point light casting on the Calacatta marble slab
+    const tvBiasLight = new THREE.PointLight(0xffedd8, 0.85, 2.4, 2);
+    tvBiasLight.position.set(0, 0, 0.02);
+    tvGroup.add(tvBiasLight);
+    tvBiasLightRef.current = tvBiasLight;
+
+    // 4.c Ultra-Slim TV Chassis Frame (75-inch class: 1.82m x 1.05m x 0.024m)
+    const tvFrameMat = new THREE.MeshStandardMaterial({
+      color: 0x181a20,
+      roughness: 0.28,
+      metalness: 0.88,
+    });
+    const tvChassis = new THREE.Mesh(
+      new RoundedBoxGeometry(1.82, 1.05, 0.024, 6, 0.012),
+      tvFrameMat
+    );
+    tvChassis.position.set(0, 0, 0.025);
+    tvChassis.castShadow = true;
+    tvGroup.add(tvChassis);
+
+    // 4.d Ultra-Thin Inner Bezel Border (Minimalist 4mm edge)
+    const bezelMat = new THREE.MeshStandardMaterial({ color: 0x090a0d, roughness: 0.4, metalness: 0.3 });
+    const innerBezel = new THREE.Mesh(new THREE.BoxGeometry(1.79, 1.02, 0.025), bezelMat);
+    innerBezel.position.set(0, 0, 0.026);
+    tvGroup.add(innerBezel);
+
+    // 4.e OLED Display Screen Glass with 4K Ambient Art Texture
+    const tvScreenMat = new THREE.MeshPhysicalMaterial({
+      map: tvTex,
+      emissiveMap: tvTex,
+      emissive: new THREE.Color(0xffffff),
+      emissiveIntensity: 0.45,
+      roughness: 0.08,
+      metalness: 0.12,
+      clearcoat: 0.85,
+      clearcoatRoughness: 0.06,
+      reflectivity: 0.65,
+    });
+    tvScreenMatRef.current = tvScreenMat;
+
+    const tvScreen = new THREE.Mesh(new THREE.PlaneGeometry(1.77, 1.00), tvScreenMat);
+    tvScreen.position.set(0, 0, 0.039);
+    tvScreen.name = 'Smart OLED TV Screen';
+    tvGroup.add(tvScreen);
+
+    // 4.f Discreet Standby / Power Status LED Indicator (Bottom-right edge)
+    const tvLedMat = new THREE.MeshBasicMaterial({ color: 0x22c55e });
+    const tvLed = new THREE.Mesh(new THREE.CylinderGeometry(0.0035, 0.0035, 0.002, 12), tvLedMat);
+    tvLed.rotation.x = Math.PI / 2;
+    tvLed.position.set(0.85, -0.512, 0.038);
+    tvGroup.add(tvLed);
+    tvLedMeshRef.current = tvLed;
+
+    featureWallGroup.add(tvGroup);
+
+    // 4.g Architectural Acoustic Soundbar (Floating between TV and Credenza)
+    const soundbarGroup = new THREE.Group();
+    soundbarGroup.name = 'Acoustic Soundbar';
+    soundbarGroup.position.set(0, -0.72, 0.18);
+
+    // Wall bracket for soundbar
+    const soundbarBracket = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.04, 0.14), mountMat);
+    soundbarBracket.position.set(0, 0, -0.07);
+    soundbarGroup.add(soundbarBracket);
+
+    // Soundbar acoustic fabric body
+    const acousticFabricMat = new THREE.MeshStandardMaterial({
+      color: 0x26282e,
+      roughness: 0.88,
+      metalness: 0.04,
+    });
+    const soundbarBody = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.045, 1.28, 28), acousticFabricMat);
+    soundbarBody.rotation.z = Math.PI / 2;
+    soundbarBody.castShadow = true;
+    soundbarGroup.add(soundbarBody);
+
+    // Soundbar Brushed Brass Endcaps
+    const soundbarCapL = new THREE.Mesh(new THREE.CylinderGeometry(0.046, 0.046, 0.016, 24), brassTrimMat);
+    soundbarCapL.rotation.z = Math.PI / 2;
+    soundbarCapL.position.set(-0.645, 0, 0);
+    soundbarGroup.add(soundbarCapL);
+
+    const soundbarCapR = new THREE.Mesh(new THREE.CylinderGeometry(0.046, 0.046, 0.016, 24), brassTrimMat);
+    soundbarCapR.rotation.z = Math.PI / 2;
+    soundbarCapR.position.set(0.645, 0, 0);
+    soundbarGroup.add(soundbarCapR);
+
+    // Soundbar Center Status LED
+    const soundbarLedMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+    const soundbarLed = new THREE.Mesh(new THREE.BoxGeometry(0.014, 0.003, 0.003), soundbarLedMat);
+    soundbarLed.position.set(0, 0.046, 0);
+    soundbarGroup.add(soundbarLed);
+
+    featureWallGroup.add(soundbarGroup);
 
     scene.add(featureWallGroup);
 
@@ -1326,113 +1686,420 @@ export default function CodeLuxuryRoom({
     coveLightsRef.current = coveLightList;
 
     // =========================================================================
-    // I. LOW-PROFILE LUXURY FURNITURE (OPEN SIGHTLINES, ZERO OCCLUSION)
-    // Low-slung seating positioned to keep floor, window, AC, wall 100% visible!
+    // I. ULTRA-LUXURY ARCHITECTURAL FURNITURE ENSEMBLE
+    // Custom-designed Italian modular seating with realistic bouclé fabric weave,
+    // pillowed chamfer contours, welt piping seams, contact shadows, and bespoke
+    // nested marble/fluted-wood coffee tables.
     // =========================================================================
 
-    // 1. Large Wool Area Rug
-    const rugMat = new THREE.MeshStandardMaterial({ map: rugTex, roughness: 0.85, metalness: 0.02 });
-    const rug = new THREE.Mesh(new THREE.PlaneGeometry(4.8, 3.6), rugMat);
-    rug.rotation.x = -Math.PI / 2;
-    rug.position.set(0.1, 0.008, -0.4);
-    rug.receiveShadow = true;
-    scene.add(rug);
+    // Shared Luxury Materials
+    const luxuryBoucleMat = new THREE.MeshPhysicalMaterial({
+      map: fabricTex.map,
+      bumpMap: fabricTex.bumpMap,
+      bumpScale: 0.007,
+      color: 0xeeeae2,
+      roughness: 0.88,
+      metalness: 0.02,
+      sheen: 1.0,
+      sheenRoughness: 0.55,
+      sheenColor: new THREE.Color(0xffffff),
+    });
 
-    // 2. Low-Profile Italian Sectional Sofa (Right Side, Open Facing Room)
+    const walnutFrameMat = new THREE.MeshStandardMaterial({
+      color: 0x241810,
+      roughness: 0.42,
+      metalness: 0.08,
+    });
+
+    const contactShadowMat = new THREE.MeshBasicMaterial({
+      map: contactShadowTex,
+      transparent: true,
+      opacity: 0.65,
+      depthWrite: false,
+    });
+
+    // 1. High-End Ribbed Boucle & Wool Area Rug (Physical 2.2cm thickness with beveled edges)
+    const rugGroup = new THREE.Group();
+    rugGroup.position.set(0.1, 0, -0.4);
+
+    // Soft Rug Ambient Contact Shadow on Floor
+    const rugShadow = new THREE.Mesh(new THREE.PlaneGeometry(5.2, 3.9), contactShadowMat);
+    rugShadow.rotation.x = -Math.PI / 2;
+    rugShadow.position.set(0, 0.002, 0);
+    rugGroup.add(rugShadow);
+
+    const rugMat = new THREE.MeshStandardMaterial({
+      map: rugTex,
+      roughness: 0.85,
+      metalness: 0.02,
+    });
+    const rug = new THREE.Mesh(new RoundedBoxGeometry(4.8, 0.022, 3.6, 6, 0.03), rugMat);
+    rug.position.set(0, 0.011, 0);
+    rug.receiveShadow = true;
+    rugGroup.add(rug);
+    scene.add(rugGroup);
+
+    // 2. Low-Profile Italian Modular Sectional Sofa (Right Side)
     const sofaGroup = new THREE.Group();
     sofaGroup.position.set(1.5, 0, 0.2);
 
-    const sofaMat = new THREE.MeshStandardMaterial({ color: 0xd9d5cc, roughness: 0.82, metalness: 0.04 });
-    const sofaPlinthMat = new THREE.MeshStandardMaterial({ color: 0x1f1915, metalness: 0.6, roughness: 0.4 });
+    // Soft Ambient Contact Shadow under Sofa
+    const sofaShadow = new THREE.Mesh(new THREE.PlaneGeometry(3.1, 1.7), contactShadowMat);
+    sofaShadow.rotation.x = -Math.PI / 2;
+    sofaShadow.position.set(0, 0.013, 0.08);
+    sofaGroup.add(sofaShadow);
 
-    // Base Plinth (Low height: 0.08m)
-    const plinth = new THREE.Mesh(new THREE.BoxGeometry(2.5, 0.08, 1.2), sofaPlinthMat);
-    plinth.position.set(0, 0.04, 0);
-    sofaGroup.add(plinth);
+    // 2.a Recessed American Walnut Base Plinth (4cm shadow reveal)
+    const sofaPlinth = new THREE.Mesh(
+      new RoundedBoxGeometry(2.68, 0.065, 1.14, 6, 0.02),
+      walnutFrameMat
+    );
+    sofaPlinth.position.set(0, 0.033, 0.06);
+    sofaPlinth.castShadow = true;
+    sofaGroup.add(sofaPlinth);
 
-    // Seat Cushion (Low height: 0.28m)
-    const seatCushion = new THREE.Mesh(new THREE.BoxGeometry(2.4, 0.26, 1.15), sofaMat);
-    seatCushion.position.set(0, 0.21, 0);
-    seatCushion.castShadow = true;
-    sofaGroup.add(seatCushion);
+    // Brushed Brass Inset Reveal Band
+    const sofaBrassReveal = new THREE.Mesh(
+      new RoundedBoxGeometry(2.70, 0.012, 1.16, 4, 0.006),
+      brassTrimMat
+    );
+    sofaBrassReveal.position.set(0, 0.068, 0.06);
+    sofaGroup.add(sofaBrassReveal);
 
-    // Low Backrest (Total height only 0.55m from floor, NEVER blocks anything behind!)
-    const backrest = new THREE.Mesh(new THREE.BoxGeometry(2.4, 0.32, 0.22), sofaMat);
-    backrest.position.set(0, 0.45, 0.46);
-    backrest.castShadow = true;
-    sofaGroup.add(backrest);
+    // 2.b Upholstered Bench Platform / Deck
+    const benchDeck = new THREE.Mesh(
+      new RoundedBoxGeometry(2.64, 0.14, 1.12, 8, 0.045),
+      luxuryBoucleMat
+    );
+    benchDeck.position.set(0, 0.14, 0.06);
+    benchDeck.castShadow = true;
+    benchDeck.receiveShadow = true;
+    sofaGroup.add(benchDeck);
 
-    // Throw Pillows
-    const pillowMat1 = new THREE.MeshStandardMaterial({ color: 0x2b303c, roughness: 0.85 });
-    const pillow1 = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.35, 0.12), pillowMat1);
-    pillow1.position.set(0.65, 0.46, 0.38);
-    pillow1.rotation.y = -0.2;
+    // 2.c Dual Deep Feather-Down Seat Cushions (Plush pillowed crowns)
+    // Left Cushion
+    const seatLeft = new THREE.Mesh(
+      new RoundedBoxGeometry(1.28, 0.22, 1.05, 10, 0.065),
+      luxuryBoucleMat
+    );
+    seatLeft.position.set(-0.66, 0.28, 0.04);
+    seatLeft.castShadow = true;
+    seatLeft.receiveShadow = true;
+    sofaGroup.add(seatLeft);
+
+    // Right Cushion
+    const seatRight = new THREE.Mesh(
+      new RoundedBoxGeometry(1.28, 0.22, 1.05, 10, 0.065),
+      luxuryBoucleMat
+    );
+    seatRight.position.set(0.66, 0.28, 0.04);
+    seatRight.castShadow = true;
+    seatRight.receiveShadow = true;
+    sofaGroup.add(seatRight);
+
+    // Center Tailored Seam Piping Divider Bead
+    const seatDivider = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.007, 0.007, 1.02, 12),
+      new THREE.MeshStandardMaterial({ color: 0xd8d3c9, roughness: 0.9 })
+    );
+    seatDivider.rotation.x = Math.PI / 2;
+    seatDivider.position.set(0, 0.35, 0.04);
+    sofaGroup.add(seatDivider);
+
+    // 2.d Tailored Backrest Shell (Rear support with gentle bevel)
+    const backrestShell = new THREE.Mesh(
+      new RoundedBoxGeometry(2.64, 0.38, 0.24, 8, 0.055),
+      luxuryBoucleMat
+    );
+    backrestShell.position.set(0, 0.44, 0.48);
+    backrestShell.castShadow = true;
+    backrestShell.receiveShadow = true;
+    sofaGroup.add(backrestShell);
+
+    // Top Perimeter Backrest Welting Bead (Visible from rear camera angle!)
+    const backrestWelt = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.009, 0.009, 2.58, 16),
+      new THREE.MeshStandardMaterial({ color: 0xc8c2b5, roughness: 0.85 })
+    );
+    backrestWelt.rotation.z = Math.PI / 2;
+    backrestWelt.position.set(0, 0.63, 0.48);
+    sofaGroup.add(backrestWelt);
+
+    // 2.e Dual Plush Backrest Pillows (Slightly angled back for casual elegance)
+    const backPillowLeft = new THREE.Mesh(
+      new RoundedBoxGeometry(1.24, 0.30, 0.16, 8, 0.05),
+      luxuryBoucleMat
+    );
+    backPillowLeft.position.set(-0.66, 0.50, 0.34);
+    backPillowLeft.rotation.x = -0.09;
+    backPillowLeft.castShadow = true;
+    sofaGroup.add(backPillowLeft);
+
+    const backPillowRight = new THREE.Mesh(
+      new RoundedBoxGeometry(1.24, 0.30, 0.16, 8, 0.05),
+      luxuryBoucleMat
+    );
+    backPillowRight.position.set(0.66, 0.50, 0.34);
+    backPillowRight.rotation.x = -0.09;
+    backPillowRight.castShadow = true;
+    sofaGroup.add(backPillowRight);
+
+    // 2.f Architectural Low Armrest (Right Side)
+    const armrestRight = new THREE.Mesh(
+      new RoundedBoxGeometry(0.24, 0.28, 1.05, 8, 0.05),
+      luxuryBoucleMat
+    );
+    armrestRight.position.set(1.42, 0.30, 0.04);
+    armrestRight.castShadow = true;
+    sofaGroup.add(armrestRight);
+
+    // 2.g Left End Integrated Dark Smoked Walnut Accent Tray
+    const sideTray = new THREE.Mesh(
+      new RoundedBoxGeometry(0.32, 0.045, 0.65, 6, 0.012),
+      walnutFrameMat
+    );
+    sideTray.position.set(-1.42, 0.20, -0.05);
+    sideTray.castShadow = true;
+    sofaGroup.add(sideTray);
+
+    // Marble Coaster & Minimalist Ceramic Tumbler on Tray
+    const marbleCoaster = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.065, 0.065, 0.015, 24),
+      new THREE.MeshStandardMaterial({ map: marbleTex, roughness: 0.3 })
+    );
+    marbleCoaster.position.set(-1.42, 0.23, -0.05);
+    sofaGroup.add(marbleCoaster);
+
+    const tumbler = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.038, 0.032, 0.09, 20),
+      new THREE.MeshStandardMaterial({ color: 0x181c24, roughness: 0.2, metalness: 0.1 })
+    );
+    tumbler.position.set(-1.42, 0.28, -0.05);
+    sofaGroup.add(tumbler);
+
+    // 2.h Curated Throw Pillows (Rich velvet, charcoal bouclé, & ivory lumbar)
+    // Pillow 1: Warm Sunset Terracotta Velvet
+    const pillowMatTerracotta = new THREE.MeshPhysicalMaterial({
+      color: 0xb85e3a,
+      roughness: 0.75,
+      sheen: 1.0,
+      sheenColor: new THREE.Color(0xd9774a),
+    });
+    const pillow1 = new THREE.Mesh(
+      new RoundedBoxGeometry(0.40, 0.40, 0.14, 8, 0.065),
+      pillowMatTerracotta
+    );
+    pillow1.position.set(0.72, 0.48, 0.25);
+    pillow1.rotation.set(0.08, -0.22, 0.08);
+    pillow1.castShadow = true;
     sofaGroup.add(pillow1);
 
-    const pillowMat2 = new THREE.MeshStandardMaterial({ color: 0xca8a04, roughness: 0.8 });
-    const pillow2 = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.32, 0.12), pillowMat2);
-    pillow2.position.set(-0.25, 0.44, 0.38);
-    pillow2.rotation.y = 0.15;
+    // Pillow 2: Midnight Slate Navy Bouclé
+    const pillowMatNavy = new THREE.MeshPhysicalMaterial({
+      color: 0x243242,
+      roughness: 0.85,
+      sheen: 0.8,
+      sheenColor: new THREE.Color(0x38526d),
+    });
+    const pillow2 = new THREE.Mesh(
+      new RoundedBoxGeometry(0.36, 0.36, 0.13, 8, 0.055),
+      pillowMatNavy
+    );
+    pillow2.position.set(-0.32, 0.47, 0.26);
+    pillow2.rotation.set(-0.06, 0.16, -0.04);
+    pillow2.castShadow = true;
     sofaGroup.add(pillow2);
+
+    // Pillow 3: Tailored Oatmeal Lumbar Cushion
+    const pillow3 = new THREE.Mesh(
+      new RoundedBoxGeometry(0.44, 0.24, 0.12, 8, 0.045),
+      luxuryBoucleMat
+    );
+    pillow3.position.set(0.18, 0.37, 0.18);
+    pillow3.rotation.set(0.04, -0.08, 0.02);
+    pillow3.castShadow = true;
+    sofaGroup.add(pillow3);
+
+    // 2.i Draped Cashmere Waffle Throw Blanket (Over right armrest/back)
+    const blanketMat = new THREE.MeshStandardMaterial({
+      map: throwBlanketTex,
+      roughness: 0.9,
+      color: 0x484d57,
+    });
+    const blanket = new THREE.Mesh(
+      new RoundedBoxGeometry(0.55, 0.025, 0.72, 6, 0.012),
+      blanketMat
+    );
+    blanket.position.set(1.36, 0.42, 0.22);
+    blanket.rotation.set(0.12, 0.04, -0.15);
+    blanket.castShadow = true;
+    sofaGroup.add(blanket);
 
     scene.add(sofaGroup);
 
-    // 3. Low Sculptural Smoked Oak Coffee Table (Height: 0.32m)
+    // 3. Bespoke Nested Sculptural Coffee Table Ensemble (Center)
     const tableGroup = new THREE.Group();
     tableGroup.position.set(0.5, 0, -0.6);
 
-    const tableMat = new THREE.MeshStandardMaterial({ color: 0x1f1914, roughness: 0.45, metalness: 0.1 });
-    const tableTop = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.06, 0.8), tableMat);
-    tableTop.position.set(0, 0.31, 0);
-    tableTop.castShadow = true;
-    tableTop.receiveShadow = true;
-    tableGroup.add(tableTop);
+    // Soft Ambient Contact Shadow under Table
+    const tableShadow = new THREE.Mesh(new THREE.PlaneGeometry(2.2, 1.4), contactShadowMat);
+    tableShadow.rotation.x = -Math.PI / 2;
+    tableShadow.position.set(0, 0.013, 0);
+    tableGroup.add(tableShadow);
 
-    const tableBase = new THREE.Mesh(new THREE.BoxGeometry(1.1, 0.26, 0.6), tableMat);
+    // 3.a Primary Table: Honed Italian Calacatta Marble Slab with Brass Bevel
+    const marbleTableTop = new THREE.Mesh(
+      new RoundedBoxGeometry(1.42, 0.055, 0.78, 8, 0.025),
+      new THREE.MeshStandardMaterial({
+        map: marbleTex,
+        roughness: 0.28,
+        metalness: 0.05,
+      })
+    );
+    marbleTableTop.position.set(0, 0.32, 0);
+    marbleTableTop.castShadow = true;
+    marbleTableTop.receiveShadow = true;
+    tableGroup.add(marbleTableTop);
+
+    // Brushed Brass Trim Reveal below marble
+    const marbleBrassRim = new THREE.Mesh(
+      new RoundedBoxGeometry(1.43, 0.012, 0.79, 6, 0.01),
+      brassTrimMat
+    );
+    marbleBrassRim.position.set(0, 0.285, 0);
+    tableGroup.add(marbleBrassRim);
+
+    // Recessed Dark Bronze Pedestal Base
+    const tableBase = new THREE.Mesh(
+      new RoundedBoxGeometry(1.10, 0.26, 0.54, 6, 0.02),
+      walnutFrameMat
+    );
     tableBase.position.set(0, 0.14, 0);
+    tableBase.castShadow = true;
     tableGroup.add(tableBase);
 
-    // Architectural Coffee Table Books
-    const bookMat = new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.6 });
-    const book = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.035, 0.34), bookMat);
-    book.position.set(-0.3, 0.36, 0.05);
-    tableGroup.add(book);
+    // 3.b Secondary Nested Table: Fluted Smoked Walnut Companion Cube
+    const nestedTable = new THREE.Mesh(
+      new RoundedBoxGeometry(0.58, 0.22, 0.58, 6, 0.02),
+      new THREE.MeshStandardMaterial({
+        map: flutedWoodTex,
+        roughness: 0.45,
+        metalness: 0.1,
+      })
+    );
+    nestedTable.position.set(-0.68, 0.12, 0.32);
+    nestedTable.rotation.y = 0.14;
+    nestedTable.castShadow = true;
+    nestedTable.receiveShadow = true;
+    tableGroup.add(nestedTable);
+
+    // 3.c Curated Tabletop Styling: Stacked Architectural Monographs
+    const book1Mat = new THREE.MeshStandardMaterial({ color: 0xf8f9fa, roughness: 0.45 });
+    const book1 = new THREE.Mesh(new RoundedBoxGeometry(0.28, 0.032, 0.36, 4, 0.008), book1Mat);
+    book1.position.set(-0.25, 0.365, 0.05);
+    book1.rotation.y = -0.08;
+    book1.castShadow = true;
+    tableGroup.add(book1);
+
+    const book2Mat = new THREE.MeshStandardMaterial({ color: 0x1e2129, roughness: 0.4 });
+    const book2 = new THREE.Mesh(new RoundedBoxGeometry(0.24, 0.026, 0.32, 4, 0.008), book2Mat);
+    book2.position.set(-0.24, 0.395, 0.06);
+    book2.rotation.y = 0.06;
+    book2.castShadow = true;
+    tableGroup.add(book2);
+
+    // Handcrafted Low Ribbed Ceramic Centerpiece Bowl
+    const bowlMat = new THREE.MeshStandardMaterial({ color: 0x303642, roughness: 0.3, metalness: 0.08 });
+    const bowl = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.07, 0.045, 24), bowlMat);
+    bowl.position.set(0.32, 0.37, -0.06);
+    bowl.castShadow = true;
+    tableGroup.add(bowl);
+
+    // Brushed Brass Sculptural Ring in Bowl
+    const bowlDeco = new THREE.Mesh(new THREE.TorusGeometry(0.045, 0.012, 12, 24), brassTrimMat);
+    bowlDeco.position.set(0.32, 0.38, -0.06);
+    bowlDeco.rotation.x = Math.PI / 3;
+    tableGroup.add(bowlDeco);
 
     scene.add(tableGroup);
 
-    // 4. Low Sculptural Lounge Armchair (Left Side, Angled Inward, Low Height: 0.62m)
+    // 4. Low Sculptural Lounge Armchair (Left Side, Angled Inward)
     const chairGroup = new THREE.Group();
     chairGroup.position.set(-2.2, 0, 0.6);
-    chairGroup.rotation.y = -Math.PI / 5;
+    chairGroup.rotation.y = -Math.PI / 5.2;
 
-    const chairSeat = new THREE.Mesh(new THREE.BoxGeometry(0.72, 0.2, 0.7), sofaMat);
-    chairSeat.position.set(0, 0.25, 0);
+    // Soft Ambient Contact Shadow under Chair
+    const chairShadow = new THREE.Mesh(new THREE.PlaneGeometry(1.3, 1.3), contactShadowMat);
+    chairShadow.rotation.x = -Math.PI / 2;
+    chairShadow.position.set(0, 0.013, 0);
+    chairGroup.add(chairShadow);
+
+    // 4.a Thick Ergonomic Rounded Seat Cushion
+    const chairSeat = new THREE.Mesh(
+      new RoundedBoxGeometry(0.82, 0.18, 0.76, 8, 0.06),
+      luxuryBoucleMat
+    );
+    chairSeat.position.set(0, 0.26, 0);
     chairSeat.castShadow = true;
+    chairSeat.receiveShadow = true;
     chairGroup.add(chairSeat);
 
-    const chairBack = new THREE.Mesh(new THREE.BoxGeometry(0.72, 0.38, 0.14), sofaMat);
-    chairBack.position.set(0, 0.48, -0.28);
+    // 4.b Gently Reclined Ergonomic Backrest
+    const chairBack = new THREE.Mesh(
+      new RoundedBoxGeometry(0.78, 0.42, 0.16, 8, 0.055),
+      luxuryBoucleMat
+    );
+    chairBack.position.set(0, 0.50, -0.28);
+    chairBack.rotation.x = -0.15;
     chairBack.castShadow = true;
+    chairBack.receiveShadow = true;
     chairGroup.add(chairBack);
 
-    // Chair Walnut Legs
-    const legGeom = new THREE.CylinderGeometry(0.022, 0.018, 0.28, 12);
-    const chairLegMat = new THREE.MeshStandardMaterial({ color: 0x3d2618, roughness: 0.4 });
-    const l1 = new THREE.Mesh(legGeom, chairLegMat);
-    l1.position.set(-0.3, 0.14, 0.28);
-    chairGroup.add(l1);
+    // 4.c Lumbar Support Pillow
+    const chairLumbar = new THREE.Mesh(
+      new RoundedBoxGeometry(0.52, 0.22, 0.11, 8, 0.045),
+      pillowMatTerracotta
+    );
+    chairLumbar.position.set(0, 0.38, -0.21);
+    chairLumbar.rotation.x = -0.12;
+    chairLumbar.castShadow = true;
+    chairGroup.add(chairLumbar);
 
-    const l2 = new THREE.Mesh(legGeom, chairLegMat);
-    l2.position.set(0.3, 0.14, 0.28);
-    chairGroup.add(l2);
+    // 4.d Tapered Walnut Legs with Solid Brushed Brass Ferrules
+    const legLength = 0.26;
+    const legMat = walnutFrameMat;
+    const ferruleMat = brassTrimMat;
 
-    const l3 = new THREE.Mesh(legGeom, chairLegMat);
-    l3.position.set(-0.3, 0.14, -0.28);
-    chairGroup.add(l3);
+    const legCoords = [
+      { x: -0.32, z: 0.28, rotX: 0.12, rotZ: -0.12 },
+      { x: 0.32, z: 0.28, rotX: 0.12, rotZ: 0.12 },
+      { x: -0.32, z: -0.28, rotX: -0.14, rotZ: -0.12 },
+      { x: 0.32, z: -0.28, rotX: -0.14, rotZ: 0.12 },
+    ];
 
-    const l4 = new THREE.Mesh(legGeom, chairLegMat);
-    l4.position.set(0.3, 0.14, -0.28);
-    chairGroup.add(l4);
+    legCoords.forEach(({ x, z, rotX, rotZ }) => {
+      const legAssembly = new THREE.Group();
+      legAssembly.position.set(x, 0.14, z);
+      legAssembly.rotation.set(rotX, 0, rotZ);
+
+      // Tapered Walnut Upper Leg
+      const legUpper = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.024, 0.016, legLength, 16),
+        legMat
+      );
+      legUpper.castShadow = true;
+      legAssembly.add(legUpper);
+
+      // Brushed Brass Ferrule Foot Cap
+      const ferrule = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.017, 0.015, 0.05, 16),
+        ferruleMat
+      );
+      ferrule.position.y = -legLength * 0.42;
+      legAssembly.add(ferrule);
+
+      chairGroup.add(legAssembly);
+    });
 
     scene.add(chairGroup);
 
@@ -1670,6 +2337,26 @@ export default function CodeLuxuryRoom({
     if (acAirflowGroupRef.current) {
       acAirflowGroupRef.current.visible = Boolean(acState.on);
     }
+
+    // 10. TV Screen Luminous OLED Emissive & Ambilight Bias
+    if (tvScreenMatRef.current) {
+      if (tvOn) {
+        tvScreenMatRef.current.emissiveIntensity = isNight ? 0.35 : 0.45;
+        tvScreenMatRef.current.color.setHex(0xffffff);
+      } else {
+        tvScreenMatRef.current.emissiveIntensity = 0.0;
+        tvScreenMatRef.current.color.setHex(0x06070a);
+      }
+    }
+    if (tvBiasMeshRef.current) {
+      tvBiasMeshRef.current.visible = tvOn;
+    }
+    if (tvBiasLightRef.current) {
+      tvBiasLightRef.current.intensity = tvOn ? 0.85 : 0;
+    }
+    if (tvLedMeshRef.current) {
+      tvLedMeshRef.current.material.color.setHex(tvOn ? 0x22c55e : 0xef4444);
+    }
   }, [
     activeScene,
     isMorning,
@@ -1689,6 +2376,7 @@ export default function CodeLuxuryRoom({
     acState.on,
     acState.temp,
     acState.mode,
+    tvOn,
   ]);
 
   // 3. INTERACTIVE RAYCASTING (Clicking 3D Object Toggles Keypad Control)
@@ -1724,6 +2412,8 @@ export default function CodeLuxuryRoom({
           onToggleFixture?.('spotlights');
         } else if (obj.name.includes('Window') || obj.name.includes('Skyline')) {
           onToggleFixture?.(isMorning ? 'night' : 'morning');
+        } else if (obj.name.includes('TV')) {
+          setTvOn((prev) => !prev);
         }
       }
     }
@@ -1752,11 +2442,15 @@ export default function CodeLuxuryRoom({
         obj = obj.parent;
       }
       if (obj && obj.name) {
-        foundName = obj.name;
+        if (obj.name.includes('TV')) {
+          foundName = tvOn ? 'Smart TV (Tap to Turn Off)' : 'Smart TV (Tap to Turn On)';
+        } else {
+          foundName = obj.name;
+        }
       }
     }
     setHoveredObject(foundName);
-  }, []);
+  }, [tvOn]);
 
   // 4. CINEMATIC CAMERA PRESETS
   const setCameraView = (viewKey) => {
@@ -1777,10 +2471,10 @@ export default function CodeLuxuryRoom({
       // Focused panoramic window & drapes view
       targetCamPosRef.current.set(-1.6, 1.6, 0.4);
       targetCamLookRef.current.set(-2.45, 1.6, -3.65);
-    } else if (viewKey === 'art') {
-      // Focused chandelier & marble feature wall view
-      targetCamPosRef.current.set(1.1, 1.9, 1.5);
-      targetCamLookRef.current.set(1.65, 2.0, -2.0);
+    } else if (viewKey === 'tv' || viewKey === 'art') {
+      // Focused Smart OLED TV & marble feature wall view
+      targetCamPosRef.current.set(1.4, 1.8, 0.8);
+      targetCamLookRef.current.set(1.65, 1.75, -3.6);
     }
   };
 
@@ -1839,10 +2533,10 @@ export default function CodeLuxuryRoom({
         </button>
         <button
           type="button"
-          className={`cam-pill ${activeCameraView === 'art' ? 'active' : ''}`}
-          onClick={() => setCameraView('art')}
+          className={`cam-pill ${activeCameraView === 'tv' || activeCameraView === 'art' ? 'active' : ''}`}
+          onClick={() => setCameraView('tv')}
         >
-          💎 Chandelier & Art
+          📺 Smart TV
         </button>
       </nav>
     </div>
